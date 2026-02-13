@@ -100,7 +100,7 @@ const zodiacSignTextEl = document.querySelector("#zodiacSignText");
 const zodiacFortuneTextEl = document.querySelector("#zodiacFortuneText");
 
 const googleLoginBtn = document.querySelector("#googleLoginBtn");
-const GOOGLE_CLIENT_ID = "";
+const GOOGLE_CLIENT_ID = "610364396438-cduadkikkc8gkcbgrn4700q45load9kr.apps.googleusercontent.com";
 const STORAGE_GOOGLE_USER = "tarotMate:googleUser";
 
 let currentIndex = 0;
