@@ -1,0 +1,314 @@
+:root {
+  --bg-top: #ecd8ff;
+  --bg-bottom: #f8eee6;
+  --primary: #8b61d4;
+  --primary-deep: #7845c8;
+  --text: #4d4460;
+  --muted: #8f7ea6;
+  --white: #ffffff;
+  --card-border: #d0c8be;
+  --shadow: 0 16px 40px rgba(82, 45, 129, 0.24);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: "Pretendard", "Noto Sans KR", sans-serif;
+  color: var(--text);
+  background:
+    radial-gradient(circle at 18% 30%, #ffffff73 0 12%, transparent 13%),
+    radial-gradient(circle at 82% 65%, #ffffff55 0 10%, transparent 11%),
+    linear-gradient(180deg, var(--bg-top), var(--bg-bottom));
+  display: grid;
+  place-items: center;
+}
+
+.app-shell {
+  width: min(390px, 100vw);
+  min-height: 100vh;
+  padding: 16px 16px 14px;
+  display: grid;
+  grid-template-rows: auto auto auto auto auto 1fr;
+  gap: 14px;
+  position: relative;
+  overflow: hidden;
+}
+
+.app-shell::before,
+.app-shell::after {
+  content: "✦";
+  position: absolute;
+  color: #ceb8ec;
+  font-size: 14px;
+  z-index: 0;
+}
+
+.app-shell::before {
+  left: 22px;
+  top: 40%;
+}
+
+.app-shell::after {
+  right: 26px;
+  top: 52%;
+}
+
+.top-bar,
+.card-area,
+.reading-box,
+.carousel-dots,
+.start-btn,
+.bottom-nav {
+  z-index: 1;
+}
+
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.brand {
+  margin: 0;
+  color: #8062be;
+  font-size: 2rem;
+  line-height: 1;
+  font-weight: 800;
+}
+
+.subtitle {
+  margin: 2px 0 0;
+  color: #9a85ba;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.top-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.coin-pill {
+  border: 2px solid #d8b04c;
+  background: linear-gradient(180deg, #ffe58f, #f2cb61);
+  border-radius: 999px;
+  padding: 6px 14px;
+  font-weight: 700;
+  color: #826029;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow: 0 4px 10px #c59f3a54;
+}
+
+.icon-btn,
+.profile-btn {
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: #8e76b3;
+  font-weight: 700;
+}
+
+.icon-btn {
+  font-size: 1rem;
+  padding: 6px;
+}
+
+.profile-btn {
+  background: linear-gradient(180deg, #21c8a5, #0f9c7d);
+  color: #f0fffb;
+  width: 40px;
+  height: 40px;
+}
+
+.card-area {
+  display: grid;
+  place-items: center;
+}
+
+.tarot-card {
+  width: min(300px, 88vw);
+  border: 3px solid var(--card-border);
+  border-radius: 22px;
+  background: #f4f1ea;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  position: relative;
+}
+
+.card-head {
+  margin: 10px auto 8px;
+  width: 80%;
+  border: 2px solid #8f8f92;
+  border-radius: 12px;
+  text-align: center;
+  font-weight: 700;
+  color: #666;
+  padding: 3px 0;
+  background: linear-gradient(180deg, #f6f6f6, #e1ddd5);
+}
+
+.card-art {
+  margin: 0 12px;
+  border: 2px solid #8f8f92;
+  border-radius: 8px;
+  height: 330px;
+  background:
+    radial-gradient(circle at 85% 12%, #fff8bb7a 0 10%, transparent 11%),
+    linear-gradient(180deg, #a7cedf 0 58%, #88a868 59% 100%);
+  font-size: 5rem;
+  display: grid;
+  place-items: center;
+  text-shadow: 0 3px 8px #374e63;
+}
+
+.card-body {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 8px;
+  padding: 0 14px;
+  color: #fff;
+  text-shadow: 0 2px 10px rgba(17, 16, 31, 0.7);
+}
+
+.card-body h2 {
+  margin: 0;
+  font-size: 2rem;
+  line-height: 1.1;
+}
+
+.card-body p {
+  margin: 8px 0;
+  font-size: 1rem;
+  line-height: 1.45;
+  font-weight: 500;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding-bottom: 8px;
+}
+
+.tag {
+  background: #e8daffcc;
+  color: #7c5abb;
+  border-radius: 999px;
+  padding: 5px 10px;
+  font-size: 0.86rem;
+  font-weight: 700;
+}
+
+.reading-box {
+  background: #fff;
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 8px 25px #a18ac12e;
+  font-size: 1.03rem;
+  line-height: 1.6;
+  text-align: center;
+  font-weight: 500;
+}
+
+.carousel-dots {
+  display: flex;
+  justify-content: center;
+  gap: 7px;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: #dccff2;
+}
+
+.dot.active {
+  width: 30px;
+  background: linear-gradient(90deg, #7f59cc, #9f7be2);
+}
+
+.start-btn {
+  border: 0;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #8454d2, #a17ee6);
+  color: #fff;
+  font-size: 1.2rem;
+  font-weight: 700;
+  padding: 16px 18px;
+  box-shadow: 0 12px 24px #885ed551;
+}
+
+.start-btn:active {
+  transform: translateY(1px);
+}
+
+.bottom-nav {
+  margin-top: auto;
+  background: #f9f1fc;
+  border-top: 1px solid #e6d5f5;
+  border-radius: 18px 18px 0 0;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  padding: 10px 4px 8px;
+}
+
+.nav-item {
+  border: 0;
+  background: transparent;
+  color: #b6a3d2;
+  font-size: 1rem;
+  display: grid;
+  gap: 2px;
+  justify-items: center;
+}
+
+.nav-item span {
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.nav-item.active {
+  color: #7b57c9;
+}
+
+.tarot-card.animating {
+  animation: floatFlip 520ms ease;
+}
+
+@keyframes floatFlip {
+  0% {
+    transform: translateY(0) rotateY(0deg) scale(1);
+    opacity: 1;
+  }
+  45% {
+    transform: translateY(8px) rotateY(80deg) scale(0.92);
+    opacity: 0.75;
+  }
+  100% {
+    transform: translateY(0) rotateY(0deg) scale(1);
+    opacity: 1;
+  }
+}
+
+@media (max-width: 360px) {
+  .brand {
+    font-size: 1.75rem;
+  }
+
+  .card-body h2 {
+    font-size: 1.7rem;
+  }
+
+  .card-art {
+    height: 300px;
+  }
+}

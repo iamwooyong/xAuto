@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>타로메이트 (Tarot-Mate)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="top-bar">
+        <div>
+          <h1 class="brand">타로메이트</h1>
+          <p class="subtitle">Tarot-Mate</p>
+        </div>
+        <div class="top-actions">
+          <button class="coin-pill" type="button">
+            <span>🪙</span>
+            <strong id="coinCount">0</strong>
+          </button>
+          <button class="icon-btn" type="button" aria-label="알림">✉️</button>
+          <button class="profile-btn" type="button">재현</button>
+        </div>
+      </header>
+
+      <section class="card-area">
+        <article class="tarot-card" id="tarotCard">
+          <div class="card-head">0</div>
+          <div class="card-art" id="cardArt">🐈</div>
+          <div class="card-body">
+            <h2 id="cardTitle">방랑자 고양이</h2>
+            <p id="cardQuote">“생각은 그만! 지금은 마음이 이끄는 대로 가볍게 시작할 때.”</p>
+            <div class="tags" id="tagBox"></div>
+          </div>
+        </article>
+      </section>
+
+      <section class="reading-box">
+        <p id="cardDesc">
+          조각난 옷을 입은 고양이가 세상 끝에서 망설임 없이 첫발을 내딛으려 한다. 그의 시선은 낭떠러지가 아니라 춤추는 나비를 따른다.
+        </p>
+      </section>
+
+      <section class="carousel-dots" aria-label="진행 표시">
+        <span class="dot active"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+      </section>
+
+      <button class="start-btn" id="drawBtn" type="button">✦ 시작하기</button>
+
+      <nav class="bottom-nav">
+        <button class="nav-item active" type="button">⌂<span>홈</span></button>
+        <button class="nav-item" type="button">◌<span>리딩 기록</span></button>
+        <button class="nav-item" type="button">▣<span>타로 백과사전</span></button>
+        <button class="nav-item" type="button">⋯<span>설정</span></button>
+      </nav>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>
