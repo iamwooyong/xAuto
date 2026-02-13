@@ -73,7 +73,7 @@ const views = {
   home: document.querySelector("#homeView"),
   history: document.querySelector("#historyView"),
   zodiac: document.querySelector("#zodiacView"),
-  settings: document.querySelector("#settingsView")
+  guide: document.querySelector("#guideView")
 };
 
 const drawBtn = document.querySelector("#drawBtn");
@@ -88,6 +88,7 @@ const tagBox = document.querySelector("#tagBox");
 const pickAreaEl = document.querySelector("#pickArea");
 const pickGridEl = document.querySelector("#pickGrid");
 const historyListEl = document.querySelector("#historyList");
+const cardCatalogListEl = document.querySelector("#cardCatalogList");
 
 const zodiacForm = document.querySelector("#zodiacForm");
 const birthDateInput = document.querySelector("#birthDate");
@@ -302,6 +303,26 @@ function renderHistory() {
   historyListEl.innerHTML = `<div class="history-viewport"><div class="history-track">${pageHtml}</div></div>`;
 }
 
+function renderCardCatalog() {
+  cardCatalogListEl.innerHTML = tarotCards
+    .map((card) => {
+      const idLabel = typeof card.number === "number" ? formatCardNumber(card.number) : String(card.number);
+      return `<li class="catalog-item">
+        <div class="catalog-head">
+          <span class="catalog-emoji">${card.emoji}</span>
+          <div>
+            <p class="catalog-id">${idLabel}</p>
+            <p class="catalog-title">${card.title}</p>
+            <p class="catalog-sub">${card.name}</p>
+          </div>
+        </div>
+        <p class="catalog-desc"><strong>정방향:</strong> ${card.upright}</p>
+        <p class="catalog-desc"><strong>역방향:</strong> ${card.reversed}</p>
+      </li>`;
+    })
+    .join("");
+}
+
 function getZodiacSign(month, day) {
   if ((month === 3 && day >= 21) || (month === 4 && day <= 19)) return "양자리";
   if ((month === 4 && day >= 20) || (month === 5 && day <= 20)) return "황소자리";
@@ -392,6 +413,10 @@ function switchTab(tab) {
 
   if (tab === "history") {
     renderHistory();
+  }
+
+  if (tab === "guide") {
+    renderCardCatalog();
   }
 
   if (tab === "home") {
@@ -501,6 +526,7 @@ function init() {
   onToggleUnknownBirthTime();
   resetHomeIntro();
   renderHistory();
+  renderCardCatalog();
   switchTab("home");
 }
 
