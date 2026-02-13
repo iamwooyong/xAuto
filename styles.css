@@ -287,6 +287,15 @@ body {
   transform: translateY(-2px);
 }
 
+.view-home.selection-mode .card-area,
+.view-home.selection-mode .reading-box {
+  display: none;
+}
+
+.view-home.selection-mode .pick-area {
+  display: block;
+}
+
 .panel-sub {
   margin: 0 0 10px;
   color: var(--muted);

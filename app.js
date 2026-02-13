@@ -25,7 +25,7 @@ const tarotCards = [
 
 const STORAGE_TODAY = "tarotMate:todayTarot";
 const STORAGE_HISTORY = "tarotMate:readingHistory";
-const SPREAD_COUNT = Math.min(5, tarotCards.length);
+const SPREAD_COUNT = Math.min(9, tarotCards.length);
 
 const brandHomeBtn = document.querySelector("#brandHomeBtn");
 const navItems = Array.from(document.querySelectorAll(".nav-item"));
@@ -62,6 +62,7 @@ const KAKAO_JS_KEY = "";
 const KAKAO_REDIRECT_URI = window.location.origin + window.location.pathname;
 
 let currentIndex = 0;
+let isSelectionMode = false;
 
 function getDateKey() {
   const today = new Date();
@@ -169,6 +170,9 @@ function revealFortune(cardIndex, dateKey, direction) {
   cardDescEl.textContent = buildFortuneText(card, direction);
   fortuneMetaEl.textContent = `${dateKey} 기준, 오늘 선택한 카드입니다.`;
   drawBtn.textContent = "✦ 오늘의 운세 다시 보기";
+  isSelectionMode = false;
+  views.home.classList.remove("selection-mode");
+  pickAreaEl.classList.add("hidden");
 
   upsertDailyHistory({
     type: "daily",
@@ -204,16 +208,12 @@ function renderPickGrid(data) {
 
 function openTodayDraw() {
   const data = getTodayData();
+  isSelectionMode = true;
+  views.home.classList.add("selection-mode");
   pickAreaEl.classList.remove("hidden");
   renderPickGrid(data);
-
-  if (Number.isInteger(data.selected)) {
-    revealFortune(data.selected, data.date, data.orientationMap?.[data.selected] || "upright");
-    return;
-  }
-
   fortuneTitleEl.textContent = "오늘의 운세";
-  cardDescEl.textContent = "펼쳐진 카드 중 한 장을 선택하면 오늘의 운세를 알려드려요.";
+  cardDescEl.textContent = "카드 9장 중 한 장을 선택하면 오늘의 운세를 알려드려요.";
   fortuneMetaEl.textContent = `${data.date} 기준, 하루 한 번 결과가 고정됩니다.`;
 }
 
@@ -311,6 +311,11 @@ function switchTab(tab) {
   if (tab === "history") {
     renderHistory();
   }
+
+  if (tab === "home" && !isSelectionMode) {
+    pickAreaEl.classList.add("hidden");
+    views.home.classList.remove("selection-mode");
+  }
 }
 
 function initNavigation() {
@@ -351,7 +356,6 @@ function init() {
   initNavigation();
   initKakaoLogin();
   renderCard(currentIndex, "upright");
-  openTodayDraw();
   renderHistory();
   switchTab("home");
 }
