@@ -99,9 +99,9 @@ const zodiacTitleEl = document.querySelector("#zodiacTitle");
 const zodiacSignTextEl = document.querySelector("#zodiacSignText");
 const zodiacFortuneTextEl = document.querySelector("#zodiacFortuneText");
 
-const kakaoLoginBtn = document.querySelector("#kakaoLoginBtn");
-const KAKAO_JS_KEY = "";
-const STORAGE_KAKAO_USER = "tarotMate:kakaoUser";
+const googleLoginBtn = document.querySelector("#googleLoginBtn");
+const GOOGLE_CLIENT_ID = "";
+const STORAGE_GOOGLE_USER = "tarotMate:googleUser";
 
 let currentIndex = 0;
 let isSelectionMode = false;
@@ -407,85 +407,89 @@ function initNavigation() {
   brandHomeBtn.addEventListener("click", () => switchTab("home"));
 }
 
-function setKakaoButton(user) {
-  if (!kakaoLoginBtn) return;
-  kakaoLoginBtn.textContent = user ? `${user.nickname} 로그아웃` : "카카오 로그인";
+function setGoogleButton(user) {
+  if (!googleLoginBtn) return;
+  googleLoginBtn.textContent = user ? `${user.name} 로그아웃` : "Google 로그인";
 }
 
-function saveKakaoUser(user) {
-  localStorage.setItem(STORAGE_KAKAO_USER, JSON.stringify(user));
+function saveGoogleUser(user) {
+  localStorage.setItem(STORAGE_GOOGLE_USER, JSON.stringify(user));
 }
 
-function clearKakaoUser() {
-  localStorage.removeItem(STORAGE_KAKAO_USER);
+function clearGoogleUser() {
+  localStorage.removeItem(STORAGE_GOOGLE_USER);
 }
 
-function loadKakaoUser() {
-  return JSON.parse(localStorage.getItem(STORAGE_KAKAO_USER) || "null");
+function loadGoogleUser() {
+  return JSON.parse(localStorage.getItem(STORAGE_GOOGLE_USER) || "null");
 }
 
-function requestKakaoUserProfile() {
-  return new Promise((resolve, reject) => {
-    window.Kakao.API.request({
-      url: "/v2/user/me",
-      success: (res) => {
-        const nickname = res?.kakao_account?.profile?.nickname || "사용자";
-        const user = { id: res?.id, nickname };
-        saveKakaoUser(user);
-        setKakaoButton(user);
-        resolve(user);
-      },
-      fail: (error) => reject(error)
+function fetchGoogleUserInfo(accessToken) {
+  return fetch("https://www.googleapis.com/oauth2/v3/userinfo", {
+    headers: { Authorization: `Bearer ${accessToken}` }
+  })
+    .then((res) => {
+      if (!res.ok) throw new Error("userinfo failed");
+      return res.json();
+    })
+    .then((profile) => {
+      const user = {
+        id: profile.sub,
+        name: profile.name || "사용자",
+        email: profile.email || ""
+      };
+      saveGoogleUser(user);
+      setGoogleButton(user);
+      return user;
     });
-  });
 }
 
-function initKakaoLogin() {
-  if (!kakaoLoginBtn) return;
-  setKakaoButton(loadKakaoUser());
+function logoutGoogleUser() {
+  const user = loadGoogleUser();
+  if (user?.email && window.google?.accounts?.oauth2?.revoke) {
+    window.google.accounts.oauth2.revoke(user.email, () => {});
+  }
+  clearGoogleUser();
+  setGoogleButton(null);
+}
 
-  kakaoLoginBtn.addEventListener("click", () => {
-    if (!window.Kakao) {
-      alert("카카오 SDK 로드에 실패했어요. 잠시 후 다시 시도해 주세요.");
+function initGoogleLogin() {
+  if (!googleLoginBtn) return;
+  setGoogleButton(loadGoogleUser());
+
+  googleLoginBtn.addEventListener("click", () => {
+    if (!window.google || !window.google.accounts || !window.google.accounts.oauth2) {
+      alert("Google SDK 로드에 실패했어요. 잠시 후 다시 시도해 주세요.");
       return;
     }
 
-    if (!KAKAO_JS_KEY) {
-      alert("app.js에 KAKAO_JS_KEY를 먼저 설정해 주세요.");
+    if (!GOOGLE_CLIENT_ID) {
+      alert("app.js에 GOOGLE_CLIENT_ID를 먼저 설정해 주세요.");
       return;
     }
 
-    if (!window.Kakao.isInitialized()) {
-      window.Kakao.init(KAKAO_JS_KEY);
-    }
-
-    if (window.Kakao.Auth.getAccessToken()) {
-      window.Kakao.Auth.logout(() => {
-        clearKakaoUser();
-        setKakaoButton(null);
-      });
+    if (loadGoogleUser()) {
+      logoutGoogleUser();
       return;
     }
 
-    window.Kakao.Auth.login({
-      success: () => {
-        requestKakaoUserProfile().catch(() => {
-          alert("로그인은 됐지만 사용자 정보를 가져오지 못했어요.");
-          setKakaoButton(loadKakaoUser());
+    const tokenClient = window.google.accounts.oauth2.initTokenClient({
+      client_id: GOOGLE_CLIENT_ID,
+      scope: "openid profile email",
+      callback: (tokenResponse) => {
+        if (!tokenResponse?.access_token) {
+          alert("Google 로그인 토큰을 받지 못했어요.");
+          return;
+        }
+        fetchGoogleUserInfo(tokenResponse.access_token).catch((error) => {
+          console.error(error);
+          alert("Google 사용자 정보를 가져오지 못했어요.");
         });
-      },
-      fail: (error) => {
-        console.error(error);
-        alert("카카오 로그인에 실패했어요. 다시 시도해 주세요.");
       }
     });
-  });
 
-  if (window.Kakao && window.Kakao.isInitialized && window.Kakao.isInitialized() && window.Kakao.Auth.getAccessToken()) {
-    requestKakaoUserProfile().catch(() => {
-      setKakaoButton(loadKakaoUser());
-    });
-  }
+    tokenClient.requestAccessToken({ prompt: "consent" });
+  });
 }
 
 function init() {
@@ -493,7 +497,7 @@ function init() {
   zodiacForm.addEventListener("submit", onSubmitZodiac);
   unknownBirthTimeInput.addEventListener("change", onToggleUnknownBirthTime);
   initNavigation();
-  initKakaoLogin();
+  initGoogleLogin();
   onToggleUnknownBirthTime();
   resetHomeIntro();
   renderHistory();

@@ -118,11 +118,11 @@ body {
   font-size: 0.82rem;
 }
 
-.kakao-btn {
-  background: #fee500;
-  color: #2b1e1e;
-  border: 1px solid #e3cd00;
-  box-shadow: 0 4px 12px rgba(113, 94, 0, 0.26);
+.google-btn {
+  background: #ffffff;
+  color: #3c4043;
+  border: 1px solid #dadce0;
+  box-shadow: 0 4px 12px rgba(60, 64, 67, 0.2);
 }
 
 .view {
