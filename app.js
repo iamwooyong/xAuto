@@ -25,7 +25,7 @@ const tarotCards = [
 
 const STORAGE_TODAY = "tarotMate:todayTarot";
 const STORAGE_HISTORY = "tarotMate:readingHistory";
-const SPREAD_COUNT = Math.min(9, tarotCards.length);
+const SPREAD_COUNT = Math.min(20, tarotCards.length);
 
 const brandHomeBtn = document.querySelector("#brandHomeBtn");
 const navItems = Array.from(document.querySelectorAll(".nav-item"));
@@ -213,8 +213,20 @@ function openTodayDraw() {
   pickAreaEl.classList.remove("hidden");
   renderPickGrid(data);
   fortuneTitleEl.textContent = "오늘의 운세";
-  cardDescEl.textContent = "카드 9장 중 한 장을 선택하면 오늘의 운세를 알려드려요.";
+  cardDescEl.textContent = "카드 20장 중 한 장을 선택하면 오늘의 운세를 알려드려요.";
   fortuneMetaEl.textContent = `${data.date} 기준, 하루 한 번 결과가 고정됩니다.`;
+}
+
+function resetHomeIntro() {
+  isSelectionMode = false;
+  views.home.classList.remove("selection-mode");
+  pickAreaEl.classList.add("hidden");
+  currentIndex = 0;
+  renderCard(currentIndex, "upright");
+  fortuneTitleEl.textContent = "안녕하세요 타로메이트 입니다.";
+  cardDescEl.textContent = "오늘의 타로 골라볼까요?";
+  fortuneMetaEl.textContent = "";
+  drawBtn.textContent = "✦ 오늘의 운세 보기";
 }
 
 function renderHistory() {
@@ -312,9 +324,8 @@ function switchTab(tab) {
     renderHistory();
   }
 
-  if (tab === "home" && !isSelectionMode) {
-    pickAreaEl.classList.add("hidden");
-    views.home.classList.remove("selection-mode");
+  if (tab === "home") {
+    resetHomeIntro();
   }
 }
 
@@ -355,7 +366,7 @@ function init() {
   zodiacForm.addEventListener("submit", onSubmitZodiac);
   initNavigation();
   initKakaoLogin();
-  renderCard(currentIndex, "upright");
+  resetHomeIntro();
   renderHistory();
   switchTab("home");
 }

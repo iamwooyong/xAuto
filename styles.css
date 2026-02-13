@@ -254,6 +254,8 @@ body {
 .pick-area {
   background: #ffffffc7;
   border: 1px solid #eadcf6;
+  max-height: 66vh;
+  overflow: auto;
 }
 
 .pick-area h3 {
@@ -265,14 +267,14 @@ body {
 
 .pick-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(52px, 1fr));
+  grid-template-columns: repeat(5, 1fr);
   gap: 8px;
 }
 
 .pick-card {
   border: 0;
   border-radius: 10px;
-  min-height: 74px;
+  min-height: 56px;
   background:
     radial-gradient(circle at 24% 18%, #ffffff8f 0 12%, transparent 13%),
     linear-gradient(145deg, #7a51c8, #9c79dc);
