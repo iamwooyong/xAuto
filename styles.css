@@ -121,10 +121,17 @@ body {
 }
 
 .profile-btn {
-  background: linear-gradient(180deg, #21c8a5, #0f9c7d);
-  color: #f0fffb;
-  width: 40px;
+  width: auto;
   height: 40px;
+  padding: 0 12px;
+  font-size: 0.82rem;
+}
+
+.kakao-btn {
+  background: #fee500;
+  color: #2b1e1e;
+  border: 1px solid #e3cd00;
+  box-shadow: 0 4px 12px rgba(113, 94, 0, 0.26);
 }
 
 .card-area {

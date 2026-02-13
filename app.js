@@ -46,6 +46,10 @@ const cardArtEl = document.querySelector("#cardArt");
 const cardHeadEl = document.querySelector(".card-head");
 const tagBox = document.querySelector("#tagBox");
 const coinCountEl = document.querySelector("#coinCount");
+const kakaoLoginBtn = document.querySelector("#kakaoLoginBtn");
+
+const KAKAO_JS_KEY = "";
+const KAKAO_REDIRECT_URI = window.location.origin + window.location.pathname;
 
 let currentIndex = 0;
 let coin = 0;
@@ -80,3 +84,29 @@ function nextCard() {
 
 drawBtn.addEventListener("click", nextCard);
 renderCard(currentIndex);
+
+function initKakaoLogin() {
+  if (!kakaoLoginBtn) return;
+
+  kakaoLoginBtn.addEventListener("click", () => {
+    if (!window.Kakao) {
+      alert("카카오 SDK 로드에 실패했어요. 잠시 후 다시 시도해 주세요.");
+      return;
+    }
+
+    if (!KAKAO_JS_KEY) {
+      alert("app.js에 KAKAO_JS_KEY를 먼저 설정해 주세요.");
+      return;
+    }
+
+    if (!window.Kakao.isInitialized()) {
+      window.Kakao.init(KAKAO_JS_KEY);
+    }
+
+    window.Kakao.Auth.authorize({
+      redirectUri: KAKAO_REDIRECT_URI
+    });
+  });
+}
+
+initKakaoLogin();
