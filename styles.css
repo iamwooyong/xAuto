@@ -97,18 +97,12 @@ body {
   gap: 8px;
 }
 
-.icon-btn,
 .profile-btn {
   border: 0;
   border-radius: 999px;
   background: transparent;
   color: #8e76b3;
   font-weight: 700;
-}
-
-.icon-btn {
-  font-size: 1rem;
-  padding: 6px;
 }
 
 .profile-btn {
