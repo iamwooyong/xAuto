@@ -924,6 +924,7 @@ function handleSubmit() {
       els.submitBtn.textContent = "다음 복습";
     }
     els.submitBtn.disabled = false;
+    els.submitBtn.focus();
     return;
   }
 
@@ -960,6 +961,7 @@ function handleSubmit() {
     els.submitBtn.textContent = "다음 문제";
   }
   els.submitBtn.disabled = false;
+  els.submitBtn.focus();
 }
 
 function handleHint() {
