@@ -9,7 +9,7 @@ const app = express();
 const PORT = Number(process.env.PORT || 3000);
 const ROOT = process.cwd();
 const DATABASE_URL = process.env.DATABASE_URL || "postgresql://postgres:postgres@localhost:5432/gommath";
-const GOOGLE_CLIENT_IDS = (process.env.GOOGLE_CLIENT_IDS || process.env.GOOGLE_CLIENT_ID || "610364396438-cduadkikkc8gkcbgrn4700q45load9kr.apps.googleusercontent.com")
+const GOOGLE_CLIENT_IDS = (process.env.GOOGLE_CLIENT_IDS || process.env.GOOGLE_CLIENT_ID || "160808232856-3c351j191uocqiailplgha2pnf2qtdam.apps.googleusercontent.com")
   .split(",")
   .map((value) => value.trim())
   .filter(Boolean);

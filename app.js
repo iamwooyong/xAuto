@@ -2,7 +2,7 @@ const STORAGE_KEY = "gomdori-math:profile";
 const AUTH_STORAGE_KEY = "gomdori-math:auth";
 const TARGET_QUESTIONS = 10;
 const API_BASE = "";
-const GOOGLE_CLIENT_ID = "610364396438-cduadkikkc8gkcbgrn4700q45load9kr.apps.googleusercontent.com";
+const GOOGLE_CLIENT_ID = "160808232856-3c351j191uocqiailplgha2pnf2qtdam.apps.googleusercontent.com";
 
 const OPERATIONS = {
   add: { key: "add", label: "더하기", symbol: "+" },
