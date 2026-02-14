@@ -33,7 +33,7 @@ const THEME_KEYS = Object.keys(THEMES);
 const NICKNAME_PATTERN = /^[A-Za-z0-9가-힣_]{2,12}$/;
 
 const POSITIVE_FEEDBACK = [
-  "곰골이 선생님이 박수 치고 있어!",
+  "곰돌이 선생님이 박수 치고 있어!",
   "완벽해! 계산 감각이 정말 좋아.",
   "아주 좋아! 다음 문제도 가보자.",
   "맞았어! 오늘 집중력이 최고야."
@@ -327,7 +327,7 @@ function setBear(mood, message) {
 }
 
 function setFeedback(message) {
-  els.feedbackText.textContent = `곰골이 선생님: ${message}`;
+  els.feedbackText.textContent = `곰돌이 선생님: ${message}`;
 }
 
 function setAuthStatus(message) {
@@ -882,7 +882,7 @@ function completeSession() {
   let mood = "happy";
 
   if (score === 100) {
-    line = "완벽해! 곰골이 선생님이 깜짝 놀랐어!";
+    line = "완벽해! 곰돌이 선생님이 깜짝 놀랐어!";
     mood = "celebrate";
   } else if (score >= 80) {
     line = "대단해! 오늘 수학 감각이 아주 좋아.";
@@ -947,7 +947,7 @@ function handleSubmit() {
   if (state.reviewMode) {
     if (userAnswer === state.currentQuestion.answer) {
       setFeedback(`정답! ${getRandomLine(POSITIVE_FEEDBACK)}`);
-      setBear("love", "정답이야! 곰골이 선생님 눈이 하트가 됐어.");
+      setBear("love", "정답이야! 곰돌이 선생님 눈이 하트가 됐어.");
     } else {
       state.reviewQueue.push({ ...state.currentQuestion });
       setFeedback(`오답! 정답은 ${state.currentQuestion.answer}이야. ${getRandomLine(ENCOURAGE_FEEDBACK)}`);
@@ -977,14 +977,14 @@ function handleSubmit() {
     profile.bestStreak = Math.max(profile.bestStreak, state.sessionStreak);
 
     setFeedback(`정답! ${getRandomLine(POSITIVE_FEEDBACK)}`);
-    setBear("love", "정답이야! 곰골이 선생님 눈이 하트가 됐어.");
+    setBear("love", "정답이야! 곰돌이 선생님 눈이 하트가 됐어.");
   } else {
     state.sessionWrong += 1;
     state.sessionStreak = 0;
     state.wrongQuestions.push({ ...state.currentQuestion });
 
     setFeedback(`오답! 정답은 ${state.currentQuestion.answer}이야. ${getRandomLine(ENCOURAGE_FEEDBACK)}`);
-    setBear("cry", "괜찮아, 곰골이 선생님이 토닥토닥. 다음 문제에서 만회하자.");
+    setBear("cry", "괜찮아, 곰돌이 선생님이 토닥토닥. 다음 문제에서 만회하자.");
   }
 
   saveProfile();
