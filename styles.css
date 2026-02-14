@@ -811,16 +811,46 @@ body {
   transform: translateY(-2px);
 }
 
+.bear-avatar[data-mood="smile"] {
+  transform: translateY(-2px);
+}
+
 .bear-avatar[data-mood="happy"] .mouth,
+.bear-avatar[data-mood="smile"] .mouth,
 .bear-avatar[data-mood="celebrate"] .mouth {
   border-bottom-width: 4px;
   height: 16px;
+  width: 30px;
 }
 
 .bear-avatar[data-mood="oops"] .mouth {
   border-bottom: 0;
   border-top: 3px solid #58392a;
   border-radius: 20px 20px 0 0;
+}
+
+.bear-avatar[data-mood="smile"] .eye {
+  width: 14px;
+  height: 7px;
+  top: 57px;
+  border-radius: 0 0 12px 12px;
+  border-bottom: 3px solid #33261c;
+  background: transparent;
+}
+
+.bear-avatar[data-mood="surprised"] .eye {
+  width: 14px;
+  height: 14px;
+  top: 50px;
+}
+
+.bear-avatar[data-mood="surprised"] .mouth {
+  width: 18px;
+  height: 18px;
+  bottom: 34px;
+  border: 3px solid #58392a;
+  border-radius: 50%;
+  background: #f8d1c8;
 }
 
 .bear-avatar[data-mood="celebrate"] {
@@ -1097,6 +1127,15 @@ h2 {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
+}
+
+#submitBtn {
+  flex: 1 1 100%;
+  width: 100%;
+  min-height: 58px;
+  font-size: 1.22rem;
+  font-weight: 800;
+  border-radius: 18px;
 }
 
 .feedback {

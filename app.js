@@ -596,13 +596,13 @@ function handleSubmit() {
     profile.bestStreak = Math.max(profile.bestStreak, state.sessionStreak);
 
     setFeedback(getRandomLine(POSITIVE_FEEDBACK));
-    setBear("happy", "정답이야! 역시 집중력 최고야.");
+    setBear("smile", "정답! 곰 선생님이 활짝 웃고 있어.");
   } else {
     state.sessionWrong += 1;
     state.sessionStreak = 0;
 
     setFeedback(`아쉽다! 정답은 ${state.currentQuestion.answer}이야. ${getRandomLine(ENCOURAGE_FEEDBACK)}`);
-    setBear("oops", "괜찮아, 다음 문제에서 만회하자.");
+    setBear("surprised", "어머! 살짝 놀랐지만, 다음 문제는 맞힐 수 있어.");
   }
 
   saveProfile();
