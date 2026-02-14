@@ -684,6 +684,7 @@ function renderQuestion() {
   els.answerInput.disabled = false;
   els.answerInput.focus();
 
+  els.submitBtn.textContent = "정답 확인";
   els.submitBtn.disabled = false;
   els.hintBtn.disabled = false;
   els.nextBtn.classList.add("hidden");
@@ -735,6 +736,7 @@ function completeWrongReview() {
   els.equation.textContent = "🎉 틀린 문제를 모두 다시 풀었어!";
   els.answerInput.value = "";
   els.answerInput.disabled = true;
+  els.submitBtn.textContent = "정답 확인";
   els.submitBtn.disabled = true;
   els.hintBtn.disabled = true;
   els.nextBtn.classList.add("hidden");
@@ -868,6 +870,7 @@ function completeSession() {
 
   els.answerInput.value = "";
   els.answerInput.disabled = true;
+  els.submitBtn.textContent = "정답 확인";
   els.submitBtn.disabled = true;
   els.hintBtn.disabled = true;
   els.nextBtn.classList.add("hidden");
@@ -901,10 +904,9 @@ function handleSubmit() {
   }
 
   state.answered = true;
-  els.submitBtn.disabled = true;
   els.hintBtn.disabled = true;
   els.answerInput.disabled = true;
-  els.nextBtn.classList.remove("hidden");
+  els.nextBtn.classList.add("hidden");
 
   if (state.reviewMode) {
     if (userAnswer === state.currentQuestion.answer) {
@@ -917,10 +919,11 @@ function handleSubmit() {
     }
 
     if (state.reviewQueue.length === 0) {
-      els.nextBtn.textContent = "복습 완료";
+      els.submitBtn.textContent = "복습 완료";
     } else {
-      els.nextBtn.textContent = "다음 복습";
+      els.submitBtn.textContent = "다음 복습";
     }
+    els.submitBtn.disabled = false;
     return;
   }
 
@@ -952,10 +955,11 @@ function handleSubmit() {
   updateProgress();
 
   if (state.questionNumber >= TARGET_QUESTIONS) {
-    els.nextBtn.textContent = "결과 보기";
+    els.submitBtn.textContent = "결과 보기";
   } else {
-    els.nextBtn.textContent = "다음 문제";
+    els.submitBtn.textContent = "다음 문제";
   }
+  els.submitBtn.disabled = false;
 }
 
 function handleHint() {
@@ -1272,6 +1276,11 @@ function bindEvents() {
   });
 
   els.submitBtn.addEventListener("click", () => {
+    if (state.answered) {
+      handleNext();
+      return;
+    }
+
     handleSubmit();
   });
 
