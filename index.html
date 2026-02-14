@@ -10,7 +10,7 @@
       href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="styles.css?v=20260214-5" />
+    <link rel="stylesheet" href="styles.css?v=20260214-6" />
   </head>
   <body>
     <main class="app-shell">
@@ -116,7 +116,12 @@
           <button class="btn btn-ghost hidden" id="retryWrongBtn" type="button">틀린 문제 다시 풀기</button>
         </div>
 
-        <p class="feedback" id="feedback">천천히, 정확하게! 준비되면 시작해요.</p>
+        <section class="feedback" id="feedback" data-mood="idle" aria-live="polite">
+          <div class="feedback-bear" id="feedbackBear" aria-hidden="true">
+            <span class="feedback-bear-face" id="feedbackBearFace">🐻</span>
+          </div>
+          <p class="feedback-text" id="feedbackText">곰 선생님: 천천히, 정확하게! 준비되면 시작해요.</p>
+        </section>
       </section>
 
       <section class="panel stats-panel">
@@ -153,6 +158,6 @@
     </main>
 
     <script src="https://accounts.google.com/gsi/client" async defer></script>
-    <script src="app.js?v=20260214-5"></script>
+    <script src="app.js?v=20260214-6"></script>
   </body>
 </html>

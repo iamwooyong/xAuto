@@ -59,6 +59,8 @@ const els = {
   modePill: document.querySelector("#modePill"),
   equation: document.querySelector("#equation"),
   feedback: document.querySelector("#feedback"),
+  feedbackText: document.querySelector("#feedbackText"),
+  feedbackBearFace: document.querySelector("#feedbackBearFace"),
 
   bearAvatar: document.querySelector("#bearAvatar"),
   bearMessage: document.querySelector("#bearMessage"),
@@ -269,10 +271,22 @@ async function saveThemeToDb(themeKey) {
 function setBear(mood, message) {
   els.bearAvatar.dataset.mood = mood;
   els.bearMessage.textContent = message;
+  els.feedback.dataset.mood = mood;
+  els.feedbackBearFace.textContent = getFeedbackBearFace(mood);
 }
 
 function setFeedback(message) {
-  els.feedback.textContent = message;
+  els.feedbackText.textContent = `곰 선생님: ${message}`;
+}
+
+function getFeedbackBearFace(mood) {
+  if (mood === "smile" || mood === "happy") return "🐻😄";
+  if (mood === "cry") return "🐻😭";
+  if (mood === "surprised") return "🐻😲";
+  if (mood === "celebrate") return "🐻🎉";
+  if (mood === "thinking") return "🐻🤔";
+  if (mood === "oops") return "🐻🥺";
+  return "🐻";
 }
 
 function setAuthStatus(message) {
