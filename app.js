@@ -46,6 +46,7 @@ const ENCOURAGE_FEEDBACK = [
 ];
 
 const TAB_STORAGE_KEY = "gomdori-math:tab";
+const CURRENT_ORIGIN = window.location.origin;
 const ENGLISH_LESSONS = [
   { korean: "사과", english: "apple", sentence: "I like apples." },
   { korean: "학교", english: "school", sentence: "I go to school." },
@@ -1798,9 +1799,7 @@ function bindEvents() {
 
       setTimeout(() => {
         if (authState.user || hasVisibleGoogleButtonDom()) return;
-        setAuthStatus(
-          "계속 안 보이면 Google Cloud Console 승인 도메인에 https://math.dndyd.com 이 등록됐는지 확인해 주세요."
-        );
+        setAuthStatus(`계속 안 보이면 Google Cloud Console 승인 도메인에 ${CURRENT_ORIGIN} 이 등록됐는지 확인해 주세요.`);
       }, 1800);
     });
   });
