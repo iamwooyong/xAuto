@@ -1295,6 +1295,11 @@ function handleEnglishOptionSelect(option) {
   });
 
   updateEnglishStats();
+  if (isCorrect) {
+    handleEnglishNext();
+    return;
+  }
+
   if (englishState.questionNumber >= TARGET_QUESTIONS) {
     els.englishNextBtn.textContent = "말하기 미션 시작";
   } else {
@@ -1422,6 +1427,7 @@ function handleEnglishMic() {
   }
 
   const recognition = new RecognitionCtor();
+  let shouldAutoAdvance = false;
   englishState.recognition = recognition;
   recognition.lang = "en-US";
   recognition.interimResults = false;
@@ -1442,7 +1448,8 @@ function handleEnglishMic() {
       englishState.streak += 1;
       englishState.bestStreak = Math.max(englishState.bestStreak, englishState.streak);
       englishState.answered = true;
-      setEnglishSpeakingFeedback("정답! 발음이 또렷해요. 이제 다음 문제로 넘어가요.", false);
+      shouldAutoAdvance = true;
+      setEnglishSpeakingFeedback("정답! 발음이 또렷해요. 바로 다음 문제로 넘어갈게요.", false);
       setEnglishFeedback("말하기 정답! 정말 잘했어.");
       setBear("love", "말하기 정답! 곰돌이 선생님이 하트 눈으로 칭찬 중이야.");
     } else {
@@ -1455,10 +1462,12 @@ function handleEnglishMic() {
       setBear("cry", "괜찮아, 다음 말하기 문제에서 바로 다시 도전하자.");
     }
 
-    englishState.speakingAction = ENGLISH_SPEAK_ACTIONS.NEXT;
     updateEnglishStats();
-    updateEnglishSpeakingControls();
-    els.englishSpeakActionBtn.focus();
+    if (!shouldAutoAdvance) {
+      englishState.speakingAction = ENGLISH_SPEAK_ACTIONS.NEXT;
+      updateEnglishSpeakingControls();
+      els.englishSpeakActionBtn.focus();
+    }
   };
 
   recognition.onerror = () => {
@@ -1469,6 +1478,10 @@ function handleEnglishMic() {
   recognition.onend = () => {
     englishState.recognizing = false;
     englishState.recognition = null;
+    if (shouldAutoAdvance) {
+      handleEnglishNext();
+      return;
+    }
     if (!englishState.answered && isEnglishSpeakingPhase()) {
       englishState.speakingAction = ENGLISH_SPEAK_ACTIONS.RECORD;
     }
@@ -1792,6 +1805,7 @@ function handleSubmit() {
     setFeedback("숫자만 입력해줘.");
     return;
   }
+  const isCorrect = userAnswer === state.currentQuestion.answer;
 
   state.answered = true;
   els.hintBtn.disabled = true;
@@ -1799,9 +1813,11 @@ function handleSubmit() {
   els.nextBtn.classList.add("hidden");
 
   if (state.reviewMode) {
-    if (userAnswer === state.currentQuestion.answer) {
+    if (isCorrect) {
       setFeedback(`정답! ${getRandomLine(POSITIVE_FEEDBACK)}`);
       setBear("love", "정답이야! 곰돌이 선생님 눈이 하트가 됐어.");
+      handleNext();
+      return;
     } else {
       state.reviewQueue.push({ ...state.currentQuestion });
       setFeedback(`오답! 정답은 ${state.currentQuestion.answer}이야. ${getRandomLine(ENCOURAGE_FEEDBACK)}`);
@@ -1821,7 +1837,7 @@ function handleSubmit() {
   profile.dailySolved += 1;
   profile.lifetimeSolved += 1;
 
-  if (userAnswer === state.currentQuestion.answer) {
+  if (isCorrect) {
     state.sessionCorrect += 1;
     state.sessionStreak += 1;
     state.sessionBestStreak = Math.max(state.sessionBestStreak, state.sessionStreak);
@@ -1844,6 +1860,10 @@ function handleSubmit() {
   saveProfile();
   updateStats();
   updateProgress();
+  if (isCorrect) {
+    handleNext();
+    return;
+  }
 
   if (state.questionNumber >= TARGET_QUESTIONS) {
     els.submitBtn.textContent = "결과 보기";
