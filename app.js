@@ -58,20 +58,87 @@ const ENGLISH_SPEAK_ACTIONS = {
 };
 const ENGLISH_TOTAL_QUESTIONS = TARGET_QUESTIONS * 2;
 const ENGLISH_LESSONS = [
-  { korean: "사과", english: "apple", sentence: "I like apples." },
-  { korean: "학교", english: "school", sentence: "I go to school." },
+  { korean: "사과", english: "apple", sentence: "I eat an apple." },
+  { korean: "바나나", english: "banana", sentence: "This banana is sweet." },
+  { korean: "포도", english: "grape", sentence: "I like purple grapes." },
+  { korean: "딸기", english: "strawberry", sentence: "The strawberry is red." },
+  { korean: "복숭아", english: "peach", sentence: "I have a peach." },
+  { korean: "오렌지", english: "orange", sentence: "The orange smells good." },
+  { korean: "학교", english: "school", sentence: "We go to school." },
+  { korean: "교실", english: "classroom", sentence: "Our classroom is clean." },
+  { korean: "선생님", english: "teacher", sentence: "My teacher is kind." },
+  { korean: "학생", english: "student", sentence: "He is a good student." },
+  { korean: "친구", english: "friend", sentence: "She is my best friend." },
+  { korean: "가족", english: "family", sentence: "I love my family." },
+  { korean: "엄마", english: "mother", sentence: "My mother cooks well." },
+  { korean: "아빠", english: "father", sentence: "My father reads a book." },
+  { korean: "언니/누나", english: "sister", sentence: "My sister can sing." },
+  { korean: "형/오빠/남동생", english: "brother", sentence: "My brother plays soccer." },
+  { korean: "책", english: "book", sentence: "This book is fun." },
+  { korean: "공책", english: "notebook", sentence: "I write in my notebook." },
+  { korean: "연필", english: "pencil", sentence: "I need a new pencil." },
+  { korean: "지우개", english: "eraser", sentence: "Use the eraser, please." },
+  { korean: "가방", english: "bag", sentence: "My bag is heavy." },
+  { korean: "책상", english: "desk", sentence: "The desk is by the window." },
+  { korean: "의자", english: "chair", sentence: "Sit on the chair." },
+  { korean: "컴퓨터", english: "computer", sentence: "The computer is on." },
+  { korean: "전화기", english: "phone", sentence: "My phone is in my bag." },
   { korean: "물", english: "water", sentence: "Please give me water." },
-  { korean: "친구", english: "friend", sentence: "She is my friend." },
-  { korean: "책", english: "book", sentence: "This is my book." },
+  { korean: "우유", english: "milk", sentence: "I drink milk every day." },
+  { korean: "주스", english: "juice", sentence: "Apple juice is my favorite." },
+  { korean: "빵", english: "bread", sentence: "I eat bread for breakfast." },
+  { korean: "쌀", english: "rice", sentence: "We eat rice at home." },
+  { korean: "수프", english: "soup", sentence: "The soup is hot." },
+  { korean: "아침", english: "morning", sentence: "Good morning, everyone." },
+  { korean: "오후", english: "afternoon", sentence: "Good afternoon, class." },
+  { korean: "저녁", english: "evening", sentence: "Good evening, teacher." },
+  { korean: "밤", english: "night", sentence: "Good night, mom." },
+  { korean: "행복한", english: "happy", sentence: "I am happy today." },
+  { korean: "슬픈", english: "sad", sentence: "He looks sad now." },
+  { korean: "신나는", english: "excited", sentence: "I am excited for the trip." },
+  { korean: "피곤한", english: "tired", sentence: "She is tired after school." },
+  { korean: "작은", english: "small", sentence: "It is a small cat." },
+  { korean: "큰", english: "big", sentence: "That is a big tree." },
+  { korean: "빠른", english: "fast", sentence: "The rabbit is fast." },
+  { korean: "느린", english: "slow", sentence: "The turtle is slow." },
+  { korean: "빨간", english: "red", sentence: "My hat is red." },
+  { korean: "노란", english: "yellow", sentence: "The sun is yellow." },
+  { korean: "초록", english: "green", sentence: "The leaves are green." },
+  { korean: "파란", english: "blue", sentence: "The sky is blue." },
+  { korean: "보라", english: "purple", sentence: "I have a purple pen." },
+  { korean: "검은", english: "black", sentence: "The cat is black." },
+  { korean: "하얀", english: "white", sentence: "The cloud is white." },
   { korean: "고양이", english: "cat", sentence: "The cat is cute." },
   { korean: "강아지", english: "dog", sentence: "The dog is running." },
-  { korean: "가족", english: "family", sentence: "I love my family." },
-  { korean: "아침", english: "morning", sentence: "Good morning, teacher." },
-  { korean: "행복한", english: "happy", sentence: "I am happy today." },
-  { korean: "작은", english: "small", sentence: "It is a small bag." },
-  { korean: "빨간", english: "red", sentence: "My pencil is red." },
-  { korean: "음악", english: "music", sentence: "I listen to music." },
-  { korean: "공원", english: "park", sentence: "We play in the park." }
+  { korean: "새", english: "bird", sentence: "A bird is flying." },
+  { korean: "물고기", english: "fish", sentence: "The fish can swim." },
+  { korean: "토끼", english: "rabbit", sentence: "The rabbit jumps high." },
+  { korean: "곰", english: "bear", sentence: "The bear likes honey." },
+  { korean: "사자", english: "lion", sentence: "The lion is strong." },
+  { korean: "호랑이", english: "tiger", sentence: "The tiger is in the zoo." },
+  { korean: "공원", english: "park", sentence: "We play in the park." },
+  { korean: "도서관", english: "library", sentence: "I read at the library." },
+  { korean: "병원", english: "hospital", sentence: "She works at a hospital." },
+  { korean: "시장", english: "market", sentence: "We buy fruit at the market." },
+  { korean: "정류장", english: "station", sentence: "I wait at the station." },
+  { korean: "버스", english: "bus", sentence: "The bus is yellow." },
+  { korean: "기차", english: "train", sentence: "The train is very long." },
+  { korean: "비행기", english: "airplane", sentence: "The airplane is in the sky." },
+  { korean: "걷다", english: "walk", sentence: "I walk to school." },
+  { korean: "달리다", english: "run", sentence: "They run in the field." },
+  { korean: "읽다", english: "read", sentence: "I read a story." },
+  { korean: "쓰다", english: "write", sentence: "Please write your name." },
+  { korean: "듣다", english: "listen", sentence: "Listen to your teacher." },
+  { korean: "말하다", english: "speak", sentence: "Speak slowly, please." },
+  { korean: "노래하다", english: "sing", sentence: "We sing a song." },
+  { korean: "춤추다", english: "dance", sentence: "She can dance well." },
+  { korean: "놀다", english: "play", sentence: "The kids play outside." },
+  { korean: "공부하다", english: "study", sentence: "I study English every day." },
+  { korean: "청소하다", english: "clean", sentence: "Let's clean the room." },
+  { korean: "열다", english: "open", sentence: "Open the window, please." },
+  { korean: "닫다", english: "close", sentence: "Close the door, please." },
+  { korean: "도와주다", english: "help", sentence: "Can you help me?" },
+  { korean: "미소 짓다", english: "smile", sentence: "Please smile for the photo." }
 ];
 
 const SUBJECT_COPY = {
@@ -151,6 +218,7 @@ const els = {
   englishNextBtn: document.querySelector("#englishNextBtn"),
   englishSpeakActionBtn: document.querySelector("#englishSpeakActionBtn"),
   englishSpeakReplayBtn: document.querySelector("#englishSpeakReplayBtn"),
+  englishSpeakOffBtn: document.querySelector("#englishSpeakOffBtn"),
   englishFeedback: document.querySelector("#englishFeedback"),
   englishFeedbackBear: document.querySelector("#englishFeedbackBear"),
   englishFeedbackText: document.querySelector("#englishFeedbackText"),
@@ -360,7 +428,7 @@ function setSubjectTab(tabKey, options = {}) {
     element.classList.toggle("hidden", safeTab !== "english");
   });
   applySubjectCopy(safeTab);
-  document.title = safeTab === "english" ? "곰돌이 영어" : "곰돌이 수학";
+  document.title = "곰돌이 선생님";
 
   if (safeTab !== "english") {
     stopEnglishRecognition();
@@ -1020,12 +1088,15 @@ function updateEnglishSpeakingControls() {
   const canGoWordNext = englishState.sessionActive && !isSpeakingPhase && englishState.answered;
   const showWordNext = englishState.sessionActive && !isSpeakingPhase;
   const showSpeakingControls = englishState.sessionActive && isSpeakingPhase;
+  const showMicOff = showSpeakingControls || (!englishState.sessionActive && englishState.speakingCorrect + englishState.speakingWrong > 0);
 
   els.englishNextBtn.classList.toggle("hidden", !showWordNext);
   els.englishSpeakActionBtn.classList.toggle("hidden", !showSpeakingControls);
   els.englishSpeakReplayBtn.classList.toggle("hidden", !showSpeakingControls);
+  els.englishSpeakOffBtn.classList.toggle("hidden", !showMicOff);
 
   els.englishNextBtn.disabled = !canGoWordNext;
+  els.englishSpeakOffBtn.disabled = !showMicOff;
 
   if (!showSpeakingControls || !hasActiveQuestion) {
     els.englishSpeakActionBtn.textContent = "문제 시작";
@@ -1179,7 +1250,7 @@ function completeEnglishSession() {
   els.englishNextBtn.textContent = "다음 문제";
   els.englishSpeakTarget.textContent = "라운드가 완료됐어요. 영어 20문제 도전 성공!";
   els.englishTranscript.textContent = "내 말하기 결과: 라운드 완료";
-  setEnglishSpeakingFeedback("단어 10문제 + 말하기 10문제 완료! 다음 라운드에서 다시 도전해보자.");
+  setEnglishSpeakingFeedback("영어 공부가 끝났으면 마이크를 끌게요. 아래 버튼을 눌러 마이크를 꺼요.");
   setEnglishFeedback(`완료! 총 ${englishState.correct}/${ENGLISH_TOTAL_QUESTIONS}문제 정답, 정답률 ${accuracy}%야.`);
   updateEnglishSpeakingControls();
   setBear(mood, "영어 라운드 완료! 계속하면 발음이 더 좋아져.");
@@ -1298,6 +1369,16 @@ function handleEnglishSpeakReplay() {
     return;
   }
   speakEnglishSentence();
+}
+
+function handleEnglishSpeakOff() {
+  stopEnglishRecognition();
+  if (canUseSpeechSynthesis()) {
+    window.speechSynthesis.cancel();
+  }
+  englishState.speakingAction = ENGLISH_SPEAK_ACTIONS.START;
+  setEnglishSpeakingFeedback("영어 공부가 끝났으면 마이크를 끌게요. 필요하면 다음 라운드에서 다시 시작해요.");
+  updateEnglishSpeakingControls();
 }
 
 function stopEnglishRecognition() {
@@ -2154,6 +2235,10 @@ function bindEvents() {
 
   els.englishSpeakReplayBtn.addEventListener("click", () => {
     handleEnglishSpeakReplay();
+  });
+
+  els.englishSpeakOffBtn.addEventListener("click", () => {
+    handleEnglishSpeakOff();
   });
 
   document.addEventListener("click", (event) => {

@@ -1337,6 +1337,14 @@ h2 {
   width: 100%;
 }
 
+.english-speaking-off {
+  display: flex;
+}
+
+#englishSpeakOffBtn {
+  width: 100%;
+}
+
 .english-transcript {
   margin: 0;
   border-radius: 10px;
