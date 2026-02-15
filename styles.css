@@ -1250,10 +1250,42 @@ h2 {
   font-size: clamp(1.3rem, 4vw, 1.9rem);
 }
 
+.english-word-question {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.english-word-question-text {
+  line-height: 1.1;
+}
+
+.english-audio-btn {
+  width: 42px;
+  height: 42px;
+  border: 2px solid var(--chip-border);
+  border-radius: 999px;
+  background: var(--chip-bg);
+  color: var(--chip-text);
+  font-size: 1rem;
+  cursor: pointer;
+  transition: transform 0.16s ease, background 0.2s ease;
+}
+
+.english-audio-btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
 .english-options {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 8px;
+}
+
+.english-option-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 6px;
 }
 
 .english-option {
@@ -1269,8 +1301,29 @@ h2 {
   transition: transform 0.16s ease, background 0.2s ease, border-color 0.2s ease;
 }
 
+.english-option-speak {
+  width: 42px;
+  border: 2px solid var(--chip-border);
+  background: var(--chip-bg);
+  border-radius: 12px;
+  color: var(--chip-text);
+  font-size: 1rem;
+  cursor: pointer;
+  transition: transform 0.16s ease, background 0.2s ease;
+}
+
 .english-option:hover {
   transform: translateY(-1px);
+}
+
+.english-option-speak:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.english-audio-btn:disabled,
+.english-option-speak:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
 }
 
 .english-option.is-correct {

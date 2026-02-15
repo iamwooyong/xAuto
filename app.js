@@ -994,6 +994,23 @@ function canUseSpeechSynthesis() {
   return "speechSynthesis" in window && typeof window.SpeechSynthesisUtterance === "function";
 }
 
+function speakText(text, lang = "en-US", options = {}) {
+  if (!canUseSpeechSynthesis()) {
+    return false;
+  }
+  const voiceText = String(text || "").trim();
+  if (!voiceText) return false;
+
+  const { rate = 0.92, pitch = 1.02 } = options;
+  window.speechSynthesis.cancel();
+  const utterance = new SpeechSynthesisUtterance(voiceText);
+  utterance.lang = lang;
+  utterance.rate = rate;
+  utterance.pitch = pitch;
+  window.speechSynthesis.speak(utterance);
+  return true;
+}
+
 function normalizeEnglishText(text) {
   return String(text || "")
     .toLowerCase()
@@ -1137,17 +1154,11 @@ function buildEnglishSpeakingQuestion() {
 
 function speakEnglishSentence() {
   if (!englishState.current) return false;
-  if (!canUseSpeechSynthesis()) {
+  const played = speakText(englishState.current.sentence, "en-US", { rate: 0.92, pitch: 1.02 });
+  if (!played) {
     setEnglishSpeakingFeedback("이 브라우저는 문장 읽기를 지원하지 않을 수 있어요. Chrome 사용을 추천해요.", true);
     return false;
   }
-
-  window.speechSynthesis.cancel();
-  const utterance = new SpeechSynthesisUtterance(englishState.current.sentence);
-  utterance.lang = "en-US";
-  utterance.rate = 0.92;
-  utterance.pitch = 1.02;
-  window.speechSynthesis.speak(utterance);
   return true;
 }
 
@@ -1246,10 +1257,20 @@ function renderEnglishQuestion() {
   } else {
     els.englishQuestionCount.textContent = `${englishState.questionNumber} / ${TARGET_QUESTIONS} 단어`;
     els.englishModePill.textContent = `${levelLabel} 단어 4지선다`;
-    els.englishPrompt.textContent = `"${englishState.current.korean}" 는 영어로?`;
+    els.englishPrompt.innerHTML = `
+      <span class="english-word-question">
+        <span class="english-word-question-text">${englishState.current.korean}</span>
+        <button class="english-audio-btn" type="button" data-english-audio="prompt" aria-label="문제 단어 듣기">🔊</button>
+      </span>
+    `;
     els.englishOptions.innerHTML = englishState.current.options
       .map((option) => {
-        return `<button class="english-option" type="button" data-option="${option}">${option}</button>`;
+        return `
+          <div class="english-option-row">
+            <button class="english-option" type="button" data-option="${option}">${option}</button>
+            <button class="english-option-speak" type="button" data-option-speak="${option}" aria-label="${option} 발음 듣기">🔊</button>
+          </div>
+        `;
       })
       .join("");
     els.englishNextBtn.textContent = "다음 문제";
@@ -1366,6 +1387,10 @@ function handleEnglishOptionSelect(option) {
       button.classList.add("is-wrong");
     }
   });
+  Array.from(els.englishOptions.querySelectorAll(".english-option-speak")).forEach((button) => {
+    if (!(button instanceof HTMLElement)) return;
+    button.setAttribute("disabled", "true");
+  });
 
   updateEnglishStats();
   if (isCorrect) {
@@ -1447,6 +1472,24 @@ function handleEnglishSpeakReplay() {
     return;
   }
   speakEnglishSentence();
+}
+
+function handleEnglishPromptSpeak() {
+  if (!englishState.sessionActive || !englishState.current || isEnglishSpeakingPhase()) return;
+  const played = speakText(englishState.current.korean, "ko-KR", { rate: 0.95, pitch: 1 });
+  if (!played) {
+    setEnglishFeedback("브라우저에서 음성 재생을 지원하지 않아요. Chrome 사용을 추천해요.");
+  }
+}
+
+function handleEnglishOptionSpeak(option) {
+  if (!englishState.sessionActive || isEnglishSpeakingPhase()) return;
+  const word = String(option || "").trim();
+  if (!word) return;
+  const played = speakText(word, "en-US", { rate: 0.9, pitch: 1.02 });
+  if (!played) {
+    setEnglishFeedback("브라우저에서 음성 재생을 지원하지 않아요. Chrome 사용을 추천해요.");
+  }
 }
 
 function handleEnglishSpeakOff() {
@@ -2341,8 +2384,20 @@ function bindEvents() {
   els.englishOptions.addEventListener("click", (event) => {
     const target = event.target;
     if (!(target instanceof HTMLElement)) return;
-    if (!target.classList.contains("english-option")) return;
-    handleEnglishOptionSelect(String(target.dataset.option || ""));
+    if (target.classList.contains("english-option-speak")) {
+      handleEnglishOptionSpeak(String(target.dataset.optionSpeak || ""));
+      return;
+    }
+    if (target.classList.contains("english-option")) {
+      handleEnglishOptionSelect(String(target.dataset.option || ""));
+    }
+  });
+
+  els.englishPrompt.addEventListener("click", (event) => {
+    const target = event.target;
+    if (!(target instanceof HTMLElement)) return;
+    if (!target.classList.contains("english-audio-btn")) return;
+    handleEnglishPromptSpeak();
   });
 
   els.englishNextBtn.addEventListener("click", () => {
