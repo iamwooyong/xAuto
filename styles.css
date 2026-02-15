@@ -577,6 +577,7 @@ body {
   grid-template-columns: minmax(0, 1fr) minmax(280px, 360px);
   grid-template-areas:
     "hero hero"
+    "tabs tabs"
     "settings stats"
     "quiz stats";
   gap: 16px;
@@ -598,6 +599,35 @@ body {
   gap: 18px;
   align-items: center;
   animation: slide-up 0.6s ease both;
+}
+
+.subject-tabs {
+  grid-area: tabs;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.subject-tab {
+  border: 2px solid var(--chip-border);
+  border-radius: 14px;
+  background: var(--chip-bg);
+  color: var(--chip-text);
+  font-family: var(--font-heading);
+  font-size: 1.02rem;
+  font-weight: 800;
+  padding: 10px 12px;
+  cursor: pointer;
+  transition: transform 0.18s ease, background 0.2s ease, border-color 0.2s ease;
+}
+
+.subject-tab:hover {
+  transform: translateY(-1px);
+}
+
+.subject-tab.is-active {
+  border-color: var(--chip-active-border);
+  background: var(--chip-active-bg);
 }
 
 .hero-copy h1 {
@@ -1187,6 +1217,158 @@ h2 {
   font-size: 1.05rem;
 }
 
+.english-guide {
+  margin: 0 0 14px;
+  color: var(--theme-text);
+  font-size: 0.98rem;
+  line-height: 1.35;
+}
+
+#englishStartBtn {
+  width: 100%;
+  min-height: 56px;
+  font-size: 1.12rem;
+  font-weight: 800;
+  border-radius: 16px;
+}
+
+.english-label {
+  margin: 12px 0 0;
+  font-weight: 700;
+}
+
+.english-equation {
+  min-height: 78px;
+  font-size: clamp(1.3rem, 4vw, 1.9rem);
+}
+
+.english-options {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.english-option {
+  border: 2px solid var(--chip-border);
+  background: var(--chip-bg);
+  border-radius: 12px;
+  color: var(--chip-text);
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  font-weight: 700;
+  padding: 10px 12px;
+  cursor: pointer;
+  transition: transform 0.16s ease, background 0.2s ease, border-color 0.2s ease;
+}
+
+.english-option:hover {
+  transform: translateY(-1px);
+}
+
+.english-option.is-correct {
+  border-color: #63b477;
+  background: #eaf8ee;
+  color: #24633a;
+}
+
+.english-option.is-wrong {
+  border-color: #d96c8f;
+  background: #ffeef4;
+  color: #8f3f5c;
+}
+
+.english-actions {
+  margin-top: 10px;
+}
+
+#englishNextBtn {
+  width: 100%;
+  min-height: 54px;
+  border-radius: 16px;
+  font-size: 1.08rem;
+  font-weight: 800;
+}
+
+.english-speaking {
+  margin-top: 12px;
+  border: 2px dashed var(--theme-panel-border);
+  border-radius: 14px;
+  background: #fffafc;
+  padding: 10px;
+  display: grid;
+  gap: 8px;
+}
+
+.english-speaking-head {
+  display: grid;
+  gap: 2px;
+}
+
+.english-speaking-title {
+  margin: 0;
+  font-weight: 800;
+}
+
+.english-speaking-target {
+  margin: 0;
+  color: var(--theme-text);
+  font-size: 0.95rem;
+  line-height: 1.3;
+}
+
+.english-speaking-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+#englishListenBtn,
+#englishMicBtn {
+  flex: 1 1 140px;
+}
+
+.english-transcript {
+  margin: 0;
+  border-radius: 10px;
+  background: var(--mode-bg);
+  border: 2px solid var(--mode-border);
+  color: var(--mode-text);
+  font-size: 0.9rem;
+  line-height: 1.3;
+  padding: 8px 10px;
+}
+
+.english-speak-feedback {
+  margin: 0;
+  color: var(--theme-text);
+  font-size: 0.88rem;
+  line-height: 1.3;
+}
+
+.english-speak-feedback.is-error {
+  color: #be466f;
+}
+
+.english-feedback-text {
+  margin: 12px 0 0;
+  border-radius: 12px;
+  border: 2px solid var(--feedback-border);
+  background: var(--feedback-bg);
+  padding: 10px 12px;
+  line-height: 1.35;
+}
+
+.english-voice-support {
+  margin: 12px 0 0;
+  border-radius: 12px;
+  border: 2px dashed var(--theme-panel-border);
+  background: var(--theme-panel-bg);
+  color: var(--theme-text);
+  font-size: 0.9rem;
+  line-height: 1.35;
+  padding: 10px;
+}
+
 .quiz-head {
   display: flex;
   justify-content: space-between;
@@ -1745,9 +1927,14 @@ h2 {
     grid-template-columns: 1fr;
     grid-template-areas:
       "hero"
+      "tabs"
       "settings"
       "quiz"
       "stats";
+  }
+
+  .subject-tabs {
+    grid-template-columns: 1fr;
   }
 
   .hero {
@@ -1774,6 +1961,14 @@ h2 {
 
   .theme-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .english-options {
+    grid-template-columns: 1fr;
+  }
+
+  .english-speaking-actions {
+    flex-direction: column;
   }
 
   .feedback {

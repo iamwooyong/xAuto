@@ -45,7 +45,29 @@ const ENCOURAGE_FEEDBACK = [
   "실수는 배움이야. 다음 문제에서 만회하자."
 ];
 
+const TAB_STORAGE_KEY = "gomdori-math:tab";
+const ENGLISH_LESSONS = [
+  { korean: "사과", english: "apple", sentence: "I like apples." },
+  { korean: "학교", english: "school", sentence: "I go to school." },
+  { korean: "물", english: "water", sentence: "Please give me water." },
+  { korean: "친구", english: "friend", sentence: "She is my friend." },
+  { korean: "책", english: "book", sentence: "This is my book." },
+  { korean: "고양이", english: "cat", sentence: "The cat is cute." },
+  { korean: "강아지", english: "dog", sentence: "The dog is running." },
+  { korean: "가족", english: "family", sentence: "I love my family." },
+  { korean: "아침", english: "morning", sentence: "Good morning, teacher." },
+  { korean: "행복한", english: "happy", sentence: "I am happy today." },
+  { korean: "작은", english: "small", sentence: "It is a small bag." },
+  { korean: "빨간", english: "red", sentence: "My pencil is red." },
+  { korean: "음악", english: "music", sentence: "I listen to music." },
+  { korean: "공원", english: "park", sentence: "We play in the park." }
+];
+
 const els = {
+  subjectTabs: Array.from(document.querySelectorAll("[data-subject]")),
+  mathViews: Array.from(document.querySelectorAll(".math-view")),
+  englishViews: Array.from(document.querySelectorAll(".english-view")),
+
   operationButtons: Array.from(document.querySelectorAll("[data-operation]")),
   levelButtons: Array.from(document.querySelectorAll("[data-level]")),
   themeButtons: Array.from(document.querySelectorAll("[data-theme]")),
@@ -91,7 +113,25 @@ const els = {
   nicknameNote: document.querySelector("#nicknameNote"),
 
   refreshRankingBtn: document.querySelector("#refreshRankingBtn"),
-  rankingList: document.querySelector("#rankingList")
+  rankingList: document.querySelector("#rankingList"),
+
+  englishStartBtn: document.querySelector("#englishStartBtn"),
+  englishQuestionCount: document.querySelector("#englishQuestionCount"),
+  englishPrompt: document.querySelector("#englishPrompt"),
+  englishModePill: document.querySelector("#englishModePill"),
+  englishOptions: document.querySelector("#englishOptions"),
+  englishNextBtn: document.querySelector("#englishNextBtn"),
+  englishFeedbackText: document.querySelector("#englishFeedbackText"),
+  englishSpeakTarget: document.querySelector("#englishSpeakTarget"),
+  englishListenBtn: document.querySelector("#englishListenBtn"),
+  englishMicBtn: document.querySelector("#englishMicBtn"),
+  englishTranscript: document.querySelector("#englishTranscript"),
+  englishSpeakFeedback: document.querySelector("#englishSpeakFeedback"),
+  englishCorrect: document.querySelector("#englishCorrect"),
+  englishStreak: document.querySelector("#englishStreak"),
+  englishBestStreak: document.querySelector("#englishBestStreak"),
+  englishAccuracy: document.querySelector("#englishAccuracy"),
+  englishVoiceSupport: document.querySelector("#englishVoiceSupport")
 };
 
 const state = {
@@ -110,13 +150,27 @@ const state = {
   reviewMode: false,
   reviewQueue: [],
   themePickerOpen: false,
-  rankingCorrect: null
+  rankingCorrect: null,
+  subject: "math"
 };
 
 const authState = {
   token: "",
   user: null,
   googleReady: false
+};
+
+const englishState = {
+  sessionActive: false,
+  questionNumber: 0,
+  correct: 0,
+  wrong: 0,
+  streak: 0,
+  bestStreak: 0,
+  answered: false,
+  current: null,
+  recognition: null,
+  recognizing: false
 };
 
 let googleScriptLoadPromise = null;
@@ -221,6 +275,50 @@ function clearAuthState() {
   authState.token = "";
   authState.user = null;
   localStorage.removeItem(AUTH_STORAGE_KEY);
+}
+
+function loadTabPreference() {
+  try {
+    const saved = String(localStorage.getItem(TAB_STORAGE_KEY) || "").trim();
+    return saved === "english" ? "english" : "math";
+  } catch {
+    return "math";
+  }
+}
+
+function saveTabPreference(tabKey) {
+  try {
+    localStorage.setItem(TAB_STORAGE_KEY, tabKey);
+  } catch {
+    // Ignore storage failures.
+  }
+}
+
+function setSubjectTab(tabKey, options = {}) {
+  const { persist = true } = options;
+  const safeTab = tabKey === "english" ? "english" : "math";
+  state.subject = safeTab;
+
+  setActive(els.subjectTabs, "subject", safeTab);
+  els.mathViews.forEach((element) => {
+    element.classList.toggle("hidden", safeTab !== "math");
+  });
+  els.englishViews.forEach((element) => {
+    element.classList.toggle("hidden", safeTab !== "english");
+  });
+  document.title = safeTab === "english" ? "곰돌이 영어" : "곰돌이 수학";
+
+  if (safeTab !== "english") {
+    stopEnglishRecognition();
+  }
+
+  if (safeTab === "english" && !englishState.sessionActive && !englishState.current) {
+    renderEnglishIdle();
+  }
+
+  if (persist) {
+    saveTabPreference(safeTab);
+  }
 }
 
 function setActive(buttons, attrName, value) {
@@ -702,6 +800,303 @@ function updateProgress() {
   els.progressFill.style.width = `${progressRate}%`;
   els.progressText.textContent = `${progressCount} / ${TARGET_QUESTIONS} 진행`;
   els.progressBar.setAttribute("aria-valuenow", String(progressCount));
+}
+
+function shuffleList(items) {
+  const copied = [...items];
+  for (let index = copied.length - 1; index > 0; index -= 1) {
+    const swapIndex = randomInt(0, index);
+    [copied[index], copied[swapIndex]] = [copied[swapIndex], copied[index]];
+  }
+  return copied;
+}
+
+function getSpeechRecognitionCtor() {
+  return window.SpeechRecognition || window.webkitSpeechRecognition || null;
+}
+
+function canUseSpeechSynthesis() {
+  return "speechSynthesis" in window && typeof window.SpeechSynthesisUtterance === "function";
+}
+
+function normalizeEnglishText(text) {
+  return String(text || "")
+    .toLowerCase()
+    .replace(/[^a-z0-9\s]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function getWordMatchRate(spokenText, targetText) {
+  const spokenWords = normalizeEnglishText(spokenText).split(" ").filter(Boolean);
+  const targetWords = normalizeEnglishText(targetText).split(" ").filter(Boolean);
+  if (targetWords.length === 0) return 0;
+
+  const spokenSet = new Set(spokenWords);
+  const matched = targetWords.filter((word) => spokenSet.has(word)).length;
+  return matched / targetWords.length;
+}
+
+function isSpokenSentenceCorrect(spokenText, targetText) {
+  const spoken = normalizeEnglishText(spokenText);
+  const target = normalizeEnglishText(targetText);
+  if (!spoken || !target) return false;
+  if (spoken === target) return true;
+  if (spoken.includes(target) || target.includes(spoken)) return true;
+  return getWordMatchRate(spoken, target) >= 0.7;
+}
+
+function setEnglishFeedback(message) {
+  els.englishFeedbackText.textContent = `곰돌이 선생님: ${message}`;
+}
+
+function setEnglishSpeakingFeedback(message, isError = false) {
+  els.englishSpeakFeedback.textContent = message;
+  els.englishSpeakFeedback.classList.toggle("is-error", isError);
+}
+
+function updateEnglishStats() {
+  const solved = englishState.correct + englishState.wrong;
+  const accuracy = solved > 0 ? Math.round((englishState.correct / solved) * 100) : 0;
+  els.englishCorrect.textContent = String(englishState.correct);
+  els.englishStreak.textContent = String(englishState.streak);
+  els.englishBestStreak.textContent = String(englishState.bestStreak);
+  els.englishAccuracy.textContent = `${accuracy}%`;
+}
+
+function renderEnglishIdle() {
+  els.englishQuestionCount.textContent = "준비 완료";
+  els.englishPrompt.textContent = "영어 시작 버튼을 누르면 문제가 나와요.";
+  els.englishOptions.innerHTML = "";
+  els.englishNextBtn.textContent = "다음 문제";
+  els.englishNextBtn.disabled = true;
+  els.englishSpeakTarget.textContent = "문제를 풀면 오늘의 말하기 문장이 나와요.";
+  els.englishListenBtn.disabled = true;
+  els.englishMicBtn.disabled = true;
+  els.englishTranscript.textContent = "내 말하기 결과: 아직 없음";
+  setEnglishSpeakingFeedback("듀오링고처럼 웹에서도 듣고 따라 말하기 연습을 할 수 있어요.");
+  setEnglishFeedback("영어 탭 준비 완료! 시작 버튼을 눌러보자.");
+  updateEnglishStats();
+}
+
+function buildEnglishQuestion() {
+  const lesson = ENGLISH_LESSONS[randomInt(0, ENGLISH_LESSONS.length - 1)];
+  const options = new Set([lesson.english]);
+  while (options.size < 4) {
+    const candidate = ENGLISH_LESSONS[randomInt(0, ENGLISH_LESSONS.length - 1)];
+    options.add(candidate.english);
+  }
+
+  return {
+    korean: lesson.korean,
+    answer: lesson.english,
+    sentence: lesson.sentence,
+    options: shuffleList(Array.from(options))
+  };
+}
+
+function renderEnglishQuestion() {
+  if (!englishState.current) return;
+
+  els.englishQuestionCount.textContent = `${englishState.questionNumber} / ${TARGET_QUESTIONS} 문제`;
+  els.englishPrompt.textContent = `"${englishState.current.korean}" 는 영어로?`;
+  els.englishOptions.innerHTML = englishState.current.options
+    .map((option) => {
+      return `<button class="english-option" type="button" data-option="${option}">${option}</button>`;
+    })
+    .join("");
+
+  els.englishNextBtn.textContent = "다음 문제";
+  els.englishNextBtn.disabled = true;
+  els.englishSpeakTarget.textContent = englishState.current.sentence;
+  els.englishTranscript.textContent = "내 말하기 결과: 아직 없음";
+  setEnglishSpeakingFeedback("문장 듣기를 누른 뒤 말하기 시작으로 따라 말해보자.");
+  setEnglishFeedback("정답 단어를 골라보자!");
+
+  els.englishListenBtn.disabled = !canUseSpeechSynthesis();
+  els.englishMicBtn.disabled = !Boolean(getSpeechRecognitionCtor());
+  englishState.answered = false;
+}
+
+function startEnglishSession() {
+  stopEnglishRecognition();
+  englishState.sessionActive = true;
+  englishState.questionNumber = 1;
+  englishState.correct = 0;
+  englishState.wrong = 0;
+  englishState.streak = 0;
+  englishState.bestStreak = 0;
+  englishState.answered = false;
+  englishState.current = buildEnglishQuestion();
+  updateEnglishStats();
+  renderEnglishQuestion();
+  setBear("thinking", "영어 시간 시작! 곰돌이 선생님이 옆에서 도와줄게.");
+}
+
+function completeEnglishSession() {
+  englishState.sessionActive = false;
+  const solved = englishState.correct + englishState.wrong;
+  const accuracy = solved > 0 ? Math.round((englishState.correct / solved) * 100) : 0;
+  let mood = "happy";
+  if (accuracy >= 90) mood = "celebrate";
+  if (accuracy < 60) mood = "thinking";
+
+  els.englishQuestionCount.textContent = "영어 라운드 완료";
+  els.englishPrompt.textContent = `오늘 영어 ${englishState.correct}/${TARGET_QUESTIONS}문제 정답!`;
+  els.englishOptions.innerHTML = "";
+  els.englishNextBtn.textContent = "다음 문제";
+  els.englishNextBtn.disabled = true;
+  els.englishListenBtn.disabled = true;
+  els.englishMicBtn.disabled = true;
+  els.englishTranscript.textContent = "내 말하기 결과: 라운드 완료";
+  setEnglishSpeakingFeedback("다음 라운드에서 새로운 문장으로 다시 도전해보자.");
+  setEnglishFeedback(`완료! 정답률 ${accuracy}%야. 정말 잘했어.`);
+  setBear(mood, "영어 라운드 완료! 계속하면 발음이 더 좋아져.");
+}
+
+function handleEnglishOptionSelect(option) {
+  if (!englishState.sessionActive || englishState.answered || !englishState.current) return;
+
+  englishState.answered = true;
+  const isCorrect = option === englishState.current.answer;
+
+  if (isCorrect) {
+    englishState.correct += 1;
+    englishState.streak += 1;
+    englishState.bestStreak = Math.max(englishState.bestStreak, englishState.streak);
+    setEnglishFeedback(`정답! "${englishState.current.answer}" 맞아요.`);
+    setBear("love", "영어 정답! 곰돌이 선생님이 하트 눈으로 칭찬 중이야.");
+  } else {
+    englishState.wrong += 1;
+    englishState.streak = 0;
+    setEnglishFeedback(`아쉬워! 정답은 "${englishState.current.answer}"야.`);
+    setBear("cry", "괜찮아, 다음 영어 문제에서 바로 만회하자.");
+  }
+
+  Array.from(els.englishOptions.querySelectorAll(".english-option")).forEach((button) => {
+    if (!(button instanceof HTMLElement)) return;
+    const value = button.dataset.option || "";
+    button.setAttribute("disabled", "true");
+    if (value === englishState.current.answer) {
+      button.classList.add("is-correct");
+      return;
+    }
+    if (value === option && !isCorrect) {
+      button.classList.add("is-wrong");
+    }
+  });
+
+  updateEnglishStats();
+  if (englishState.questionNumber >= TARGET_QUESTIONS) {
+    els.englishNextBtn.textContent = "결과 보기";
+  } else {
+    els.englishNextBtn.textContent = "다음 문제";
+  }
+  els.englishNextBtn.disabled = false;
+  els.englishNextBtn.focus();
+}
+
+function handleEnglishNext() {
+  if (!englishState.answered) return;
+  if (englishState.questionNumber >= TARGET_QUESTIONS) {
+    completeEnglishSession();
+    return;
+  }
+
+  englishState.questionNumber += 1;
+  englishState.current = buildEnglishQuestion();
+  renderEnglishQuestion();
+}
+
+function handleEnglishListen() {
+  if (!englishState.current || !canUseSpeechSynthesis()) return;
+  window.speechSynthesis.cancel();
+  const utterance = new SpeechSynthesisUtterance(englishState.current.sentence);
+  utterance.lang = "en-US";
+  utterance.rate = 0.92;
+  utterance.pitch = 1.02;
+  window.speechSynthesis.speak(utterance);
+}
+
+function stopEnglishRecognition() {
+  if (englishState.recognition) {
+    try {
+      englishState.recognition.onresult = null;
+      englishState.recognition.onerror = null;
+      englishState.recognition.onend = null;
+      englishState.recognition.abort();
+    } catch {
+      // Ignore abort failures.
+    }
+  }
+  englishState.recognition = null;
+  englishState.recognizing = false;
+  if (els.englishMicBtn) {
+    els.englishMicBtn.textContent = "말하기 시작";
+  }
+}
+
+function handleEnglishMic() {
+  if (!englishState.current) return;
+  const RecognitionCtor = getSpeechRecognitionCtor();
+  if (!RecognitionCtor) {
+    setEnglishSpeakingFeedback("이 브라우저는 음성 인식을 지원하지 않아요. Chrome 사용을 추천해요.", true);
+    return;
+  }
+
+  if (englishState.recognizing) {
+    stopEnglishRecognition();
+    return;
+  }
+
+  const recognition = new RecognitionCtor();
+  englishState.recognition = recognition;
+  recognition.lang = "en-US";
+  recognition.interimResults = false;
+  recognition.maxAlternatives = 1;
+  englishState.recognizing = true;
+  els.englishMicBtn.textContent = "듣는 중...";
+
+  recognition.onresult = (event) => {
+    const transcript = String(event.results?.[0]?.[0]?.transcript || "").trim();
+    els.englishTranscript.textContent = transcript
+      ? `내 말하기 결과: ${transcript}`
+      : "내 말하기 결과: 인식된 문장이 없어요.";
+
+    const target = englishState.current?.sentence || "";
+    if (isSpokenSentenceCorrect(transcript, target)) {
+      setEnglishSpeakingFeedback("발음 좋아요! 듀오링고처럼 말하기 미션 성공!", false);
+      setBear("happy", "영어 발음까지 완전 좋아! 이대로 계속 가보자.");
+      return;
+    }
+
+    setEnglishSpeakingFeedback(`조금만 더 또렷하게! 목표 문장: "${target}"`, true);
+  };
+
+  recognition.onerror = () => {
+    setEnglishSpeakingFeedback("마이크 인식 중 문제가 생겼어요. 다시 시도해보자.", true);
+  };
+
+  recognition.onend = () => {
+    englishState.recognizing = false;
+    els.englishMicBtn.textContent = "말하기 시작";
+    englishState.recognition = null;
+  };
+
+  try {
+    recognition.start();
+  } catch (error) {
+    console.error("english recognition start failed", error);
+    setEnglishSpeakingFeedback("마이크 시작에 실패했어요. 브라우저 권한을 확인해 주세요.", true);
+    stopEnglishRecognition();
+  }
+}
+
+function setupEnglishVoiceSupport() {
+  const supportMessage = getSpeechRecognitionCtor()
+    ? "이 기기에서는 웹 음성 인식이 가능해요. 듀오링고처럼 말하기 연습을 할 수 있어요."
+    : "이 브라우저는 음성 인식을 지원하지 않을 수 있어요. Chrome 최신 버전을 추천해요.";
+  els.englishVoiceSupport.textContent = supportMessage;
 }
 
 function renderQuestion() {
@@ -1271,6 +1666,12 @@ function handleLogout() {
 }
 
 function bindEvents() {
+  els.subjectTabs.forEach((button) => {
+    button.addEventListener("click", () => {
+      setSubjectTab(button.dataset.subject || "math");
+    });
+  });
+
   els.operationButtons.forEach((button) => {
     button.addEventListener("click", () => {
       handleOperationSelect(button.dataset.operation);
@@ -1349,6 +1750,29 @@ function bindEvents() {
     void refreshRankings();
   });
 
+  els.englishStartBtn.addEventListener("click", () => {
+    startEnglishSession();
+  });
+
+  els.englishOptions.addEventListener("click", (event) => {
+    const target = event.target;
+    if (!(target instanceof HTMLElement)) return;
+    if (!target.classList.contains("english-option")) return;
+    handleEnglishOptionSelect(String(target.dataset.option || ""));
+  });
+
+  els.englishNextBtn.addEventListener("click", () => {
+    handleEnglishNext();
+  });
+
+  els.englishListenBtn.addEventListener("click", () => {
+    handleEnglishListen();
+  });
+
+  els.englishMicBtn.addEventListener("click", () => {
+    handleEnglishMic();
+  });
+
   document.addEventListener("click", (event) => {
     const target = event.target;
     if (!(target instanceof HTMLElement)) return;
@@ -1394,6 +1818,20 @@ function bindEvents() {
     handleSubmit();
   });
 
+  document.addEventListener("keydown", (event) => {
+    if (event.key !== "Enter") return;
+    if (state.subject !== "english") return;
+
+    const target = event.target;
+    if (target instanceof HTMLInputElement || target instanceof HTMLTextAreaElement) return;
+    if (!englishState.sessionActive) return;
+
+    if (englishState.answered) {
+      event.preventDefault();
+      handleEnglishNext();
+    }
+  });
+
   els.logoutBtn.addEventListener("click", () => {
     handleLogout();
   });
@@ -1402,6 +1840,7 @@ function bindEvents() {
 function init() {
   state.operation = OPERATIONS[profile.lastOperation] ? profile.lastOperation : "add";
   state.level = LEVELS[profile.lastLevel] ? profile.lastLevel : "easy";
+  state.subject = loadTabPreference();
 
   setActive(els.operationButtons, "operation", state.operation);
   setActive(els.levelButtons, "level", state.level);
@@ -1413,10 +1852,13 @@ function init() {
   updateModePill();
   updateStats();
   updateProgress();
+  setupEnglishVoiceSupport();
+  renderEnglishIdle();
   setBear("idle", "안녕! 오늘은 우리가 수학 히어로야.");
   setFeedback("천천히, 정확하게! 준비되면 시작해요.");
 
   bindEvents();
+  setSubjectTab(state.subject, { persist: false });
   renderAuthUser();
 
   void restoreAuthSession();

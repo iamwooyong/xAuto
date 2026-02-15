@@ -10,8 +10,8 @@
       href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="styles.css?v=20260214-17" />
-    <link rel="icon" type="image/svg+xml" href="favicon.svg?v=20260214-17" />
+    <link rel="stylesheet" href="styles.css?v=20260215-1" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg?v=20260215-1" />
   </head>
   <body>
     <main class="app-shell">
@@ -82,7 +82,12 @@
         </section>
       </header>
 
-      <section class="panel settings-panel">
+      <nav class="subject-tabs" aria-label="학습 과목 탭">
+        <button class="subject-tab is-active" data-subject="math" type="button">곰돌이 수학</button>
+        <button class="subject-tab" data-subject="english" type="button">곰돌이 영어</button>
+      </nav>
+
+      <section class="panel settings-panel math-view">
         <h2>학습 모드</h2>
 
         <div class="option-wrap">
@@ -108,7 +113,7 @@
         <button class="btn btn-primary" id="startBtn" type="button">10문제 시작</button>
       </section>
 
-      <section class="panel quiz-panel">
+      <section class="panel quiz-panel math-view">
         <div class="quiz-head">
           <p class="question-count" id="questionCount">준비 완료</p>
           <p class="mode-pill" id="modePill">더하기 · 쉬움</p>
@@ -141,7 +146,7 @@
         </section>
       </section>
 
-      <section class="panel stats-panel">
+      <section class="panel stats-panel math-view">
         <h2>오늘의 성과판</h2>
 
         <div class="stat-grid">
@@ -182,9 +187,70 @@
           <ol class="ranking-list" id="rankingList"></ol>
         </section>
       </section>
+
+      <section class="panel settings-panel english-view hidden" id="englishSettingsPanel">
+        <h2>곰돌이 영어</h2>
+        <p class="english-guide">듀오링고처럼 듣고 말하며 영어를 익혀요.</p>
+        <button class="btn btn-primary" id="englishStartBtn" type="button">영어 10문제 시작</button>
+      </section>
+
+      <section class="panel quiz-panel english-view hidden" id="englishQuizPanel">
+        <div class="quiz-head">
+          <p class="question-count" id="englishQuestionCount">준비 완료</p>
+          <p class="mode-pill" id="englishModePill">기초 단어 · 말하기</p>
+        </div>
+
+        <p class="english-label">한국어 뜻에 맞는 영어 단어를 고르세요.</p>
+        <p class="equation english-equation" id="englishPrompt">영어 시작 버튼을 누르면 문제가 나와요.</p>
+
+        <div class="english-options" id="englishOptions"></div>
+        <div class="english-actions">
+          <button class="btn btn-primary" id="englishNextBtn" type="button" disabled>다음 문제</button>
+        </div>
+
+        <section class="english-speaking">
+          <div class="english-speaking-head">
+            <p class="english-speaking-title">말하기 미션</p>
+            <p class="english-speaking-target" id="englishSpeakTarget">문제를 풀면 오늘의 말하기 문장이 나와요.</p>
+          </div>
+          <div class="english-speaking-actions">
+            <button class="btn btn-ghost" id="englishListenBtn" type="button" disabled>문장 듣기</button>
+            <button class="btn btn-ghost" id="englishMicBtn" type="button" disabled>말하기 시작</button>
+          </div>
+          <p class="english-transcript" id="englishTranscript">내 말하기 결과: 아직 없음</p>
+          <p class="english-speak-feedback" id="englishSpeakFeedback">
+            듀오링고처럼 웹에서도 듣고 따라 말하기 연습을 할 수 있어요.
+          </p>
+        </section>
+
+        <p class="english-feedback-text" id="englishFeedbackText">곰돌이 선생님: 영어 탭 준비 완료!</p>
+      </section>
+
+      <section class="panel stats-panel english-view hidden" id="englishStatsPanel">
+        <h2>오늘의 영어 성과판</h2>
+        <div class="stat-grid">
+          <article class="stat-card">
+            <p class="stat-label">맞힌 문제</p>
+            <p class="stat-value" id="englishCorrect">0</p>
+          </article>
+          <article class="stat-card">
+            <p class="stat-label">현재 연속 정답</p>
+            <p class="stat-value" id="englishStreak">0</p>
+          </article>
+          <article class="stat-card">
+            <p class="stat-label">최고 연속 기록</p>
+            <p class="stat-value" id="englishBestStreak">0</p>
+          </article>
+          <article class="stat-card">
+            <p class="stat-label">정답률</p>
+            <p class="stat-value" id="englishAccuracy">0%</p>
+          </article>
+        </div>
+        <p class="english-voice-support" id="englishVoiceSupport"></p>
+      </section>
     </main>
 
     <script src="https://accounts.google.com/gsi/client" async defer></script>
-    <script src="app.js?v=20260214-17"></script>
+    <script src="app.js?v=20260215-1"></script>
   </body>
 </html>
