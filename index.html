@@ -347,6 +347,14 @@
             <p class="stat-value" id="historyAccuracy">0%</p>
           </article>
         </div>
+        <section class="ranking-board history-wrong-note-board">
+          <div class="ranking-head">
+            <h3>오답노트</h3>
+            <button class="btn btn-ghost ranking-refresh hidden" id="historyRetryWrongBtn" type="button">오답 다시 풀기</button>
+          </div>
+          <p class="ranking-sub" id="historyWrongNoteGuide">틀린 문제가 생기면 여기에 자동으로 기록돼요.</p>
+          <ol class="history-wrong-note-list" id="historyWrongNoteList"></ol>
+        </section>
         <section class="ranking-board">
           <div class="ranking-head">
             <h3>곰돌이 한국사 랭킹</h3>
@@ -359,6 +367,6 @@
     </main>
 
     <script src="https://accounts.google.com/gsi/client" async defer></script>
-    <script src="app.js?v=20260215-12"></script>
+    <script src="app.js?v=20260215-13"></script>
   </body>
 </html>

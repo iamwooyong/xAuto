@@ -567,7 +567,10 @@ const els = {
   historyCorrect: document.querySelector("#historyCorrect"),
   historyStreak: document.querySelector("#historyStreak"),
   historyBestStreak: document.querySelector("#historyBestStreak"),
-  historyAccuracy: document.querySelector("#historyAccuracy")
+  historyAccuracy: document.querySelector("#historyAccuracy"),
+  historyWrongNoteGuide: document.querySelector("#historyWrongNoteGuide"),
+  historyWrongNoteList: document.querySelector("#historyWrongNoteList"),
+  historyRetryWrongBtn: document.querySelector("#historyRetryWrongBtn")
 };
 
 const state = {
@@ -631,7 +634,11 @@ const historyState = {
   bestStreak: 0,
   answered: false,
   current: null,
-  usedQuestionIndexes: new Set()
+  usedQuestionIndexes: new Set(),
+  wrongNotes: [],
+  reviewMode: false,
+  reviewQueue: [],
+  reviewTotal: 0
 };
 
 let googleScriptLoadPromise = null;
@@ -2062,11 +2069,81 @@ function updateHistoryStats() {
   els.historyAccuracy.textContent = `${accuracy}%`;
 }
 
+function renderHistoryWrongNotes() {
+  if (!els.historyWrongNoteList) return;
+
+  const notes = historyState.wrongNotes;
+  const unresolvedCount = notes.filter((note) => !note.solved).length;
+  const canRetry = unresolvedCount > 0 && !historyState.sessionActive && !historyState.reviewMode;
+
+  els.historyWrongNoteList.innerHTML = "";
+  if (els.historyRetryWrongBtn) {
+    els.historyRetryWrongBtn.classList.toggle("hidden", !canRetry);
+    els.historyRetryWrongBtn.disabled = !canRetry;
+  }
+
+  if (els.historyWrongNoteGuide) {
+    if (notes.length === 0) {
+      els.historyWrongNoteGuide.textContent = "틀린 문제가 생기면 여기에 자동으로 기록돼요.";
+    } else if (unresolvedCount === 0) {
+      els.historyWrongNoteGuide.textContent = "멋져요! 오답노트를 전부 다시 맞혔어요.";
+    } else {
+      els.historyWrongNoteGuide.textContent = `오답 ${unresolvedCount}개가 남아 있어요. 복습 버튼으로 다시 풀어봐요.`;
+    }
+  }
+
+  if (notes.length === 0) {
+    const empty = document.createElement("li");
+    empty.className = "ranking-empty";
+    empty.textContent = "아직 기록된 오답이 없어요.";
+    els.historyWrongNoteList.appendChild(empty);
+    return;
+  }
+
+  notes.forEach((note, index) => {
+    const li = document.createElement("li");
+    li.className = "history-wrong-note-item";
+    if (note.solved) {
+      li.classList.add("is-solved");
+    }
+
+    const top = document.createElement("div");
+    top.className = "history-wrong-note-top";
+
+    const order = document.createElement("span");
+    order.className = "history-wrong-note-order";
+    order.textContent = `${index + 1}번`;
+
+    const badge = document.createElement("span");
+    badge.className = "history-wrong-note-badge";
+    badge.textContent = note.solved ? "복습 완료" : "복습 대기";
+
+    top.appendChild(order);
+    top.appendChild(badge);
+
+    const question = document.createElement("p");
+    question.className = "history-wrong-note-question";
+    question.textContent = note.question;
+
+    const answer = document.createElement("p");
+    answer.className = "history-wrong-note-answer";
+    answer.textContent = `내 답: ${note.selected} · 정답: ${note.answer}`;
+
+    li.appendChild(top);
+    li.appendChild(question);
+    li.appendChild(answer);
+    els.historyWrongNoteList.appendChild(li);
+  });
+}
+
 function renderHistoryIdle() {
   const level = getHistoryLevel(historyState.level);
   historyState.current = null;
   historyState.answered = false;
   historyState.sessionActive = false;
+  historyState.reviewMode = false;
+  historyState.reviewQueue = [];
+  historyState.reviewTotal = 0;
   els.historyQuestionCount.textContent = "준비 완료";
   els.historyModePill.textContent = `${level.label} 객관식`;
   els.historyPrompt.textContent = `${level.label} 시작 버튼을 누르면 한국사 10문제가 나와요.`;
@@ -2076,21 +2153,28 @@ function renderHistoryIdle() {
   setHistoryFeedback(`${level.label} 준비 완료! 시작 버튼을 눌러보자.`);
   updateHistoryLevelUi();
   updateHistoryStats();
+  renderHistoryWrongNotes();
 }
 
 function renderHistoryQuestion() {
   if (!historyState.current) return;
 
   const level = getHistoryLevel(historyState.level);
-  els.historyQuestionCount.textContent = `${historyState.questionNumber} / ${TARGET_QUESTIONS} 문제`;
-  els.historyModePill.textContent = `${level.label} 객관식`;
+  if (historyState.reviewMode) {
+    const remaining = historyState.reviewQueue.length + 1;
+    els.historyQuestionCount.textContent = `오답노트 복습 · 남은 ${remaining}문제`;
+    els.historyModePill.textContent = "오답노트 복습";
+  } else {
+    els.historyQuestionCount.textContent = `${historyState.questionNumber} / ${TARGET_QUESTIONS} 문제`;
+    els.historyModePill.textContent = `${level.label} 객관식`;
+  }
   els.historyPrompt.textContent = historyState.current.question;
   els.historyOptions.innerHTML = historyState.current.options
     .map((option) => {
       return `<button class="english-option" type="button" data-history-option="${option}">${option}</button>`;
     })
     .join("");
-  els.historyNextBtn.textContent = "다음 문제";
+  els.historyNextBtn.textContent = historyState.reviewMode ? "다음 복습" : "다음 문제";
   els.historyNextBtn.disabled = true;
   historyState.answered = false;
 }
@@ -2106,9 +2190,14 @@ function startHistorySession() {
   historyState.bestStreak = 0;
   historyState.answered = false;
   historyState.current = null;
+  historyState.reviewMode = false;
+  historyState.reviewQueue = [];
+  historyState.reviewTotal = 0;
+  historyState.wrongNotes = [];
   historyState.usedQuestionIndexes.clear();
   historyState.current = buildHistoryQuestion();
   updateHistoryStats();
+  renderHistoryWrongNotes();
   renderHistoryQuestion();
   setHistoryFeedback(`${level.label} 시작! 문제를 차근차근 풀어보자.`);
   setBear("thinking", `${level.label} 한국사 라운드 시작!`);
@@ -2131,12 +2220,85 @@ function completeHistorySession() {
   els.historyOptions.innerHTML = "";
   els.historyNextBtn.textContent = "다음 문제";
   els.historyNextBtn.disabled = true;
-  setHistoryFeedback(`완료! ${getHistoryLevel(historyState.level).label} 라운드를 끝냈어요. 다시 도전해볼까?`);
+  const unresolvedWrongCount = historyState.wrongNotes.filter((note) => !note.solved).length;
+  if (unresolvedWrongCount > 0) {
+    setHistoryFeedback(
+      `완료! ${getHistoryLevel(historyState.level).label} 라운드를 끝냈어요. 오답노트 ${unresolvedWrongCount}개를 다시 풀어볼까?`
+    );
+  } else {
+    setHistoryFeedback(`완료! ${getHistoryLevel(historyState.level).label} 라운드를 끝냈어요. 다시 도전해볼까?`);
+  }
   updateHistoryStats();
+  renderHistoryWrongNotes();
   setBear(mood, "한국사 라운드 완료! 꾸준히 하면 더 강해져.");
 
   const summary = buildHistoryRoundSummary();
   void syncHistoryRoundResult(summary);
+}
+
+function nextHistoryReviewQuestion() {
+  const next = historyState.reviewQueue.shift();
+  if (!next) {
+    completeHistoryWrongReview();
+    return;
+  }
+
+  historyState.current = {
+    ...next,
+    options: shuffleList([...(next.options || [])])
+  };
+  renderHistoryQuestion();
+}
+
+function startHistoryWrongReview() {
+  const unresolved = historyState.wrongNotes.filter((note) => !note.solved);
+  if (unresolved.length === 0) return;
+
+  historyState.reviewMode = true;
+  historyState.sessionActive = true;
+  historyState.answered = false;
+  historyState.reviewTotal = unresolved.length;
+  historyState.reviewQueue = unresolved.map((note) => ({
+    question: note.question,
+    options: [...note.options],
+    answer: note.answer,
+    explanation: note.explanation,
+    noteKey: note.key
+  }));
+  historyState.current = null;
+  historyState.questionNumber = 1;
+
+  renderHistoryWrongNotes();
+  setHistoryFeedback("좋아! 오답노트 복습 시작. 틀린 문제를 다시 맞혀보자.");
+  setBear("thinking", "오답노트 복습 시작! 이번엔 꼭 맞힐 수 있어.");
+  nextHistoryReviewQuestion();
+}
+
+function completeHistoryWrongReview() {
+  const unresolved = historyState.wrongNotes.filter((note) => !note.solved).length;
+  historyState.reviewMode = false;
+  historyState.sessionActive = false;
+  historyState.answered = false;
+  historyState.current = null;
+  historyState.reviewQueue = [];
+  historyState.reviewTotal = 0;
+  historyState.questionNumber = 0;
+
+  els.historyQuestionCount.textContent = "오답노트 복습 완료";
+  els.historyModePill.textContent = `${getHistoryLevel(historyState.level).label} 객관식`;
+  els.historyPrompt.textContent = "오답노트를 모두 점검했어요. 다시 라운드를 시작해볼까요?";
+  els.historyOptions.innerHTML = "";
+  els.historyNextBtn.textContent = "다음 문제";
+  els.historyNextBtn.disabled = true;
+
+  if (unresolved > 0) {
+    setHistoryFeedback(`복습 완료! 아직 ${unresolved}개 남았어요. 다시 복습하면 더 좋아져요.`);
+    setBear("happy", "괜찮아! 한 번 더 복습하면 완벽해질 수 있어.");
+  } else {
+    setHistoryFeedback("복습 완료! 오답노트를 전부 해결했어요.");
+    setBear("celebrate", "오답노트 완주! 정말 대단해.");
+  }
+  renderHistoryWrongNotes();
 }
 
 function handleHistoryOptionSelect(option) {
@@ -2145,17 +2307,50 @@ function handleHistoryOptionSelect(option) {
   historyState.answered = true;
   const isCorrect = option === historyState.current.answer;
 
-  if (isCorrect) {
+  if (historyState.reviewMode) {
+    if (isCorrect) {
+      const targetKey = String(historyState.current.noteKey || "");
+      const matched = historyState.wrongNotes.find((note) => note.key === targetKey);
+      if (matched) {
+        matched.solved = true;
+      }
+      setHistoryFeedback(`정답! ${historyState.current.explanation}`);
+      setBear("love", "좋아! 오답노트 문제를 다시 맞혔어.");
+      renderHistoryWrongNotes();
+    } else {
+      historyState.reviewQueue.push({
+        question: historyState.current.question,
+        options: [...historyState.current.options],
+        answer: historyState.current.answer,
+        explanation: historyState.current.explanation,
+        noteKey: historyState.current.noteKey
+      });
+      setHistoryFeedback(`오답! 정답은 "${historyState.current.answer}" · ${historyState.current.explanation}`);
+      setBear("cry", "괜찮아! 같은 문제를 한 번 더 복습해보자.");
+      renderHistoryWrongNotes();
+    }
+  } else if (isCorrect) {
     historyState.correct += 1;
     historyState.streak += 1;
     historyState.bestStreak = Math.max(historyState.bestStreak, historyState.streak);
     setHistoryFeedback(`정답! ${historyState.current.explanation}`);
     setBear("love", "한국사 정답! 곰돌이 선생님이 칭찬 중이야.");
   } else {
+    const noteKey = `history-wrong-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
     historyState.wrong += 1;
     historyState.streak = 0;
+    historyState.wrongNotes.push({
+      key: noteKey,
+      question: historyState.current.question,
+      options: [...historyState.current.options],
+      answer: historyState.current.answer,
+      explanation: historyState.current.explanation,
+      selected: option,
+      solved: false
+    });
     setHistoryFeedback(`오답! 정답은 "${historyState.current.answer}" · ${historyState.current.explanation}`);
     setBear("cry", "괜찮아! 다음 문제에서 만회하자.");
+    renderHistoryWrongNotes();
   }
 
   Array.from(els.historyOptions.querySelectorAll(".english-option")).forEach((button) => {
@@ -2171,19 +2366,38 @@ function handleHistoryOptionSelect(option) {
     }
   });
 
-  updateHistoryStats();
+  if (!historyState.reviewMode) {
+    updateHistoryStats();
+  }
   if (isCorrect) {
     handleHistoryNext();
     return;
   }
 
-  els.historyNextBtn.textContent = historyState.questionNumber >= TARGET_QUESTIONS ? "결과 보기" : "다음 문제";
+  if (historyState.reviewMode) {
+    els.historyNextBtn.textContent = historyState.reviewQueue.length === 0 ? "복습 완료" : "다음 복습";
+  } else {
+    els.historyNextBtn.textContent = historyState.questionNumber >= TARGET_QUESTIONS ? "결과 보기" : "다음 문제";
+  }
   els.historyNextBtn.disabled = false;
   els.historyNextBtn.focus();
 }
 
 function handleHistoryNext() {
   if (!historyState.answered) return;
+
+  if (historyState.reviewMode) {
+    if (historyState.reviewQueue.length === 0) {
+      completeHistoryWrongReview();
+      return;
+    }
+
+    historyState.questionNumber += 1;
+    nextHistoryReviewQuestion();
+    setBear("idle", "좋아! 오답노트 다음 문제로 가자.");
+    setHistoryFeedback("복습을 하나씩 끝내보자.");
+    return;
+  }
 
   if (historyState.questionNumber >= TARGET_QUESTIONS) {
     completeHistorySession();
@@ -3049,6 +3263,10 @@ function bindEvents() {
 
   els.refreshHistoryRankingBtn.addEventListener("click", () => {
     void refreshHistoryRankings();
+  });
+
+  els.historyRetryWrongBtn.addEventListener("click", () => {
+    startHistoryWrongReview();
   });
 
   els.englishStartBtn.addEventListener("click", () => {
