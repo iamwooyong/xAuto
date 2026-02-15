@@ -1179,6 +1179,24 @@ function buildHistoryYearOptions(targetYear, yearPool, baseIndex) {
   return options.slice(0, 4);
 }
 
+function buildHistoryEventOptions(targetEvent, eventPool, baseIndex, excludedEvent = "") {
+  const options = [targetEvent];
+  let step = 1;
+  while (options.length < 4 && step < eventPool.length + 1) {
+    const forward = eventPool[(baseIndex + step) % eventPool.length];
+    if (forward && forward !== excludedEvent && !options.includes(forward)) {
+      options.push(forward);
+    }
+    const backwardIndex = (baseIndex - step + eventPool.length) % eventPool.length;
+    const backward = eventPool[backwardIndex];
+    if (options.length < 4 && backward && backward !== excludedEvent && !options.includes(backward)) {
+      options.push(backward);
+    }
+    step += 1;
+  }
+  return options.slice(0, 4);
+}
+
 function buildHistoryTimelineQuestions(entries) {
   if (!Array.isArray(entries) || entries.length === 0) return [];
   const yearPool = entries.map((entry) => String(entry[0] || "").trim()).filter(Boolean);
@@ -1192,6 +1210,91 @@ function buildHistoryTimelineQuestions(entries) {
       explanation: `${safeEvent}은(는) ${safeYear}에 일어났어요.`
     };
   });
+}
+
+function buildHistoryTimelineYearToEventQuestions(entries) {
+  if (!Array.isArray(entries) || entries.length === 0) return [];
+  const eventPool = entries.map((entry) => String(entry[1] || "").trim()).filter(Boolean);
+  return entries.map(([year, event], index) => {
+    const safeYear = String(year || "").trim();
+    const safeEvent = String(event || "").trim();
+    return {
+      question: `${safeYear}년에 일어난 사건은 무엇일까요?`,
+      options: buildHistoryEventOptions(safeEvent, eventPool, index),
+      answer: safeEvent,
+      explanation: `${safeYear}년에는 ${safeEvent}이(가) 일어났어요.`
+    };
+  });
+}
+
+function buildHistoryTimelineNextQuestions(entries) {
+  if (!Array.isArray(entries) || entries.length < 2) return [];
+  const eventPool = entries.map((entry) => String(entry[1] || "").trim()).filter(Boolean);
+  const questions = [];
+
+  for (let index = 0; index < entries.length - 1; index += 1) {
+    const currentEvent = String(entries[index][1] || "").trim();
+    const nextYear = String(entries[index + 1][0] || "").trim();
+    const nextEvent = String(entries[index + 1][1] || "").trim();
+    if (!currentEvent || !nextEvent) continue;
+
+    questions.push({
+      question: `"${currentEvent}" 다음에 일어난 사건은 무엇일까요?`,
+      options: buildHistoryEventOptions(nextEvent, eventPool, index + 1, currentEvent),
+      answer: nextEvent,
+      explanation: `"${currentEvent}" 다음에는 ${nextYear}년에 ${nextEvent}이(가) 일어났어요.`
+    });
+  }
+
+  return questions;
+}
+
+function buildHistoryTimelineBeforeYearQuestions(entries) {
+  if (!Array.isArray(entries) || entries.length < 5) return [];
+  const questions = [];
+
+  for (let index = 1; index <= entries.length - 4; index += 1) {
+    const targetYear = String(entries[index][0] || "").trim();
+    const answerEvent = String(entries[index - 1][1] || "").trim();
+    const distractorA = String(entries[index + 1][1] || "").trim();
+    const distractorB = String(entries[index + 2][1] || "").trim();
+    const distractorC = String(entries[index + 3][1] || "").trim();
+    const answerYear = String(entries[index - 1][0] || "").trim();
+    if (!targetYear || !answerEvent || !distractorA || !distractorB || !distractorC) continue;
+
+    questions.push({
+      question: `${targetYear}보다 먼저 일어난 사건은 무엇일까요?`,
+      options: [answerEvent, distractorA, distractorB, distractorC],
+      answer: answerEvent,
+      explanation: `${answerEvent}은(는) ${answerYear}년에 일어나 ${targetYear}보다 먼저예요.`
+    });
+  }
+
+  return questions;
+}
+
+function buildHistoryTimelineAfterYearQuestions(entries) {
+  if (!Array.isArray(entries) || entries.length < 5) return [];
+  const questions = [];
+
+  for (let index = 3; index < entries.length - 1; index += 1) {
+    const targetYear = String(entries[index][0] || "").trim();
+    const answerEvent = String(entries[index + 1][1] || "").trim();
+    const distractorA = String(entries[index - 1][1] || "").trim();
+    const distractorB = String(entries[index - 2][1] || "").trim();
+    const distractorC = String(entries[index - 3][1] || "").trim();
+    const answerYear = String(entries[index + 1][0] || "").trim();
+    if (!targetYear || !answerEvent || !distractorA || !distractorB || !distractorC) continue;
+
+    questions.push({
+      question: `${targetYear}보다 나중에 일어난 사건은 무엇일까요?`,
+      options: [answerEvent, distractorA, distractorB, distractorC],
+      answer: answerEvent,
+      explanation: `${answerEvent}은(는) ${answerYear}년에 일어나 ${targetYear}보다 나중이에요.`
+    });
+  }
+
+  return questions;
 }
 
 function dedupeHistoryQuestions(questions) {
@@ -1218,11 +1321,20 @@ function dedupeHistoryQuestions(questions) {
 HISTORY_LEVEL_KEYS.forEach((levelKey) => {
   const baseQuestions = HISTORY_QUESTION_BANK[levelKey];
   const extraQuestions = EXTRA_HISTORY_QUESTION_BANK[levelKey];
-  const timelineQuestions = buildHistoryTimelineQuestions(HISTORY_TIMELINE_FACTS[levelKey]);
+  const timelineEntries = HISTORY_TIMELINE_FACTS[levelKey];
+  const timelineYearQuestions = buildHistoryTimelineQuestions(timelineEntries);
+  const timelineEventQuestions = buildHistoryTimelineYearToEventQuestions(timelineEntries);
+  const timelineNextQuestions = buildHistoryTimelineNextQuestions(timelineEntries);
+  const timelineBeforeQuestions = buildHistoryTimelineBeforeYearQuestions(timelineEntries);
+  const timelineAfterQuestions = buildHistoryTimelineAfterYearQuestions(timelineEntries);
   const mergedQuestions = [
     ...(Array.isArray(baseQuestions) ? baseQuestions : []),
     ...(Array.isArray(extraQuestions) ? extraQuestions : []),
-    ...timelineQuestions
+    ...timelineYearQuestions,
+    ...timelineEventQuestions,
+    ...timelineNextQuestions,
+    ...timelineBeforeQuestions,
+    ...timelineAfterQuestions
   ];
   HISTORY_QUESTION_BANK[levelKey] = dedupeHistoryQuestions(mergedQuestions);
 });
