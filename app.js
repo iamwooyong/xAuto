@@ -52,9 +52,9 @@ const ENGLISH_PHASES = {
   SPEAKING: "speaking"
 };
 const ENGLISH_LEVELS = {
-  beginner: { key: "beginner", label: "초급", rangeStart: 0, rangeEnd: 33 },
-  intermediate: { key: "intermediate", label: "중급", rangeStart: 24, rangeEnd: 63 },
-  advanced: { key: "advanced", label: "고급", rangeStart: 48, rangeEnd: Number.POSITIVE_INFINITY }
+  beginner: { key: "beginner", label: "초급", rangeStart: 0, rangeEnd: 89 },
+  intermediate: { key: "intermediate", label: "중급", rangeStart: 60, rangeEnd: 169 },
+  advanced: { key: "advanced", label: "고급", rangeStart: 120, rangeEnd: Number.POSITIVE_INFINITY }
 };
 const ENGLISH_LEVEL_KEYS = Object.keys(ENGLISH_LEVELS);
 const HISTORY_LEVELS = {
@@ -153,6 +153,141 @@ const ENGLISH_LESSONS = [
   { korean: "도와주다", english: "help", sentence: "Can you help me?" },
   { korean: "미소 짓다", english: "smile", sentence: "Please smile for the photo." }
 ];
+const ENGLISH_EXTRA_LESSONS = [
+  { korean: "일", english: "one", sentence: "I have one cookie." },
+  { korean: "이", english: "two", sentence: "Two birds are flying." },
+  { korean: "삼", english: "three", sentence: "I see three stars." },
+  { korean: "사", english: "four", sentence: "Four students are here." },
+  { korean: "오", english: "five", sentence: "We need five pencils." },
+  { korean: "육", english: "six", sentence: "Six apples are on the table." },
+  { korean: "칠", english: "seven", sentence: "There are seven days in a week." },
+  { korean: "팔", english: "eight", sentence: "I wake up at eight." },
+  { korean: "구", english: "nine", sentence: "Nine kids are in the class." },
+  { korean: "십", english: "ten", sentence: "I can count to ten." },
+  { korean: "열하나", english: "eleven", sentence: "Eleven players are on the field." },
+  { korean: "열둘", english: "twelve", sentence: "There are twelve months in a year." },
+  { korean: "열셋", english: "thirteen", sentence: "She is thirteen years old." },
+  { korean: "열넷", english: "fourteen", sentence: "Fourteen books are on the shelf." },
+  { korean: "열다섯", english: "fifteen", sentence: "Fifteen minutes are left." },
+  { korean: "열여섯", english: "sixteen", sentence: "He bought sixteen balloons." },
+  { korean: "열일곱", english: "seventeen", sentence: "Seventeen students joined the club." },
+  { korean: "열여덟", english: "eighteen", sentence: "Eighteen cookies are in the box." },
+  { korean: "열아홉", english: "nineteen", sentence: "Nineteen birds sat on the tree." },
+  { korean: "스무", english: "twenty", sentence: "I got twenty points." },
+  { korean: "월요일", english: "monday", sentence: "We have math on Monday." },
+  { korean: "화요일", english: "tuesday", sentence: "Tuesday is a busy day." },
+  { korean: "수요일", english: "wednesday", sentence: "I go to piano class on Wednesday." },
+  { korean: "목요일", english: "thursday", sentence: "Thursday comes before Friday." },
+  { korean: "금요일", english: "friday", sentence: "Friday is my favorite day." },
+  { korean: "토요일", english: "saturday", sentence: "We visit grandma on Saturday." },
+  { korean: "일요일", english: "sunday", sentence: "Sunday is a rest day." },
+  { korean: "1월", english: "january", sentence: "January is the first month." },
+  { korean: "2월", english: "february", sentence: "February is short." },
+  { korean: "3월", english: "march", sentence: "Flowers bloom in March." },
+  { korean: "4월", english: "april", sentence: "April has spring rain." },
+  { korean: "5월", english: "may", sentence: "May is warm and bright." },
+  { korean: "6월", english: "june", sentence: "School starts swimming in June." },
+  { korean: "7월", english: "july", sentence: "July is hot." },
+  { korean: "8월", english: "august", sentence: "We travel in August." },
+  { korean: "9월", english: "september", sentence: "The new term begins in September." },
+  { korean: "10월", english: "october", sentence: "Leaves change color in October." },
+  { korean: "11월", english: "november", sentence: "November is cool." },
+  { korean: "12월", english: "december", sentence: "December has winter holidays." },
+  { korean: "머리", english: "head", sentence: "My head hurts." },
+  { korean: "눈", english: "eye", sentence: "I close one eye." },
+  { korean: "코", english: "nose", sentence: "My nose is cold." },
+  { korean: "입", english: "mouth", sentence: "Open your mouth, please." },
+  { korean: "귀", english: "ear", sentence: "I can hear with my ear." },
+  { korean: "얼굴", english: "face", sentence: "Wash your face." },
+  { korean: "머리카락", english: "hair", sentence: "Her hair is long." },
+  { korean: "손", english: "hand", sentence: "Raise your hand." },
+  { korean: "손가락", english: "finger", sentence: "Point with your finger." },
+  { korean: "팔", english: "arm", sentence: "My arm is strong." },
+  { korean: "다리", english: "leg", sentence: "He hurt his leg." },
+  { korean: "발", english: "foot", sentence: "My foot is wet." },
+  { korean: "심장", english: "heart", sentence: "My heart beats fast." },
+  { korean: "집", english: "house", sentence: "My house is near the park." },
+  { korean: "방", english: "room", sentence: "This room is bright." },
+  { korean: "침대", english: "bed", sentence: "I sleep on my bed." },
+  { korean: "베개", english: "pillow", sentence: "The pillow is soft." },
+  { korean: "담요", english: "blanket", sentence: "I use a warm blanket." },
+  { korean: "창문", english: "window", sentence: "Please open the window." },
+  { korean: "문", english: "door", sentence: "Close the door quietly." },
+  { korean: "부엌", english: "kitchen", sentence: "Mom is in the kitchen." },
+  { korean: "욕실", english: "bathroom", sentence: "The bathroom is clean." },
+  { korean: "거울", english: "mirror", sentence: "I look in the mirror." },
+  { korean: "수건", english: "towel", sentence: "Use a dry towel." },
+  { korean: "비누", english: "soap", sentence: "Wash your hands with soap." },
+  { korean: "열쇠", english: "key", sentence: "I found the key." },
+  { korean: "시계", english: "clock", sentence: "The clock is on the wall." },
+  { korean: "램프", english: "lamp", sentence: "Turn on the lamp." },
+  { korean: "셔츠", english: "shirt", sentence: "He wears a white shirt." },
+  { korean: "바지", english: "pants", sentence: "My pants are blue." },
+  { korean: "치마", english: "skirt", sentence: "She has a red skirt." },
+  { korean: "원피스", english: "dress", sentence: "The dress is pretty." },
+  { korean: "신발", english: "shoes", sentence: "My shoes are new." },
+  { korean: "양말", english: "socks", sentence: "These socks are warm." },
+  { korean: "코트", english: "coat", sentence: "Wear your coat outside." },
+  { korean: "재킷", english: "jacket", sentence: "This jacket is light." },
+  { korean: "장갑", english: "gloves", sentence: "I need gloves in winter." },
+  { korean: "목도리", english: "scarf", sentence: "The scarf is very soft." },
+  { korean: "모자", english: "cap", sentence: "His cap is black." },
+  { korean: "교복", english: "uniform", sentence: "Our school uniform is neat." },
+  { korean: "맑은", english: "sunny", sentence: "It is sunny today." },
+  { korean: "비 오는", english: "rainy", sentence: "It is rainy this morning." },
+  { korean: "흐린", english: "cloudy", sentence: "The sky is cloudy." },
+  { korean: "눈 오는", english: "snowy", sentence: "It is snowy outside." },
+  { korean: "바람 부는", english: "windy", sentence: "It is windy on the hill." },
+  { korean: "더운", english: "hot", sentence: "Summer is very hot." },
+  { korean: "추운", english: "cold", sentence: "Winter is cold." },
+  { korean: "따뜻한", english: "warm", sentence: "The soup is warm." },
+  { korean: "선선한", english: "cool", sentence: "The evening air is cool." },
+  { korean: "산", english: "mountain", sentence: "We climbed a mountain." },
+  { korean: "강", english: "river", sentence: "A river flows by the town." },
+  { korean: "바다", english: "sea", sentence: "The sea is deep." },
+  { korean: "해변", english: "beach", sentence: "We played at the beach." },
+  { korean: "숲", english: "forest", sentence: "The forest is quiet." },
+  { korean: "꽃", english: "flower", sentence: "This flower smells good." },
+  { korean: "나무", english: "tree", sentence: "A bird sits on the tree." },
+  { korean: "잔디", english: "grass", sentence: "The grass is green." },
+  { korean: "하늘", english: "sky", sentence: "The sky looks clear." },
+  { korean: "별", english: "star", sentence: "I see a bright star." },
+  { korean: "달", english: "moon", sentence: "The moon is full tonight." },
+  { korean: "달걀", english: "egg", sentence: "I ate one boiled egg." },
+  { korean: "고기", english: "meat", sentence: "We had meat for dinner." },
+  { korean: "국수", english: "noodle", sentence: "This noodle is delicious." },
+  { korean: "파스타", english: "pasta", sentence: "I like creamy pasta." },
+  { korean: "샐러드", english: "salad", sentence: "She made a fresh salad." },
+  { korean: "치즈", english: "cheese", sentence: "Cheese is on the pizza." },
+  { korean: "버터", english: "butter", sentence: "Spread butter on the bread." },
+  { korean: "설탕", english: "sugar", sentence: "Do not add too much sugar." },
+  { korean: "소금", english: "salt", sentence: "Add a little salt." },
+  { korean: "후추", english: "pepper", sentence: "I like black pepper." },
+  { korean: "아침식사", english: "breakfast", sentence: "Breakfast is important." },
+  { korean: "점심식사", english: "lunch", sentence: "We eat lunch at noon." },
+  { korean: "저녁식사", english: "dinner", sentence: "Dinner is ready." },
+  { korean: "요리하다", english: "cook", sentence: "I can cook noodles." },
+  { korean: "마시다", english: "drink", sentence: "Drink enough water." },
+  { korean: "생각하다", english: "think", sentence: "Think before you answer." },
+  { korean: "알다", english: "know", sentence: "I know the answer." },
+  { korean: "고르다", english: "choose", sentence: "Choose one card." },
+  { korean: "시작하다", english: "start", sentence: "Let's start now." },
+  { korean: "끝내다", english: "finish", sentence: "Finish your homework." },
+  { korean: "사다", english: "buy", sentence: "We buy fruit at the store." },
+  { korean: "팔다", english: "sell", sentence: "They sell fresh bread." },
+  { korean: "가져오다", english: "bring", sentence: "Bring your notebook tomorrow." },
+  { korean: "보내다", english: "send", sentence: "Please send me a message." },
+  { korean: "기다리다", english: "wait", sentence: "Wait for the green light." },
+  { korean: "도착하다", english: "arrive", sentence: "The bus will arrive soon." },
+  { korean: "떠나다", english: "leave", sentence: "We leave at seven." },
+  { korean: "짓다", english: "build", sentence: "They build a new bridge." },
+  { korean: "고치다", english: "fix", sentence: "Can you fix this toy?" },
+  { korean: "칠하다", english: "paint", sentence: "Let's paint the wall." },
+  { korean: "여행하다", english: "travel", sentence: "I want to travel abroad." },
+  { korean: "방문하다", english: "visit", sentence: "We visit our teacher on Friday." },
+  { korean: "나누다", english: "share", sentence: "Please share your crayons." }
+];
+ENGLISH_LESSONS.push(...ENGLISH_EXTRA_LESSONS);
 const ENGLISH_ALL_LESSON_INDEXES = Array.from({ length: ENGLISH_LESSONS.length }, (_, index) => index);
 const ENGLISH_LEVEL_POOLS = Object.fromEntries(ENGLISH_LEVEL_KEYS.map((levelKey) => [levelKey, buildEnglishLevelPool(levelKey)]));
 const HISTORY_QUESTION_BANK = {
@@ -453,6 +588,264 @@ const HISTORY_QUESTION_BANK = {
     }
   ]
 };
+const EXTRA_HISTORY_QUESTION_BANK = {
+  grade4: [
+    {
+      question: "백제를 건국한 인물은 누구일까요?",
+      options: ["온조", "주몽", "박혁거세", "대조영"],
+      answer: "온조",
+      explanation: "백제는 온조가 세운 나라로 알려져요."
+    },
+    {
+      question: "신라를 건국한 인물은 누구일까요?",
+      options: ["박혁거세", "김춘추", "김유신", "진흥왕"],
+      answer: "박혁거세",
+      explanation: "신라는 박혁거세가 건국했다고 전해져요."
+    },
+    {
+      question: "독도를 우리 땅이라 알린 조선 후기 인물은 누구일까요?",
+      options: ["안용복", "정약용", "허준", "홍대용"],
+      answer: "안용복",
+      explanation: "안용복은 울릉도와 독도 문제를 일본에 알렸어요."
+    },
+    {
+      question: "광복(해방)을 맞이한 해는 언제일까요?",
+      options: ["1945년", "1948년", "1919년", "1950년"],
+      answer: "1945년",
+      explanation: "1945년 8월 15일, 우리나라는 광복을 맞았어요."
+    },
+    {
+      question: "한글날은 무엇을 기념하는 날일까요?",
+      options: ["훈민정음 반포", "3.1 운동", "대한민국 정부 수립", "광복"],
+      answer: "훈민정음 반포",
+      explanation: "한글날은 훈민정음 반포를 기념하는 날이에요."
+    },
+    {
+      question: "6.25 전쟁이 시작된 해는 언제일까요?",
+      options: ["1950년", "1945년", "1960년", "1972년"],
+      answer: "1950년",
+      explanation: "한국전쟁은 1950년 6월 25일에 시작되었어요."
+    },
+    {
+      question: "대한민국이 서울 올림픽을 개최한 해는 언제일까요?",
+      options: ["1988년", "1972년", "2002년", "1996년"],
+      answer: "1988년",
+      explanation: "서울 올림픽은 1988년에 열렸어요."
+    },
+    {
+      question: "고조선의 법으로 전해지는 것은 무엇일까요?",
+      options: ["8조법", "경국대전", "속대전", "대전회통"],
+      answer: "8조법",
+      explanation: "고조선에는 8조법이라는 법이 있었다고 전해져요."
+    },
+    {
+      question: "백제의 문화유산으로 유명한 무령왕릉이 있는 곳은 어디일까요?",
+      options: ["공주", "경주", "부여", "개성"],
+      answer: "공주",
+      explanation: "무령왕릉은 충청남도 공주에 있어요."
+    },
+    {
+      question: "고려 시대 대표적인 도자기는 무엇일까요?",
+      options: ["청자", "백자", "분청사기", "토기"],
+      answer: "청자",
+      explanation: "고려청자는 아름다운 색과 무늬로 유명해요."
+    }
+  ],
+  grade3: [
+    {
+      question: "고려 초 거란과 외교 담판으로 강동 6주를 확보한 인물은 누구일까요?",
+      options: ["서희", "강감찬", "윤관", "김부식"],
+      answer: "서희",
+      explanation: "서희는 외교 담판으로 강동 6주를 확보했어요."
+    },
+    {
+      question: "백제 문화를 일본에 전한 인물로 잘 알려진 사람은 누구일까요?",
+      options: ["왕인", "최치원", "도선", "원효"],
+      answer: "왕인",
+      explanation: "왕인은 일본에 천자문과 논어를 전했다고 알려져요."
+    },
+    {
+      question: "조선 선조 때 사림이 갈라져 형성된 두 붕당은 무엇일까요?",
+      options: ["동인과 서인", "남인과 북인", "노론과 소론", "훈구와 사림"],
+      answer: "동인과 서인",
+      explanation: "선조 때 동인과 서인으로 나뉘며 붕당 정치가 시작되었어요."
+    },
+    {
+      question: "정조가 개혁 정치를 위해 축조한 성곽은 무엇일까요?",
+      options: ["수원 화성", "남한산성", "북한산성", "진주성"],
+      answer: "수원 화성",
+      explanation: "정조는 수원 화성을 건설해 개혁 기반을 다졌어요."
+    },
+    {
+      question: "갑오개혁에서 폐지된 사회 제도로 옳은 것은 무엇일까요?",
+      options: ["신분제", "호패법", "향약", "서원"],
+      answer: "신분제",
+      explanation: "갑오개혁으로 신분제가 공식적으로 폐지되었어요."
+    },
+    {
+      question: "1920년 봉오동 전투를 승리로 이끈 독립군 지휘관은 누구일까요?",
+      options: ["홍범도", "김좌진", "지청천", "이회영"],
+      answer: "홍범도",
+      explanation: "홍범도 장군은 봉오동 전투를 승리로 이끌었어요."
+    },
+    {
+      question: "1920년 청산리 대첩의 독립군 지휘관은 누구일까요?",
+      options: ["김좌진", "안중근", "윤봉길", "안창호"],
+      answer: "김좌진",
+      explanation: "김좌진 장군은 청산리 대첩에서 큰 승리를 거두었어요."
+    },
+    {
+      question: "1931년 만주사변 이후 일본이 세운 괴뢰 국가는 무엇일까요?",
+      options: ["만주국", "대한제국", "중화민국", "청"],
+      answer: "만주국",
+      explanation: "일본은 만주사변 이후 만주국을 세웠어요."
+    },
+    {
+      question: "광복 직후 미군과 소련군의 분할 점령 기준선은 무엇이었을까요?",
+      options: ["38도선", "휴전선", "DMZ", "압록강"],
+      answer: "38도선",
+      explanation: "광복 직후 한반도는 38도선을 기준으로 분할 점령되었어요."
+    },
+    {
+      question: "독립협회가 자주독립의 상징으로 세운 건축물은 무엇일까요?",
+      options: ["독립문", "숭례문", "흥인지문", "광화문"],
+      answer: "독립문",
+      explanation: "독립협회는 독립문을 세워 자주독립 의지를 나타냈어요."
+    }
+  ],
+  grade2: [
+    {
+      question: "고구려 소수림왕의 업적으로 옳은 것은 무엇일까요?",
+      options: ["태학 설립", "훈민정음 창제", "과거제 실시", "집현전 설치"],
+      answer: "태학 설립",
+      explanation: "소수림왕은 율령 반포, 불교 수용, 태학 설립을 추진했어요."
+    },
+    {
+      question: "발해를 '해동성국'이라 부를 정도로 전성기를 이끈 왕은 누구일까요?",
+      options: ["선왕", "문왕", "무왕", "대조영"],
+      answer: "선왕",
+      explanation: "선왕 때 발해는 영토를 넓히며 전성기를 맞았어요."
+    },
+    {
+      question: "고려 무신정권기 최우가 정권 강화를 위해 설치한 기구는 무엇일까요?",
+      options: ["교정도감", "중추원", "의정부", "삼사"],
+      answer: "교정도감",
+      explanation: "최우는 교정도감을 통해 실권을 장악했어요."
+    },
+    {
+      question: "조선 전기 4군 6진 개척에 큰 역할을 한 인물은 누구일까요?",
+      options: ["김종서", "강감찬", "최무선", "정도전"],
+      answer: "김종서",
+      explanation: "세종 때 김종서 등이 북방 개척을 추진했어요."
+    },
+    {
+      question: "조선 후기 상공업 진흥 정책인 신해통공의 핵심 내용은 무엇일까요?",
+      options: ["금난전권 폐지", "과거제 부활", "대동법 폐지", "군포 인상"],
+      answer: "금난전권 폐지",
+      explanation: "정조는 신해통공으로 금난전권을 폐지해 상업 활동을 넓혔어요."
+    },
+    {
+      question: "흥선대원군이 추진한 정책으로 옳은 것은 무엇일까요?",
+      options: ["서원 철폐", "의정부 서사제", "과거제 폐지", "대동법 폐지"],
+      answer: "서원 철폐",
+      explanation: "흥선대원군은 서원 대부분을 철폐해 재정과 왕권을 강화했어요."
+    },
+    {
+      question: "파리강화회의에 독립 청원서를 제출하기 위해 파견된 인물은 누구일까요?",
+      options: ["김규식", "이승만", "안창호", "서재필"],
+      answer: "김규식",
+      explanation: "김규식은 파리강화회의에 한국 독립을 청원했어요."
+    },
+    {
+      question: "일제가 우리말 연구 단체를 탄압한 사건은 무엇일까요?",
+      options: ["조선어학회 사건", "105인 사건", "치안유지법 사건", "신간회 사건"],
+      answer: "조선어학회 사건",
+      explanation: "1942년 조선어학회 사건으로 많은 학자가 탄압받았어요."
+    },
+    {
+      question: "의열단을 조직한 인물은 누구일까요?",
+      options: ["김원봉", "김구", "윤봉길", "안중근"],
+      answer: "김원봉",
+      explanation: "김원봉은 1919년 의열단을 조직해 무장 투쟁을 전개했어요."
+    },
+    {
+      question: "브나로드 운동을 주도한 언론사는 어디일까요?",
+      options: ["동아일보", "조선일보", "독립신문", "대한매일신보"],
+      answer: "동아일보",
+      explanation: "동아일보는 문맹 퇴치와 계몽을 위한 브나로드 운동을 전개했어요."
+    }
+  ],
+  grade1: [
+    {
+      question: "수나라 대군을 물리친 살수대첩의 고구려 장군은 누구일까요?",
+      options: ["을지문덕", "연개소문", "양만춘", "주몽"],
+      answer: "을지문덕",
+      explanation: "을지문덕은 살수대첩에서 수나라 군대를 크게 격파했어요."
+    },
+    {
+      question: "통일 신라 신문왕의 업적으로 옳은 것은 무엇일까요?",
+      options: ["관료전 지급", "훈민정음 반포", "과거제 실시", "전민변정도감 설치"],
+      answer: "관료전 지급",
+      explanation: "신문왕은 관료전을 지급하고 귀족 세력을 약화했어요."
+    },
+    {
+      question: "고려 공민왕의 반원 개혁 내용으로 옳은 것은 무엇일까요?",
+      options: ["기철 등 친원 세력 제거", "사림 등용", "규장각 설치", "균역법 시행"],
+      answer: "기철 등 친원 세력 제거",
+      explanation: "공민왕은 친원 세력을 제거하며 반원 자주 정책을 펼쳤어요."
+    },
+    {
+      question: "병인양요가 일어난 해는 언제일까요?",
+      options: ["1866년", "1871년", "1882년", "1894년"],
+      answer: "1866년",
+      explanation: "병인양요는 1866년 프랑스의 침략으로 일어났어요."
+    },
+    {
+      question: "신미양요의 침략 국가는 어디였을까요?",
+      options: ["미국", "프랑스", "일본", "러시아"],
+      answer: "미국",
+      explanation: "신미양요는 1871년 미국이 조선을 침략한 사건이에요."
+    },
+    {
+      question: "을미의병이 일어나는 계기가 된 사건은 무엇일까요?",
+      options: ["명성황후 시해", "단발령 철회", "한일병합", "갑신정변"],
+      answer: "명성황후 시해",
+      explanation: "을미사변(명성황후 시해)이 을미의병의 주요 계기가 되었어요."
+    },
+    {
+      question: "3.1 운동 당시 민족 대표는 몇 명이었을까요?",
+      options: ["33인", "13인", "50인", "99인"],
+      answer: "33인",
+      explanation: "3.1 운동에서는 민족 대표 33인이 독립 선언서를 발표했어요."
+    },
+    {
+      question: "의열단의 투쟁 방침을 담은 '조선혁명선언'을 작성한 인물은 누구일까요?",
+      options: ["신채호", "최남선", "이광수", "이승훈"],
+      answer: "신채호",
+      explanation: "신채호는 의열단의 이념을 담은 조선혁명선언을 작성했어요."
+    },
+    {
+      question: "4.19 혁명의 직접적인 도화선이 된 사건은 무엇일까요?",
+      options: ["3.15 부정선거", "5.16 군사정변", "6월 민주 항쟁", "유신 헌법 공포"],
+      answer: "3.15 부정선거",
+      explanation: "3.15 부정선거에 대한 분노가 4.19 혁명으로 이어졌어요."
+    },
+    {
+      question: "5.18 민주화 운동이 일어난 도시는 어디일까요?",
+      options: ["광주", "부산", "대구", "대전"],
+      answer: "광주",
+      explanation: "5.18 민주화 운동은 광주에서 일어났어요."
+    }
+  ]
+};
+HISTORY_LEVEL_KEYS.forEach((levelKey) => {
+  const baseQuestions = HISTORY_QUESTION_BANK[levelKey];
+  const extraQuestions = EXTRA_HISTORY_QUESTION_BANK[levelKey];
+  if (!Array.isArray(baseQuestions) || !Array.isArray(extraQuestions) || extraQuestions.length === 0) {
+    return;
+  }
+  baseQuestions.push(...extraQuestions);
+});
 
 const SUBJECT_COPY = {
   math: {
@@ -588,6 +981,7 @@ const state = {
   wrongQuestions: [],
   reviewMode: false,
   reviewQueue: [],
+  usedQuestionSignatures: new Set(),
   themePickerOpen: false,
   rankingCorrect: null,
   englishRankingCorrect: null,
@@ -618,8 +1012,7 @@ const englishState = {
   answered: false,
   current: null,
   speakingAction: ENGLISH_SPEAK_ACTIONS.START,
-  usedWordLessonIndexes: new Set(),
-  usedSpeakingLessonIndexes: new Set(),
+  usedLessonIndexes: new Set(),
   recognition: null,
   recognizing: false
 };
@@ -1295,6 +1688,43 @@ function buildQuestion(operationKey, levelKey) {
   };
 }
 
+function makeMathQuestionSignature(question) {
+  if (!question) return "";
+  const operationKey = String(question.operationKey || "");
+  let left = Number(question.left || 0);
+  let right = Number(question.right || 0);
+
+  if (operationKey === "add" || operationKey === "multiply") {
+    if (left > right) {
+      [left, right] = [right, left];
+    }
+  }
+
+  return `${operationKey}:${left}:${right}`;
+}
+
+function buildUniqueMathQuestion(operationKey, levelKey) {
+  const MAX_ATTEMPTS = 240;
+  for (let attempt = 0; attempt < MAX_ATTEMPTS; attempt += 1) {
+    const question = buildQuestion(operationKey, levelKey);
+    const signature = makeMathQuestionSignature(question);
+    if (!signature || !state.usedQuestionSignatures.has(signature)) {
+      if (signature) {
+        state.usedQuestionSignatures.add(signature);
+      }
+      return question;
+    }
+  }
+
+  state.usedQuestionSignatures.clear();
+  const fallbackQuestion = buildQuestion(operationKey, levelKey);
+  const fallbackSignature = makeMathQuestionSignature(fallbackQuestion);
+  if (fallbackSignature) {
+    state.usedQuestionSignatures.add(fallbackSignature);
+  }
+  return fallbackQuestion;
+}
+
 function updateModePill() {
   const operationLabel = OPERATIONS[state.operation].label;
   const levelLabel = LEVELS[state.level].label;
@@ -1533,7 +1963,8 @@ function isEnglishSpeakingPhase() {
   return englishState.phase === ENGLISH_PHASES.SPEAKING;
 }
 
-function pickEnglishLessonIndex(usedIndexes, levelKey) {
+function pickEnglishLessonIndex(levelKey) {
+  const usedIndexes = englishState.usedLessonIndexes;
   const levelPool = getEnglishLevelPool(levelKey);
   let availableIndexes = levelPool.filter((index) => !usedIndexes.has(index));
   if (availableIndexes.length === 0) {
@@ -1548,7 +1979,7 @@ function pickEnglishLessonIndex(usedIndexes, levelKey) {
 
 function buildEnglishWordQuestion() {
   const levelPool = getEnglishLevelPool(englishState.level);
-  const lessonIndex = pickEnglishLessonIndex(englishState.usedWordLessonIndexes, englishState.level);
+  const lessonIndex = pickEnglishLessonIndex(englishState.level);
   const lesson = ENGLISH_LESSONS[lessonIndex];
   const options = new Set([lesson.english]);
 
@@ -1583,7 +2014,7 @@ function buildEnglishWordQuestion() {
 }
 
 function buildEnglishSpeakingQuestion() {
-  const lessonIndex = pickEnglishLessonIndex(englishState.usedSpeakingLessonIndexes, englishState.level);
+  const lessonIndex = pickEnglishLessonIndex(englishState.level);
   const lesson = ENGLISH_LESSONS[lessonIndex];
   return {
     kind: ENGLISH_PHASES.SPEAKING,
@@ -1745,8 +2176,6 @@ function startEnglishSession() {
   englishState.bestStreak = 0;
   englishState.answered = false;
   englishState.speakingAction = ENGLISH_SPEAK_ACTIONS.START;
-  englishState.usedWordLessonIndexes.clear();
-  englishState.usedSpeakingLessonIndexes.clear();
   englishState.current = buildEnglishWordQuestion();
   updateEnglishStats();
   renderEnglishQuestion();
@@ -1759,7 +2188,6 @@ function startEnglishSpeakingMission() {
   englishState.questionNumber = 1;
   englishState.answered = false;
   englishState.speakingAction = ENGLISH_SPEAK_ACTIONS.START;
-  englishState.usedSpeakingLessonIndexes.clear();
   englishState.current = buildEnglishSpeakingQuestion();
   renderEnglishQuestion();
   setBear("thinking", "좋아! 이제 말하기 미션 10문제를 시작해보자.");
@@ -2194,7 +2622,6 @@ function startHistorySession() {
   historyState.reviewQueue = [];
   historyState.reviewTotal = 0;
   historyState.wrongNotes = [];
-  historyState.usedQuestionIndexes.clear();
   historyState.current = buildHistoryQuestion();
   updateHistoryStats();
   renderHistoryWrongNotes();
@@ -2438,7 +2865,7 @@ function renderQuestion() {
 
 function nextQuestion() {
   const operationKey = pickOperation();
-  state.currentQuestion = buildQuestion(operationKey, state.level);
+  state.currentQuestion = buildUniqueMathQuestion(operationKey, state.level);
   renderQuestion();
 }
 
@@ -2501,6 +2928,7 @@ function startSession() {
   state.wrongQuestions = [];
   state.reviewMode = false;
   state.reviewQueue = [];
+  state.usedQuestionSignatures.clear();
 
   els.startBtn.textContent = "다시 시작";
   els.retryWrongBtn.classList.add("hidden");
@@ -2943,8 +3371,7 @@ function handleEnglishLevelSelect(nextLevel) {
   profile.lastEnglishLevel = nextLevel;
   saveProfile();
   updateEnglishLevelUi();
-  englishState.usedWordLessonIndexes.clear();
-  englishState.usedSpeakingLessonIndexes.clear();
+  englishState.usedLessonIndexes.clear();
 
   const label = getEnglishLevel(nextLevel).label;
   if (englishState.sessionActive) {
