@@ -287,7 +287,237 @@ const ENGLISH_EXTRA_LESSONS = [
   { korean: "방문하다", english: "visit", sentence: "We visit our teacher on Friday." },
   { korean: "나누다", english: "share", sentence: "Please share your crayons." }
 ];
-ENGLISH_LESSONS.push(...ENGLISH_EXTRA_LESSONS);
+const ENGLISH_MEGA_WORDS = [
+  ["봄", "spring"],
+  ["여름", "summer"],
+  ["가을", "autumn"],
+  ["겨울", "winter"],
+  ["계절", "season"],
+  ["날씨", "weather"],
+  ["온도", "temperature"],
+  ["얼음", "ice"],
+  ["눈송이", "snowflake"],
+  ["비", "rain"],
+  ["번개", "lightning"],
+  ["천둥", "thunder"],
+  ["안개", "fog"],
+  ["무지개", "rainbow"],
+  ["태양", "sun"],
+  ["지구", "earth"],
+  ["행성", "planet"],
+  ["우주", "space"],
+  ["로켓", "rocket"],
+  ["위성", "satellite"],
+  ["나라", "country"],
+  ["도시", "city"],
+  ["마을", "village"],
+  ["거리", "street"],
+  ["다리", "bridge"],
+  ["터널", "tunnel"],
+  ["섬", "island"],
+  ["사막", "desert"],
+  ["계곡", "valley"],
+  ["폭포", "waterfall"],
+  ["호수", "lake"],
+  ["연못", "pond"],
+  ["바위", "rock"],
+  ["모래", "sand"],
+  ["흙", "soil"],
+  ["씨앗", "seed"],
+  ["뿌리", "root"],
+  ["줄기", "stem"],
+  ["잎", "leaf"],
+  ["가지", "branch"],
+  ["과일", "fruit"],
+  ["채소", "vegetable"],
+  ["감자", "potato"],
+  ["토마토", "tomato"],
+  ["양파", "onion"],
+  ["당근", "carrot"],
+  ["오이", "cucumber"],
+  ["양배추", "cabbage"],
+  ["브로콜리", "broccoli"],
+  ["버섯", "mushroom"],
+  ["닭", "chicken"],
+  ["돼지", "pig"],
+  ["소", "cow"],
+  ["양", "sheep"],
+  ["염소", "goat"],
+  ["말", "horse"],
+  ["오리", "duck"],
+  ["거북", "turtle"],
+  ["원숭이", "monkey"],
+  ["코끼리", "elephant"],
+  ["기린", "giraffe"],
+  ["판다", "panda"],
+  ["늑대", "wolf"],
+  ["여우", "fox"],
+  ["사슴", "deer"],
+  ["얼룩말", "zebra"],
+  ["낙타", "camel"],
+  ["돌고래", "dolphin"],
+  ["고래", "whale"],
+  ["상어", "shark"],
+  ["문어", "octopus"],
+  ["게", "crab"],
+  ["새우", "shrimp"],
+  ["냉장고", "refrigerator"],
+  ["가스레인지", "stove"],
+  ["오븐", "oven"],
+  ["숟가락", "spoon"],
+  ["포크", "fork"],
+  ["칼", "knife"],
+  ["접시", "plate"],
+  ["그릇", "bowl"],
+  ["컵", "cup"],
+  ["병", "bottle"],
+  ["우산", "umbrella"],
+  ["여행가방", "suitcase"],
+  ["지갑", "wallet"],
+  ["표", "ticket"],
+  ["카메라", "camera"],
+  ["배터리", "battery"],
+  ["충전기", "charger"],
+  ["리모컨", "remote"],
+  ["화면", "screen"],
+  ["키보드", "keyboard"],
+  ["마우스", "mouse"],
+  ["스피커", "speaker"],
+  ["헤드폰", "headphone"],
+  ["프린터", "printer"],
+  ["태블릿", "tablet"],
+  ["로봇", "robot"],
+  ["드론", "drone"],
+  ["인터넷", "internet"],
+  ["웹사이트", "website"],
+  ["비밀번호", "password"],
+  ["메시지", "message"],
+  ["이메일", "email"],
+  ["영상", "video"],
+  ["사진", "photo"],
+  ["파일", "file"],
+  ["폴더", "folder"],
+  ["앱", "application"],
+  ["프로그램", "program"],
+  ["코드", "code"],
+  ["데이터", "data"],
+  ["서버", "server"],
+  ["네트워크", "network"],
+  ["신호", "signal"],
+  ["과학", "science"],
+  ["지리", "geography"],
+  ["미술", "artwork"],
+  ["숙제", "homework"],
+  ["프로젝트", "project"],
+  ["시험", "exam"],
+  ["질문", "question"],
+  ["정답", "answer"],
+  ["주제", "topic"],
+  ["수업", "lesson"],
+  ["단원", "chapter"],
+  ["시간표", "schedule"],
+  ["사전", "dictionary"],
+  ["문장", "sentence"],
+  ["문단", "paragraph"],
+  ["대화", "conversation"],
+  ["발음", "pronunciation"],
+  ["문법", "grammar"],
+  ["어휘", "vocabulary"],
+  ["번역", "translation"],
+  ["의미", "meaning"],
+  ["빌리다", "borrow"],
+  ["돌려주다", "return"],
+  ["설명하다", "explain"],
+  ["연습하다", "practice"],
+  ["향상시키다", "improve"],
+  ["기억하다", "remember"],
+  ["잊다", "forget"],
+  ["비교하다", "compare"],
+  ["결정하다", "decide"],
+  ["준비하다", "prepare"],
+  ["계획하다", "plan"],
+  ["정리하다", "organize"],
+  ["포함하다", "include"],
+  ["변경하다", "change"],
+  ["옮기다", "move"],
+  ["나르다", "carry"],
+  ["들어올리다", "lift"],
+  ["밀다", "push"],
+  ["당기다", "pull"],
+  ["던지다", "throw"],
+  ["잡다", "catch"],
+  ["이기다", "win"],
+  ["지다", "lose"],
+  ["자라다", "grow"],
+  ["줄이다", "reduce"],
+  ["늘리다", "increase"],
+  ["저축하다", "save"],
+  ["소비하다", "spend"],
+  ["확인하다", "check"],
+  ["해결하다", "solve"],
+  ["만들어내다", "create"],
+  ["발견하다", "discover"],
+  ["보호하다", "protect"],
+  ["존중하다", "respect"],
+  ["약속하다", "promise"],
+  ["지지하다", "support"],
+  ["초대하다", "invite"],
+  ["수락하다", "accept"],
+  ["거절하다", "reject"],
+  ["밝은", "bright"],
+  ["어두운", "dark"],
+  ["조용한", "quiet"],
+  ["시끄러운", "noisy"],
+  ["안전한", "safe"],
+  ["위험한", "dangerous"],
+  ["유명한", "famous"],
+  ["특별한", "special"],
+  ["간단한", "simple"],
+  ["어려운", "difficult"],
+  ["이른", "early"],
+  ["늦은", "late"],
+  ["올바른", "correct"],
+  ["틀린", "wrong"],
+  ["가능한", "possible"],
+  ["중요한", "important"],
+  ["유용한", "useful"],
+  ["친근한", "friendly"],
+  ["오늘", "today"],
+  ["내일", "tomorrow"],
+  ["어제", "yesterday"],
+  ["주", "week"],
+  ["개월", "month"],
+  ["해", "year"],
+  ["시간", "hour"],
+  ["분", "minute"],
+  ["초", "second"],
+  ["순간", "moment"],
+  ["미래", "future"],
+  ["과거", "past"],
+  ["현재", "present"]
+];
+const ENGLISH_MEGA_LESSONS = ENGLISH_MEGA_WORDS.map(([korean, english]) => ({
+  korean,
+  english,
+  sentence: `Please say ${english}.`
+}));
+const mergedEnglishLessons = [...ENGLISH_LESSONS, ...ENGLISH_EXTRA_LESSONS, ...ENGLISH_MEGA_LESSONS];
+const seenEnglishWords = new Set();
+ENGLISH_LESSONS.length = 0;
+mergedEnglishLessons.forEach((lesson) => {
+  if (!lesson || typeof lesson !== "object") return;
+  const english = String(lesson.english || "")
+    .trim()
+    .toLowerCase();
+  const korean = String(lesson.korean || "").trim();
+  if (!english || !korean || seenEnglishWords.has(english)) return;
+  seenEnglishWords.add(english);
+  ENGLISH_LESSONS.push({
+    korean,
+    english,
+    sentence: String(lesson.sentence || `Please say ${english}.`).trim()
+  });
+});
 const ENGLISH_ALL_LESSON_INDEXES = Array.from({ length: ENGLISH_LESSONS.length }, (_, index) => index);
 const ENGLISH_LEVEL_POOLS = Object.fromEntries(ENGLISH_LEVEL_KEYS.map((levelKey) => [levelKey, buildEnglishLevelPool(levelKey)]));
 const HISTORY_QUESTION_BANK = {
@@ -838,13 +1068,163 @@ const EXTRA_HISTORY_QUESTION_BANK = {
     }
   ]
 };
+const HISTORY_TIMELINE_FACTS = {
+  grade4: [
+    ["기원전 2333년", "고조선이 건국된 사건"],
+    ["기원전 57년", "신라가 건국된 사건"],
+    ["기원전 37년", "고구려가 건국된 사건"],
+    ["기원전 18년", "백제가 건국된 사건"],
+    ["660년", "백제가 멸망한 사건"],
+    ["668년", "고구려가 멸망한 사건"],
+    ["676년", "신라의 삼국 통일이 완성된 사건"],
+    ["698년", "발해가 건국된 사건"],
+    ["918년", "고려가 건국된 사건"],
+    ["936년", "고려가 후삼국을 통일한 사건"],
+    ["1392년", "조선이 건국된 사건"],
+    ["1446년", "훈민정음이 반포된 사건"],
+    ["1592년", "임진왜란이 시작된 사건"],
+    ["1894년", "동학 농민 운동이 본격화된 사건"],
+    ["1919년", "3.1 운동이 일어난 사건"],
+    ["1945년", "광복을 맞이한 사건"],
+    ["1948년", "대한민국 정부가 수립된 사건"],
+    ["1950년", "6.25 전쟁이 발발한 사건"],
+    ["1987년", "6월 민주 항쟁이 전개된 사건"],
+    ["1988년", "서울 올림픽이 열린 사건"]
+  ],
+  grade3: [
+    ["527년", "신라에서 불교가 공인된 사건"],
+    ["612년", "살수대첩이 일어난 사건"],
+    ["1019년", "귀주대첩이 일어난 사건"],
+    ["1170년", "무신정변이 일어난 사건"],
+    ["1231년", "몽골의 고려 1차 침입이 시작된 사건"],
+    ["1270년", "삼별초 항쟁이 시작된 사건"],
+    ["1388년", "위화도 회군이 일어난 사건"],
+    ["1443년", "훈민정음이 창제된 사건"],
+    ["1636년", "병자호란이 일어난 사건"],
+    ["1750년", "균역법이 시행된 사건"],
+    ["1776년", "정조가 즉위하고 규장각을 설치한 사건"],
+    ["1866년", "병인양요가 일어난 사건"],
+    ["1871년", "신미양요가 일어난 사건"],
+    ["1876년", "강화도조약이 체결된 사건"],
+    ["1882년", "임오군란이 일어난 사건"],
+    ["1884년", "갑신정변이 일어난 사건"],
+    ["1895년", "을미사변이 일어난 사건"],
+    ["1897년", "대한제국이 선포된 사건"],
+    ["1905년", "을사늑약이 체결된 사건"],
+    ["1910년", "한일병합조약이 체결된 사건"],
+    ["1920년", "봉오동 전투와 청산리 대첩이 일어난 해"],
+    ["1929년", "광주학생항일운동이 시작된 사건"],
+    ["1940년", "한국광복군이 창설된 사건"],
+    ["1953년", "한국전쟁 정전협정이 체결된 사건"]
+  ],
+  grade2: [
+    ["372년", "고구려가 불교를 수용한 사건"],
+    ["384년", "백제가 불교를 수용한 사건"],
+    ["958년", "고려에서 과거제가 실시된 사건"],
+    ["1135년", "묘청의 서경 천도 운동이 일어난 사건"],
+    ["1274년", "고려-몽골 연합군의 1차 일본 원정이 이루어진 사건"],
+    ["1356년", "공민왕이 반원 자주 개혁을 본격화한 사건"],
+    ["1455년", "세조가 즉위한 사건"],
+    ["1485년", "경국대전이 완성된 사건"],
+    ["1791년", "신해통공이 시행된 사건"],
+    ["1801년", "신유박해가 일어난 사건"],
+    ["1811년", "홍경래의 난이 일어난 사건"],
+    ["1862년", "임술농민봉기가 일어난 사건"],
+    ["1907년", "정미7조약 체결과 군대 해산이 일어난 사건"],
+    ["1926년", "6.10 만세 운동이 일어난 사건"],
+    ["1931년", "만주사변이 일어난 사건"],
+    ["1932년", "윤봉길 의사가 훙커우 공원 의거를 일으킨 사건"],
+    ["1946년", "미소공동위원회가 개최된 사건"],
+    ["1960년", "4.19 혁명이 일어난 사건"],
+    ["1961년", "5.16 군사정변이 일어난 사건"],
+    ["1972년", "7.4 남북 공동 성명이 발표된 사건"],
+    ["1991년", "남북 기본 합의서가 채택된 사건"],
+    ["2000년", "6.15 남북 공동 선언이 발표된 사건"]
+  ],
+  grade1: [
+    ["1911년", "105인 사건이 발생한 사건"],
+    ["1927년", "신간회가 창립된 사건"],
+    ["1937년", "중일전쟁 발발 이후 민족말살정책이 강화된 사건"],
+    ["1942년", "조선어학회 사건이 발생한 사건"],
+    ["1948년", "제헌 헌법 공포와 대한민국 정부 수립이 이루어진 사건"],
+    ["1954년", "사사오입 개헌이 이루어진 사건"],
+    ["1965년", "한일 기본 조약이 체결된 사건"],
+    ["1972년", "유신 헌법이 선포된 사건"],
+    ["1979년", "10.26 사건이 발생한 사건"],
+    ["1980년", "5.18 민주화 운동이 전개된 사건"],
+    ["1987년", "6월 민주 항쟁과 9차 개헌이 이루어진 사건"],
+    ["1993년", "문민정부가 출범한 사건"],
+    ["1997년", "외환 위기가 발생한 사건"],
+    ["2002년", "한일 월드컵이 개최된 사건"],
+    ["2007년", "10.4 남북 정상 선언이 발표된 사건"],
+    ["2018년", "판문점 선언이 발표된 사건"]
+  ]
+};
+
+function buildHistoryYearOptions(targetYear, yearPool, baseIndex) {
+  const options = [targetYear];
+  let step = 1;
+  while (options.length < 4 && step < yearPool.length + 1) {
+    const forward = yearPool[(baseIndex + step) % yearPool.length];
+    if (forward && !options.includes(forward)) {
+      options.push(forward);
+    }
+    const backwardIndex = (baseIndex - step + yearPool.length) % yearPool.length;
+    const backward = yearPool[backwardIndex];
+    if (options.length < 4 && backward && !options.includes(backward)) {
+      options.push(backward);
+    }
+    step += 1;
+  }
+  return options.slice(0, 4);
+}
+
+function buildHistoryTimelineQuestions(entries) {
+  if (!Array.isArray(entries) || entries.length === 0) return [];
+  const yearPool = entries.map((entry) => String(entry[0] || "").trim()).filter(Boolean);
+  return entries.map(([year, event], index) => {
+    const safeYear = String(year || "").trim();
+    const safeEvent = String(event || "").trim();
+    return {
+      question: `${safeEvent}은(는) 몇 년에 일어났을까요?`,
+      options: buildHistoryYearOptions(safeYear, yearPool, index),
+      answer: safeYear,
+      explanation: `${safeEvent}은(는) ${safeYear}에 일어났어요.`
+    };
+  });
+}
+
+function dedupeHistoryQuestions(questions) {
+  if (!Array.isArray(questions)) return [];
+  const seen = new Set();
+  const unique = [];
+
+  questions.forEach((question) => {
+    if (!question || typeof question !== "object") return;
+    const prompt = String(question.question || "").trim();
+    if (!prompt || seen.has(prompt)) return;
+    seen.add(prompt);
+    unique.push({
+      question: prompt,
+      options: Array.isArray(question.options) ? question.options.slice(0, 4).map((option) => String(option || "").trim()) : [],
+      answer: String(question.answer || "").trim(),
+      explanation: String(question.explanation || "").trim()
+    });
+  });
+
+  return unique;
+}
+
 HISTORY_LEVEL_KEYS.forEach((levelKey) => {
   const baseQuestions = HISTORY_QUESTION_BANK[levelKey];
   const extraQuestions = EXTRA_HISTORY_QUESTION_BANK[levelKey];
-  if (!Array.isArray(baseQuestions) || !Array.isArray(extraQuestions) || extraQuestions.length === 0) {
-    return;
-  }
-  baseQuestions.push(...extraQuestions);
+  const timelineQuestions = buildHistoryTimelineQuestions(HISTORY_TIMELINE_FACTS[levelKey]);
+  const mergedQuestions = [
+    ...(Array.isArray(baseQuestions) ? baseQuestions : []),
+    ...(Array.isArray(extraQuestions) ? extraQuestions : []),
+    ...timelineQuestions
+  ];
+  HISTORY_QUESTION_BANK[levelKey] = dedupeHistoryQuestions(mergedQuestions);
 });
 
 const SUBJECT_COPY = {
