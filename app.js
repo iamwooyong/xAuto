@@ -1671,6 +1671,12 @@ const englishState = {
   usedLessonIndexes: new Set(),
   usedSpeakingMissionIndexes: new Set(),
   lastSpokenTranscript: "",
+  lastSpokenAudioUrl: "",
+  mediaStream: null,
+  mediaRecorder: null,
+  mediaChunks: [],
+  playbackAudio: null,
+  recordingToken: 0,
   recognition: null,
   recognizing: false
 };
@@ -2740,6 +2746,139 @@ function speakEnglishSentence() {
   return true;
 }
 
+function canRecordEnglishVoice() {
+  return typeof window.MediaRecorder === "function" && Boolean(navigator.mediaDevices?.getUserMedia);
+}
+
+function stopEnglishPlayback() {
+  const currentPlayback = englishState.playbackAudio;
+  if (!currentPlayback) return;
+  try {
+    currentPlayback.pause();
+    currentPlayback.currentTime = 0;
+  } catch {
+    // Ignore playback stop failures.
+  }
+  englishState.playbackAudio = null;
+}
+
+function revokeEnglishRecordedAudio() {
+  stopEnglishPlayback();
+  const audioUrl = String(englishState.lastSpokenAudioUrl || "").trim();
+  if (!audioUrl) return;
+  URL.revokeObjectURL(audioUrl);
+  englishState.lastSpokenAudioUrl = "";
+}
+
+function clearEnglishSpokenReplay() {
+  englishState.recordingToken += 1;
+  stopEnglishVoiceCapture();
+  englishState.lastSpokenTranscript = "";
+  revokeEnglishRecordedAudio();
+}
+
+function stopEnglishVoiceCapture() {
+  const recorder = englishState.mediaRecorder;
+  if (recorder) {
+    if (recorder.state !== "inactive") {
+      try {
+        recorder.stop();
+      } catch {
+        // Ignore recorder stop failures.
+      }
+      return;
+    }
+    englishState.mediaRecorder = null;
+  }
+
+  if (englishState.mediaStream) {
+    englishState.mediaStream.getTracks().forEach((track) => {
+      track.stop();
+    });
+    englishState.mediaStream = null;
+  }
+  englishState.mediaChunks = [];
+}
+
+async function startEnglishVoiceCapture(recordingToken) {
+  if (!canRecordEnglishVoice()) {
+    setEnglishSpeakingFeedback("이 브라우저는 내 목소리 녹음을 지원하지 않아요. Chrome 최신 버전을 추천해요.", true);
+    return false;
+  }
+
+  stopEnglishVoiceCapture();
+  revokeEnglishRecordedAudio();
+
+  let captureStream = null;
+  try {
+    captureStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+  } catch {
+    setEnglishSpeakingFeedback("내 말 다시듣기를 위해 마이크 권한이 필요해요. 브라우저에서 마이크를 허용해 주세요.", true);
+    return false;
+  }
+
+  englishState.mediaStream = captureStream;
+
+  let recorder = null;
+  try {
+    recorder = new MediaRecorder(captureStream);
+  } catch {
+    captureStream.getTracks().forEach((track) => {
+      track.stop();
+    });
+    englishState.mediaStream = null;
+    setEnglishSpeakingFeedback("내 목소리 녹음을 시작하지 못했어요. 브라우저를 확인해 주세요.", true);
+    return false;
+  }
+
+  englishState.mediaRecorder = recorder;
+  const captureChunks = [];
+  englishState.mediaChunks = captureChunks;
+
+  recorder.ondataavailable = (event) => {
+    if (!event.data || event.data.size <= 0) return;
+    captureChunks.push(event.data);
+  };
+
+  recorder.onstop = () => {
+    captureStream.getTracks().forEach((track) => {
+      track.stop();
+    });
+    if (englishState.mediaStream === captureStream) {
+      englishState.mediaStream = null;
+    }
+    if (englishState.mediaRecorder === recorder) {
+      englishState.mediaRecorder = null;
+    }
+    englishState.mediaChunks = [];
+
+    if (recordingToken === englishState.recordingToken && captureChunks.length > 0) {
+      revokeEnglishRecordedAudio();
+      const voiceBlob = new Blob(captureChunks, { type: recorder.mimeType || "audio/webm" });
+      englishState.lastSpokenAudioUrl = URL.createObjectURL(voiceBlob);
+    }
+    updateEnglishSpeakingControls();
+  };
+
+  recorder.onerror = () => {
+    setEnglishSpeakingFeedback("내 목소리 녹음 중 문제가 생겼어요. 다시 시도해 주세요.", true);
+  };
+
+  try {
+    recorder.start();
+    return true;
+  } catch {
+    captureStream.getTracks().forEach((track) => {
+      track.stop();
+    });
+    englishState.mediaStream = null;
+    englishState.mediaRecorder = null;
+    englishState.mediaChunks = [];
+    setEnglishSpeakingFeedback("내 목소리 녹음을 시작하지 못했어요. 다시 시도해 주세요.", true);
+    return false;
+  }
+}
+
 function updateEnglishSpeakingControls() {
   const isSpeakingPhase = isEnglishSpeakingPhase();
   const hasActiveQuestion = englishState.sessionActive && Boolean(englishState.current);
@@ -2747,7 +2886,7 @@ function updateEnglishSpeakingControls() {
   const showWordNext = englishState.sessionActive && !isSpeakingPhase;
   const showSpeakingControls = englishState.sessionActive && isSpeakingPhase;
   const showMicOff = showSpeakingControls || (!englishState.sessionActive && englishState.speakingCorrect + englishState.speakingWrong > 0);
-  const hasTranscript = Boolean(String(englishState.lastSpokenTranscript || "").trim());
+  const hasRecordedAudio = Boolean(String(englishState.lastSpokenAudioUrl || "").trim());
 
   els.englishNextBtn.classList.toggle("hidden", !showWordNext);
   els.englishSpeakActionBtn.classList.toggle("hidden", !showSpeakingControls);
@@ -2770,7 +2909,7 @@ function updateEnglishSpeakingControls() {
     els.englishSpeakActionBtn.textContent = "듣는 중...";
     els.englishSpeakActionBtn.disabled = true;
     els.englishSpeakReplayBtn.disabled = true;
-    els.englishSpeakMyReplayBtn.disabled = !hasTranscript;
+    els.englishSpeakMyReplayBtn.disabled = !hasRecordedAudio;
     return;
   }
 
@@ -2778,7 +2917,7 @@ function updateEnglishSpeakingControls() {
     els.englishSpeakActionBtn.textContent = "문제 시작";
     els.englishSpeakActionBtn.disabled = false;
     els.englishSpeakReplayBtn.disabled = true;
-    els.englishSpeakMyReplayBtn.disabled = !hasTranscript;
+    els.englishSpeakMyReplayBtn.disabled = !hasRecordedAudio;
     return;
   }
 
@@ -2786,14 +2925,14 @@ function updateEnglishSpeakingControls() {
     els.englishSpeakActionBtn.textContent = "말하기 시작";
     els.englishSpeakActionBtn.disabled = false;
     els.englishSpeakReplayBtn.disabled = false;
-    els.englishSpeakMyReplayBtn.disabled = !hasTranscript;
+    els.englishSpeakMyReplayBtn.disabled = !hasRecordedAudio;
     return;
   }
 
   els.englishSpeakActionBtn.textContent = getSpeakingNextLabel();
   els.englishSpeakActionBtn.disabled = false;
   els.englishSpeakReplayBtn.disabled = false;
-  els.englishSpeakMyReplayBtn.disabled = !hasTranscript;
+  els.englishSpeakMyReplayBtn.disabled = !hasRecordedAudio;
 }
 
 function updateEnglishStats() {
@@ -2812,7 +2951,7 @@ function renderEnglishIdle() {
   englishState.current = null;
   englishState.answered = false;
   englishState.speakingAction = ENGLISH_SPEAK_ACTIONS.START;
-  englishState.lastSpokenTranscript = "";
+  clearEnglishSpokenReplay();
   els.englishQuestionCount.textContent = "준비 완료";
   els.englishModePill.textContent = `${levelLabel} 단어 ${ENGLISH_WORD_QUESTIONS}문제 · 말하기 ${ENGLISH_SPEAKING_QUESTIONS}문제`;
   els.englishPrompt.textContent = `${levelLabel} 영어 시작 버튼을 누르면 단어 ${ENGLISH_WORD_QUESTIONS}문제가 먼저 나와요.`;
@@ -2841,7 +2980,7 @@ function renderEnglishQuestion() {
     els.englishOptions.innerHTML = "";
     els.englishSpeakTarget.textContent = englishState.current.sentence;
     els.englishTranscript.textContent = "내 말하기 결과: 아직 없음";
-    englishState.lastSpokenTranscript = "";
+    clearEnglishSpokenReplay();
     setEnglishSpeakingFeedback("문제 시작을 누르면 문장을 들려줘요. 그다음 말하기 시작을 눌러 따라 말해요.");
     setEnglishFeedback("말하기 미션 시작! 문장을 듣고 따라 말해보자.");
   } else {
@@ -2866,7 +3005,7 @@ function renderEnglishQuestion() {
     els.englishNextBtn.textContent = "다음 문제";
     els.englishSpeakTarget.textContent = `단어 ${ENGLISH_WORD_QUESTIONS}문제를 끝내면 말하기 미션 ${ENGLISH_SPEAKING_QUESTIONS}문제가 시작돼요.`;
     els.englishTranscript.textContent = "내 말하기 결과: 아직 없음";
-    englishState.lastSpokenTranscript = "";
+    clearEnglishSpokenReplay();
     setEnglishSpeakingFeedback(`지금은 단어 미션이에요. 단어 ${ENGLISH_WORD_QUESTIONS}문제를 끝내면 말하기로 넘어가요.`);
     setEnglishFeedback("정답 단어를 골라보자!");
   }
@@ -2896,7 +3035,7 @@ function startEnglishSession() {
   englishState.speakingAction = ENGLISH_SPEAK_ACTIONS.START;
   englishState.usedLessonIndexes.clear();
   englishState.usedSpeakingMissionIndexes.clear();
-  englishState.lastSpokenTranscript = "";
+  clearEnglishSpokenReplay();
   englishState.current = buildEnglishWordQuestion();
   updateEnglishStats();
   renderEnglishQuestion();
@@ -2910,7 +3049,7 @@ function startEnglishSpeakingMission() {
   englishState.answered = false;
   englishState.speakingAction = ENGLISH_SPEAK_ACTIONS.START;
   englishState.usedSpeakingMissionIndexes.clear();
-  englishState.lastSpokenTranscript = "";
+  clearEnglishSpokenReplay();
   englishState.current = buildEnglishSpeakingQuestion();
   renderEnglishQuestion();
   setBear("thinking", `좋아! 이제 말하기 미션 ${ENGLISH_SPEAKING_QUESTIONS}문제를 시작해보자.`);
@@ -2924,7 +3063,7 @@ function completeEnglishSession() {
   englishState.phase = ENGLISH_PHASES.WORD;
   englishState.current = null;
   englishState.answered = false;
-  englishState.lastSpokenTranscript = "";
+  clearEnglishSpokenReplay();
   const solved = englishState.correct + englishState.wrong;
   const accuracy = solved > 0 ? Math.round((englishState.correct / solved) * 100) : 0;
   let mood = "happy";
@@ -3042,7 +3181,7 @@ function handleEnglishSpeakAction() {
   }
 
   if (englishState.speakingAction === ENGLISH_SPEAK_ACTIONS.RECORD) {
-    handleEnglishMic();
+    void handleEnglishMic();
     return;
   }
 
@@ -3069,17 +3208,44 @@ function handleEnglishSpeakMyReplay() {
     setEnglishSpeakingFeedback("말하기 미션에서만 내 말 다시듣기를 사용할 수 있어요.", true);
     return;
   }
-  const transcript = String(englishState.lastSpokenTranscript || "").trim();
-  if (!transcript) {
-    setEnglishSpeakingFeedback("아직 내가 말한 문장이 없어요. 먼저 말하기 시작을 눌러주세요.", true);
+  const audioUrl = String(englishState.lastSpokenAudioUrl || "").trim();
+  if (!audioUrl) {
+    if (!canRecordEnglishVoice()) {
+      setEnglishSpeakingFeedback("이 브라우저에서는 내 목소리 다시듣기를 지원하지 않아요.", true);
+      return;
+    }
+    setEnglishSpeakingFeedback("아직 내가 말한 목소리가 없어요. 먼저 말하기 시작을 눌러주세요.", true);
     return;
   }
-  const played = speakText(transcript, "en-US", { rate: 0.92, pitch: 1.0 });
-  if (!played) {
-    setEnglishSpeakingFeedback("브라우저에서 재생을 지원하지 않아요. Chrome 최신 버전을 추천해요.", true);
+  stopEnglishPlayback();
+  const voicePlayback = new Audio(audioUrl);
+  englishState.playbackAudio = voicePlayback;
+  voicePlayback.onended = () => {
+    if (englishState.playbackAudio === voicePlayback) {
+      englishState.playbackAudio = null;
+    }
+  };
+  voicePlayback.onerror = () => {
+    if (englishState.playbackAudio === voicePlayback) {
+      englishState.playbackAudio = null;
+    }
+    setEnglishSpeakingFeedback("내 목소리 재생에 실패했어요. 다시 시도해 주세요.", true);
+  };
+  const playPromise = voicePlayback.play();
+  if (playPromise && typeof playPromise.then === "function") {
+    playPromise
+      .then(() => {
+        setEnglishSpeakingFeedback("방금 내가 말한 목소리를 다시 재생할게요.");
+      })
+      .catch(() => {
+        if (englishState.playbackAudio === voicePlayback) {
+          englishState.playbackAudio = null;
+        }
+        setEnglishSpeakingFeedback("내 목소리 재생 권한이 필요해요. 다시 눌러주세요.", true);
+      });
     return;
   }
-  setEnglishSpeakingFeedback("방금 말한 내용을 다시 들려줄게요.", false);
+  setEnglishSpeakingFeedback("방금 내가 말한 목소리를 다시 재생할게요.");
 }
 
 function handleEnglishPromptSpeak() {
@@ -3102,6 +3268,7 @@ function handleEnglishOptionSpeak(option) {
 
 function handleEnglishSpeakOff() {
   stopEnglishRecognition();
+  stopEnglishPlayback();
   if (canUseSpeechSynthesis()) {
     window.speechSynthesis.cancel();
   }
@@ -3121,11 +3288,12 @@ function stopEnglishRecognition() {
       // Ignore abort failures.
     }
   }
+  stopEnglishVoiceCapture();
   englishState.recognition = null;
   englishState.recognizing = false;
 }
 
-function handleEnglishMic() {
+async function handleEnglishMic() {
   if (!englishState.current) return;
   if (!isEnglishSpeakingPhase()) {
     setEnglishSpeakingFeedback("단어 미션이 끝나면 말하기 미션에서 따라 말하기를 할 수 있어요.", true);
@@ -3150,14 +3318,35 @@ function handleEnglishMic() {
     return;
   }
 
-  const recognition = new RecognitionCtor();
+  englishState.recognizing = true;
+  updateEnglishSpeakingControls();
+
+  const recordingToken = englishState.recordingToken + 1;
+  englishState.recordingToken = recordingToken;
+  const voiceCaptureReady = await startEnglishVoiceCapture(recordingToken);
+  if (!voiceCaptureReady) {
+    englishState.recognizing = false;
+    englishState.speakingAction = ENGLISH_SPEAK_ACTIONS.RECORD;
+    updateEnglishSpeakingControls();
+    return;
+  }
+
+  let recognition = null;
+  try {
+    recognition = new RecognitionCtor();
+  } catch {
+    stopEnglishVoiceCapture();
+    englishState.recognizing = false;
+    setEnglishSpeakingFeedback("음성 인식을 시작하지 못했어요. 다시 시도해 주세요.", true);
+    updateEnglishSpeakingControls();
+    return;
+  }
+
   let shouldAutoAdvance = false;
   englishState.recognition = recognition;
   recognition.lang = "en-US";
   recognition.interimResults = false;
   recognition.maxAlternatives = 1;
-  englishState.recognizing = true;
-  updateEnglishSpeakingControls();
 
   recognition.onresult = (event) => {
     const transcript = String(event.results?.[0]?.[0]?.transcript || "").trim();
@@ -3201,6 +3390,7 @@ function handleEnglishMic() {
   };
 
   recognition.onend = () => {
+    stopEnglishVoiceCapture();
     englishState.recognizing = false;
     englishState.recognition = null;
     if (shouldAutoAdvance) {
@@ -3225,9 +3415,14 @@ function handleEnglishMic() {
 }
 
 function setupEnglishVoiceSupport() {
-  const supportMessage = getSpeechRecognitionCtor()
-    ? "이 기기에서는 웹 음성 인식이 가능해요. 듀오링고처럼 말하기 연습을 할 수 있어요."
-    : "이 브라우저는 음성 인식을 지원하지 않을 수 있어요. Chrome 최신 버전을 추천해요.";
+  const hasRecognition = Boolean(getSpeechRecognitionCtor());
+  const hasVoiceReplay = canRecordEnglishVoice();
+  let supportMessage = "이 브라우저는 음성 인식을 지원하지 않을 수 있어요. Chrome 최신 버전을 추천해요.";
+  if (hasRecognition && hasVoiceReplay) {
+    supportMessage = "이 기기에서는 말하기 인식과 내 목소리 다시듣기를 모두 사용할 수 있어요.";
+  } else if (hasRecognition) {
+    supportMessage = "말하기 인식은 가능하지만 내 목소리 다시듣기(녹음 재생)는 브라우저 제한이 있을 수 있어요.";
+  }
   els.englishVoiceSupport.textContent = supportMessage;
 }
 
