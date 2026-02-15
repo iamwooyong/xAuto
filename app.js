@@ -69,7 +69,9 @@ const ENGLISH_SPEAK_ACTIONS = {
   RECORD: "record",
   NEXT: "next"
 };
-const ENGLISH_TOTAL_QUESTIONS = TARGET_QUESTIONS * 2;
+const ENGLISH_WORD_QUESTIONS = TARGET_QUESTIONS;
+const ENGLISH_SPEAKING_QUESTIONS = 5;
+const ENGLISH_TOTAL_QUESTIONS = ENGLISH_WORD_QUESTIONS + ENGLISH_SPEAKING_QUESTIONS;
 const ENGLISH_LESSONS = [
   { korean: "사과", english: "apple", sentence: "I eat an apple." },
   { korean: "바나나", english: "banana", sentence: "This banana is sweet." },
@@ -644,6 +646,41 @@ const ENGLISH_SPEAKING_MISSIONS = [
   { level: "advanced", korean: "후속 조치 안내", sentence: "I'll follow up with a detailed report once we validate the data." },
   { level: "advanced", korean: "회의 종료 멘트", sentence: "Thanks everyone, let's reconvene next Tuesday with updated action items." }
 ];
+const ENGLISH_EXTRA_SPEAKING_MISSIONS = [
+  { level: "beginner", korean: "간단한 자기소개", sentence: "Hi, I'm Jisoo, and I'm from Seoul." },
+  { level: "beginner", korean: "취미 말하기", sentence: "I like listening to music after school." },
+  { level: "beginner", korean: "날씨 이야기", sentence: "It's sunny today, so let's go outside." },
+  { level: "beginner", korean: "약속 잡기", sentence: "Are you free this Saturday afternoon?" },
+  { level: "beginner", korean: "필요한 것 요청", sentence: "Could you pass me that notebook?" },
+  { level: "beginner", korean: "교통수단 말하기", sentence: "I usually take the bus to school." },
+  { level: "beginner", korean: "선호 표현", sentence: "I prefer tea, but coffee is okay too." },
+  { level: "beginner", korean: "동의 표현", sentence: "Yes, that sounds great to me." },
+  { level: "beginner", korean: "계획 공유", sentence: "I'm going to study English tonight." },
+  { level: "beginner", korean: "간단한 부탁", sentence: "Please wait here for a minute." },
+
+  { level: "intermediate", korean: "회의 시작 멘트", sentence: "Thanks for joining, let's get started with today's agenda." },
+  { level: "intermediate", korean: "문제 상황 전달", sentence: "We're seeing an issue that affects users during checkout." },
+  { level: "intermediate", korean: "업무 분담 제안", sentence: "How about I handle the report while you prepare the slides?" },
+  { level: "intermediate", korean: "상황 확인 요청", sentence: "Could you update me on the current progress?" },
+  { level: "intermediate", korean: "우선순위 확인", sentence: "Which task should we prioritize first?" },
+  { level: "intermediate", korean: "서비스 문의 전화", sentence: "I'm calling to ask about my delayed package." },
+  { level: "intermediate", korean: "약속 시간 조율", sentence: "Would 3 p.m. work better for you?" },
+  { level: "intermediate", korean: "요청 거절하기", sentence: "I'm sorry, but I can't make it at that time." },
+  { level: "intermediate", korean: "요청 수락하기", sentence: "Sure, I can take care of that by noon." },
+  { level: "intermediate", korean: "의견 제시", sentence: "In my opinion, this approach is more efficient." },
+
+  { level: "advanced", korean: "위험 관리 언급", sentence: "From a risk management perspective, we should validate the assumptions first." },
+  { level: "advanced", korean: "대안 비교", sentence: "Option A is faster, but Option B is more sustainable in the long run." },
+  { level: "advanced", korean: "의견 조율", sentence: "Let's align on the objective before debating implementation details." },
+  { level: "advanced", korean: "성과 회고", sentence: "Although we met the target, there is still room to improve reliability." },
+  { level: "advanced", korean: "갈등 완화 표현", sentence: "I see where you're coming from, and I think both concerns are valid." },
+  { level: "advanced", korean: "현실적 일정 제안", sentence: "Given the scope, a phased rollout would be more realistic." },
+  { level: "advanced", korean: "협상 문장", sentence: "If we extend the timeline by one week, we can deliver higher quality." },
+  { level: "advanced", korean: "종합 정리", sentence: "To wrap up, we've agreed on the scope, owner, and deadline." },
+  { level: "advanced", korean: "문제 해결 방향 제시", sentence: "Let's focus on actions we can execute immediately while monitoring the impact." },
+  { level: "advanced", korean: "명확한 요청", sentence: "Could you provide concrete examples so we can make a data-driven decision?" }
+];
+ENGLISH_SPEAKING_MISSIONS.push(...ENGLISH_EXTRA_SPEAKING_MISSIONS);
 const ENGLISH_ALL_LESSON_INDEXES = Array.from({ length: ENGLISH_LESSONS.length }, (_, index) => index);
 const ENGLISH_LEVEL_POOLS = Object.fromEntries(ENGLISH_LEVEL_KEYS.map((levelKey) => [levelKey, buildEnglishLevelPool(levelKey)]));
 const HISTORY_QUESTION_BANK = {
@@ -1552,6 +1589,7 @@ const els = {
   englishNextBtn: document.querySelector("#englishNextBtn"),
   englishSpeakActionBtn: document.querySelector("#englishSpeakActionBtn"),
   englishSpeakReplayBtn: document.querySelector("#englishSpeakReplayBtn"),
+  englishSpeakMyReplayBtn: document.querySelector("#englishSpeakMyReplayBtn"),
   englishSpeakOffBtn: document.querySelector("#englishSpeakOffBtn"),
   englishFeedback: document.querySelector("#englishFeedback"),
   englishFeedbackBear: document.querySelector("#englishFeedbackBear"),
@@ -1632,6 +1670,7 @@ const englishState = {
   speakingAction: ENGLISH_SPEAK_ACTIONS.START,
   usedLessonIndexes: new Set(),
   usedSpeakingMissionIndexes: new Set(),
+  lastSpokenTranscript: "",
   recognition: null,
   recognizing: false
 };
@@ -2617,12 +2656,12 @@ function updateEnglishLevelUi() {
     els.englishGuide.textContent = `듀오링고처럼 듣고 말하며 영어를 익혀요. 현재 난이도: ${level.label}`;
   }
   if (els.englishStartBtn) {
-    els.englishStartBtn.textContent = `${level.label} 영어 10문제 시작`;
+    els.englishStartBtn.textContent = `${level.label} 영어 시작 (단어 ${ENGLISH_WORD_QUESTIONS} + 말하기 ${ENGLISH_SPEAKING_QUESTIONS})`;
   }
 }
 
 function getSpeakingNextLabel() {
-  return englishState.questionNumber >= TARGET_QUESTIONS ? "결과 보기" : "다음 문제";
+  return englishState.questionNumber >= ENGLISH_SPEAKING_QUESTIONS ? "결과 보기" : "다음 문제";
 }
 
 function isEnglishSpeakingPhase() {
@@ -2708,10 +2747,12 @@ function updateEnglishSpeakingControls() {
   const showWordNext = englishState.sessionActive && !isSpeakingPhase;
   const showSpeakingControls = englishState.sessionActive && isSpeakingPhase;
   const showMicOff = showSpeakingControls || (!englishState.sessionActive && englishState.speakingCorrect + englishState.speakingWrong > 0);
+  const hasTranscript = Boolean(String(englishState.lastSpokenTranscript || "").trim());
 
   els.englishNextBtn.classList.toggle("hidden", !showWordNext);
   els.englishSpeakActionBtn.classList.toggle("hidden", !showSpeakingControls);
   els.englishSpeakReplayBtn.classList.toggle("hidden", !showSpeakingControls);
+  els.englishSpeakMyReplayBtn.classList.toggle("hidden", !showSpeakingControls);
   els.englishSpeakOffBtn.classList.toggle("hidden", !showMicOff);
 
   els.englishNextBtn.disabled = !canGoWordNext;
@@ -2721,6 +2762,7 @@ function updateEnglishSpeakingControls() {
     els.englishSpeakActionBtn.textContent = "문제 시작";
     els.englishSpeakActionBtn.disabled = true;
     els.englishSpeakReplayBtn.disabled = true;
+    els.englishSpeakMyReplayBtn.disabled = true;
     return;
   }
 
@@ -2728,6 +2770,7 @@ function updateEnglishSpeakingControls() {
     els.englishSpeakActionBtn.textContent = "듣는 중...";
     els.englishSpeakActionBtn.disabled = true;
     els.englishSpeakReplayBtn.disabled = true;
+    els.englishSpeakMyReplayBtn.disabled = !hasTranscript;
     return;
   }
 
@@ -2735,6 +2778,7 @@ function updateEnglishSpeakingControls() {
     els.englishSpeakActionBtn.textContent = "문제 시작";
     els.englishSpeakActionBtn.disabled = false;
     els.englishSpeakReplayBtn.disabled = true;
+    els.englishSpeakMyReplayBtn.disabled = !hasTranscript;
     return;
   }
 
@@ -2742,12 +2786,14 @@ function updateEnglishSpeakingControls() {
     els.englishSpeakActionBtn.textContent = "말하기 시작";
     els.englishSpeakActionBtn.disabled = false;
     els.englishSpeakReplayBtn.disabled = false;
+    els.englishSpeakMyReplayBtn.disabled = !hasTranscript;
     return;
   }
 
   els.englishSpeakActionBtn.textContent = getSpeakingNextLabel();
   els.englishSpeakActionBtn.disabled = false;
   els.englishSpeakReplayBtn.disabled = false;
+  els.englishSpeakMyReplayBtn.disabled = !hasTranscript;
 }
 
 function updateEnglishStats() {
@@ -2766,12 +2812,13 @@ function renderEnglishIdle() {
   englishState.current = null;
   englishState.answered = false;
   englishState.speakingAction = ENGLISH_SPEAK_ACTIONS.START;
+  englishState.lastSpokenTranscript = "";
   els.englishQuestionCount.textContent = "준비 완료";
-  els.englishModePill.textContent = `${levelLabel} 단어 10문제 · 말하기 10문제`;
-  els.englishPrompt.textContent = `${levelLabel} 영어 시작 버튼을 누르면 단어 10문제가 먼저 나와요.`;
+  els.englishModePill.textContent = `${levelLabel} 단어 ${ENGLISH_WORD_QUESTIONS}문제 · 말하기 ${ENGLISH_SPEAKING_QUESTIONS}문제`;
+  els.englishPrompt.textContent = `${levelLabel} 영어 시작 버튼을 누르면 단어 ${ENGLISH_WORD_QUESTIONS}문제가 먼저 나와요.`;
   els.englishOptions.innerHTML = "";
   els.englishNextBtn.textContent = "다음 문제";
-  els.englishSpeakTarget.textContent = "단어 10문제를 끝내면 말하기 미션 10문제가 시작돼요.";
+  els.englishSpeakTarget.textContent = `단어 ${ENGLISH_WORD_QUESTIONS}문제를 끝내면 말하기 미션 ${ENGLISH_SPEAKING_QUESTIONS}문제가 시작돼요.`;
   els.englishTranscript.textContent = "내 말하기 결과: 아직 없음";
   setEnglishSpeakingFeedback("단어를 끝낸 뒤 말하기 미션에서 문제 시작 버튼을 눌러 연습해요.");
   setEnglishFeedback(`${levelLabel} 영어 준비 완료! 시작 버튼을 눌러보자.`);
@@ -2785,7 +2832,7 @@ function renderEnglishQuestion() {
   const levelLabel = getEnglishLevel(englishState.level).label;
 
   if (isEnglishSpeakingPhase()) {
-    els.englishQuestionCount.textContent = `말하기 ${englishState.questionNumber} / ${TARGET_QUESTIONS} 문제`;
+    els.englishQuestionCount.textContent = `말하기 ${englishState.questionNumber} / ${ENGLISH_SPEAKING_QUESTIONS} 문제`;
     els.englishModePill.textContent = `${levelLabel} 말하기 미션`;
     const situation = String(englishState.current.korean || "").trim();
     els.englishPrompt.textContent = situation
@@ -2794,10 +2841,11 @@ function renderEnglishQuestion() {
     els.englishOptions.innerHTML = "";
     els.englishSpeakTarget.textContent = englishState.current.sentence;
     els.englishTranscript.textContent = "내 말하기 결과: 아직 없음";
+    englishState.lastSpokenTranscript = "";
     setEnglishSpeakingFeedback("문제 시작을 누르면 문장을 들려줘요. 그다음 말하기 시작을 눌러 따라 말해요.");
     setEnglishFeedback("말하기 미션 시작! 문장을 듣고 따라 말해보자.");
   } else {
-    els.englishQuestionCount.textContent = `${englishState.questionNumber} / ${TARGET_QUESTIONS} 단어`;
+    els.englishQuestionCount.textContent = `${englishState.questionNumber} / ${ENGLISH_WORD_QUESTIONS} 단어`;
     els.englishModePill.textContent = `${levelLabel} 단어 4지선다`;
     els.englishPrompt.innerHTML = `
       <span class="english-word-question">
@@ -2816,9 +2864,10 @@ function renderEnglishQuestion() {
       })
       .join("");
     els.englishNextBtn.textContent = "다음 문제";
-    els.englishSpeakTarget.textContent = "단어 10문제를 끝내면 말하기 미션 10문제가 시작돼요.";
+    els.englishSpeakTarget.textContent = `단어 ${ENGLISH_WORD_QUESTIONS}문제를 끝내면 말하기 미션 ${ENGLISH_SPEAKING_QUESTIONS}문제가 시작돼요.`;
     els.englishTranscript.textContent = "내 말하기 결과: 아직 없음";
-    setEnglishSpeakingFeedback("지금은 단어 미션이에요. 단어 10문제를 끝내면 말하기로 넘어가요.");
+    englishState.lastSpokenTranscript = "";
+    setEnglishSpeakingFeedback(`지금은 단어 미션이에요. 단어 ${ENGLISH_WORD_QUESTIONS}문제를 끝내면 말하기로 넘어가요.`);
     setEnglishFeedback("정답 단어를 골라보자!");
   }
 
@@ -2847,10 +2896,11 @@ function startEnglishSession() {
   englishState.speakingAction = ENGLISH_SPEAK_ACTIONS.START;
   englishState.usedLessonIndexes.clear();
   englishState.usedSpeakingMissionIndexes.clear();
+  englishState.lastSpokenTranscript = "";
   englishState.current = buildEnglishWordQuestion();
   updateEnglishStats();
   renderEnglishQuestion();
-  setBear("thinking", `${levelLabel} 영어 시간 시작! 먼저 단어 10문제를 같이 풀어보자.`);
+  setBear("thinking", `${levelLabel} 영어 시간 시작! 먼저 단어 ${ENGLISH_WORD_QUESTIONS}문제를 같이 풀어보자.`);
 }
 
 function startEnglishSpeakingMission() {
@@ -2860,9 +2910,10 @@ function startEnglishSpeakingMission() {
   englishState.answered = false;
   englishState.speakingAction = ENGLISH_SPEAK_ACTIONS.START;
   englishState.usedSpeakingMissionIndexes.clear();
+  englishState.lastSpokenTranscript = "";
   englishState.current = buildEnglishSpeakingQuestion();
   renderEnglishQuestion();
-  setBear("thinking", "좋아! 이제 말하기 미션 10문제를 시작해보자.");
+  setBear("thinking", `좋아! 이제 말하기 미션 ${ENGLISH_SPEAKING_QUESTIONS}문제를 시작해보자.`);
   setEnglishFeedback(`${getEnglishLevel(englishState.level).label} 말하기 미션 시작! 문장 듣기 후 따라 말해보자.`);
 }
 
@@ -2873,6 +2924,7 @@ function completeEnglishSession() {
   englishState.phase = ENGLISH_PHASES.WORD;
   englishState.current = null;
   englishState.answered = false;
+  englishState.lastSpokenTranscript = "";
   const solved = englishState.correct + englishState.wrong;
   const accuracy = solved > 0 ? Math.round((englishState.correct / solved) * 100) : 0;
   let mood = "happy";
@@ -2881,10 +2933,10 @@ function completeEnglishSession() {
 
   els.englishQuestionCount.textContent = "영어 라운드 완료";
   els.englishModePill.textContent = "영어 라운드 완료";
-  els.englishPrompt.textContent = `단어 ${englishState.wordCorrect}/${TARGET_QUESTIONS}, 말하기 ${englishState.speakingCorrect}/${TARGET_QUESTIONS} 정답!`;
+  els.englishPrompt.textContent = `단어 ${englishState.wordCorrect}/${ENGLISH_WORD_QUESTIONS}, 말하기 ${englishState.speakingCorrect}/${ENGLISH_SPEAKING_QUESTIONS} 정답!`;
   els.englishOptions.innerHTML = "";
   els.englishNextBtn.textContent = "다음 문제";
-  els.englishSpeakTarget.textContent = "라운드가 완료됐어요. 영어 20문제 도전 성공!";
+  els.englishSpeakTarget.textContent = `라운드가 완료됐어요. 영어 ${ENGLISH_TOTAL_QUESTIONS}문제 도전 성공!`;
   els.englishTranscript.textContent = "내 말하기 결과: 라운드 완료";
   setEnglishSpeakingFeedback("영어 공부가 끝났으면 마이크를 끌게요. 아래 버튼을 눌러 마이크를 꺼요.");
   setEnglishFeedback(`완료! 총 ${englishState.correct}/${ENGLISH_TOTAL_QUESTIONS}문제 정답, 정답률 ${accuracy}%야.`);
@@ -2936,7 +2988,7 @@ function handleEnglishOptionSelect(option) {
     return;
   }
 
-  if (englishState.questionNumber >= TARGET_QUESTIONS) {
+  if (englishState.questionNumber >= ENGLISH_WORD_QUESTIONS) {
     els.englishNextBtn.textContent = "말하기 미션 시작";
   } else {
     els.englishNextBtn.textContent = "다음 문제";
@@ -2948,7 +3000,7 @@ function handleEnglishOptionSelect(option) {
 function handleEnglishNext() {
   if (!englishState.answered) return;
   if (isEnglishSpeakingPhase()) {
-    if (englishState.questionNumber >= TARGET_QUESTIONS) {
+    if (englishState.questionNumber >= ENGLISH_SPEAKING_QUESTIONS) {
       completeEnglishSession();
       return;
     }
@@ -2959,7 +3011,7 @@ function handleEnglishNext() {
     return;
   }
 
-  if (englishState.questionNumber >= TARGET_QUESTIONS) {
+  if (englishState.questionNumber >= ENGLISH_WORD_QUESTIONS) {
     startEnglishSpeakingMission();
     return;
   }
@@ -3010,6 +3062,24 @@ function handleEnglishSpeakReplay() {
     return;
   }
   speakEnglishSentence();
+}
+
+function handleEnglishSpeakMyReplay() {
+  if (!isEnglishSpeakingPhase()) {
+    setEnglishSpeakingFeedback("말하기 미션에서만 내 말 다시듣기를 사용할 수 있어요.", true);
+    return;
+  }
+  const transcript = String(englishState.lastSpokenTranscript || "").trim();
+  if (!transcript) {
+    setEnglishSpeakingFeedback("아직 내가 말한 문장이 없어요. 먼저 말하기 시작을 눌러주세요.", true);
+    return;
+  }
+  const played = speakText(transcript, "en-US", { rate: 0.92, pitch: 1.0 });
+  if (!played) {
+    setEnglishSpeakingFeedback("브라우저에서 재생을 지원하지 않아요. Chrome 최신 버전을 추천해요.", true);
+    return;
+  }
+  setEnglishSpeakingFeedback("방금 말한 내용을 다시 들려줄게요.", false);
 }
 
 function handleEnglishPromptSpeak() {
@@ -3091,6 +3161,7 @@ function handleEnglishMic() {
 
   recognition.onresult = (event) => {
     const transcript = String(event.results?.[0]?.[0]?.transcript || "").trim();
+    englishState.lastSpokenTranscript = transcript;
     els.englishTranscript.textContent = transcript
       ? `내 말하기 결과: ${transcript}`
       : "내 말하기 결과: 인식된 문장이 없어요.";
@@ -4417,6 +4488,10 @@ function bindEvents() {
 
   els.englishSpeakReplayBtn.addEventListener("click", () => {
     handleEnglishSpeakReplay();
+  });
+
+  els.englishSpeakMyReplayBtn.addEventListener("click", () => {
+    handleEnglishSpeakMyReplay();
   });
 
   els.englishSpeakOffBtn.addEventListener("click", () => {
