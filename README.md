@@ -13,6 +13,8 @@
 - Google 로그인 시 곰돌이 색(테마) 계정 동기화
 - Google 로그인 사용자 닉네임 등록/수정
 - 맞힌 문제 수 기준 수학/영어/한국사/과학/세계사 랭킹 보드
+- 맞힌 문제 수 기준 수학/영어/한국사/과학/세계사/야구/축구 랭킹 보드
+- 브라우저용 개발 채팅 페이지: `/codex-web.html`
 - 오늘 학습 통계:
   - 오늘 맞힌 문제 수
   - 현재 연속 정답
@@ -50,6 +52,8 @@ npm start
 - `DATABASE_URL`: PostgreSQL 연결 문자열
 - `SESSION_SECRET`: 로그인 세션 서명 키
 - `GOOGLE_CLIENT_ID` 또는 `GOOGLE_CLIENT_IDS`: Google OAuth 클라이언트 ID
+- `OPENAI_API_KEY`: 웹 코덱스 채팅용 OpenAI API 키
+- `OPENAI_MODEL`: 웹 코덱스 채팅 모델 (기본값 `gpt-4.1-mini`)
 
 ## 프로젝트 구조
 
@@ -86,6 +90,13 @@ npm start
 - `GET /api/world-history/rankings`
 - `GET /api/world-history/sessions`
 - `POST /api/world-history/sessions`
+- `GET /api/baseball/rankings`
+- `GET /api/baseball/sessions`
+- `POST /api/baseball/sessions`
+- `GET /api/soccer/rankings`
+- `GET /api/soccer/sessions`
+- `POST /api/soccer/sessions`
+- `POST /api/codex/chat`
 - `GET /api/readings?userId=...&limit=...`
 - `POST /api/readings`
 

@@ -18,6 +18,9 @@ const SESSION_TTL_HOURS = Math.max(Number(process.env.SESSION_TTL_HOURS || 24 * 
 const SESSION_TTL_MS = SESSION_TTL_HOURS * 60 * 60 * 1000;
 const ALLOWED_THEMES = ["red", "orange", "yellow", "green", "blue", "purple", "pink"];
 const NICKNAME_PATTERN = /^[A-Za-z0-9가-힣_]{2,12}$/;
+const OPENAI_API_KEY = String(process.env.OPENAI_API_KEY || "").trim();
+const OPENAI_MODEL = String(process.env.OPENAI_MODEL || "gpt-4.1-mini").trim();
+const OPENAI_RESPONSES_URL = "https://api.openai.com/v1/responses";
 
 const isLocalDb = DATABASE_URL.includes("localhost") || DATABASE_URL.includes("127.0.0.1");
 const pool = new Pool({
@@ -173,6 +176,27 @@ function toInt(value, fallback = 0) {
   const parsed = Number(value);
   if (!Number.isFinite(parsed)) return fallback;
   return Math.trunc(parsed);
+}
+
+function extractResponseText(payload) {
+  if (!payload || typeof payload !== "object") return "";
+
+  const directText = String(payload.output_text || "").trim();
+  if (directText) return directText;
+
+  const chunks = [];
+  const outputs = Array.isArray(payload.output) ? payload.output : [];
+
+  outputs.forEach((item) => {
+    const content = Array.isArray(item?.content) ? item.content : [];
+    content.forEach((part) => {
+      if (!part || typeof part !== "object") return;
+      const text = String(part.text || part.value || "").trim();
+      if (text) chunks.push(text);
+    });
+  });
+
+  return chunks.join("\n\n").trim();
 }
 
 async function initDb() {
@@ -394,6 +418,69 @@ app.get("/api/health", async (_req, res) => {
     res.json({ ok: true, db: "connected" });
   } catch {
     res.status(500).json({ ok: false, db: "error" });
+  }
+});
+
+app.post("/api/codex/chat", async (req, res) => {
+  const message = String(req.body?.message || "").trim();
+  const previousResponseId = String(req.body?.previousResponseId || "").trim();
+
+  if (!message) {
+    res.status(400).json({ error: "message is required" });
+    return;
+  }
+
+  if (!OPENAI_API_KEY) {
+    res.status(500).json({ error: "OPENAI_API_KEY is not configured on server" });
+    return;
+  }
+
+  const payload = {
+    model: OPENAI_MODEL,
+    input: [
+      {
+        role: "user",
+        content: [{ type: "input_text", text: message }]
+      }
+    ]
+  };
+
+  if (previousResponseId) {
+    payload.previous_response_id = previousResponseId;
+  }
+
+  try {
+    const response = await fetch(OPENAI_RESPONSES_URL, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${OPENAI_API_KEY}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(payload)
+    });
+
+    const body = await response.json().catch(() => ({}));
+    if (!response.ok) {
+      const messageFromApi = String(body?.error?.message || body?.error || "openai request failed");
+      res.status(502).json({ error: messageFromApi });
+      return;
+    }
+
+    const text = extractResponseText(body);
+    if (!text) {
+      res.status(502).json({ error: "empty response from model" });
+      return;
+    }
+
+    res.json({
+      ok: true,
+      responseId: String(body?.id || ""),
+      model: OPENAI_MODEL,
+      text
+    });
+  } catch (error) {
+    console.error("codex chat proxy failed", error);
+    res.status(500).json({ error: "failed to process codex chat request" });
   }
 });
 

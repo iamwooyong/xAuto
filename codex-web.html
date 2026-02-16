@@ -1,0 +1,396 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>곰돌이 웹 코덱스</title>
+    <style>
+      :root {
+        --bg: #fff6fb;
+        --panel: #ffffff;
+        --line: #f3b7d8;
+        --text: #55324a;
+        --subtle: #8d6a80;
+        --brand: #e45da8;
+        --brand-deep: #cc3f90;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Pretendard", "Noto Sans KR", "Apple SD Gothic Neo", sans-serif;
+        background: radial-gradient(circle at 20% 10%, #ffe6f4 0%, var(--bg) 48%, #fff0f8 100%);
+        color: var(--text);
+        min-height: 100vh;
+      }
+
+      .wrap {
+        max-width: 940px;
+        margin: 0 auto;
+        padding: 20px 14px 24px;
+      }
+
+      .card {
+        border: 2px solid var(--line);
+        border-radius: 20px;
+        background: var(--panel);
+        box-shadow: 0 14px 36px rgba(197, 117, 160, 0.12);
+      }
+
+      .head {
+        padding: 18px 18px 14px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 12px;
+        align-items: center;
+      }
+
+      .title {
+        margin: 0;
+        font-size: 30px;
+        line-height: 1.2;
+      }
+
+      .desc {
+        margin: 6px 0 0;
+        color: var(--subtle);
+        font-size: 15px;
+      }
+
+      .status {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 12px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        padding: 6px 10px;
+        background: #fff8fc;
+      }
+
+      .toolbar {
+        display: flex;
+        gap: 8px;
+      }
+
+      .btn {
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: #fff;
+        color: var(--text);
+        padding: 8px 14px;
+        font-weight: 700;
+        cursor: pointer;
+      }
+
+      .btn.primary {
+        background: linear-gradient(180deg, var(--brand), var(--brand-deep));
+        color: #fff;
+        border-color: transparent;
+      }
+
+      .btn:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+
+      .chat {
+        border-top: 2px dashed #f6d2e6;
+        border-bottom: 2px dashed #f6d2e6;
+        height: 62vh;
+        min-height: 360px;
+        max-height: 740px;
+        overflow: auto;
+        padding: 14px 14px 4px;
+        background: linear-gradient(180deg, #fffafd 0%, #fff 100%);
+      }
+
+      .msg {
+        display: grid;
+        gap: 5px;
+        margin: 0 0 14px;
+      }
+
+      .msg-header {
+        font-size: 12px;
+        color: var(--subtle);
+        font-weight: 700;
+      }
+
+      .bubble {
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 11px 12px;
+        background: #fff;
+        white-space: pre-wrap;
+        line-height: 1.45;
+      }
+
+      .msg.user .bubble {
+        background: #ffeaf5;
+      }
+
+      .msg.assistant .bubble {
+        background: #fff;
+      }
+
+      .composer {
+        padding: 14px;
+        display: grid;
+        gap: 10px;
+      }
+
+      .input {
+        width: 100%;
+        border: 2px solid var(--line);
+        border-radius: 14px;
+        padding: 12px 13px;
+        font: inherit;
+        min-height: 96px;
+        resize: vertical;
+        color: var(--text);
+      }
+
+      .input:focus {
+        outline: none;
+        border-color: var(--brand);
+      }
+
+      .hint {
+        margin: 0;
+        color: var(--subtle);
+        font-size: 12px;
+      }
+
+      .foot {
+        margin-top: 12px;
+        color: var(--subtle);
+        font-size: 12px;
+      }
+
+      @media (max-width: 700px) {
+        .title {
+          font-size: 24px;
+        }
+        .chat {
+          height: 58vh;
+          min-height: 300px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="wrap">
+      <section class="card">
+        <header class="head">
+          <div>
+            <h1 class="title">곰돌이 웹 코덱스</h1>
+            <p class="desc">브라우저에서 바로 대화해요. Enter 전송, Shift+Enter 줄바꿈</p>
+          </div>
+          <div class="toolbar">
+            <span class="status" id="statusText">대기 중</span>
+            <button class="btn" id="newChatBtn" type="button">새 대화</button>
+          </div>
+        </header>
+
+        <section class="chat" id="chatLog" aria-live="polite"></section>
+
+        <form class="composer" id="chatForm">
+          <textarea
+            id="chatInput"
+            class="input"
+            placeholder="여기에 요청을 입력하세요. 예) 곰돌이 영어 문제를 더 늘려줘"
+          ></textarea>
+          <div class="toolbar">
+            <button class="btn primary" id="sendBtn" type="submit">전송</button>
+          </div>
+          <p class="hint">`OPENAI_API_KEY`가 서버에 설정되어 있어야 동작해요.</p>
+        </form>
+      </section>
+      <p class="foot">접속 주소 예시: `/codex-web.html`</p>
+    </main>
+
+    <script>
+      const STORAGE_KEY = "gomdori-codex-web:state";
+      const els = {
+        statusText: document.querySelector("#statusText"),
+        newChatBtn: document.querySelector("#newChatBtn"),
+        chatLog: document.querySelector("#chatLog"),
+        chatForm: document.querySelector("#chatForm"),
+        chatInput: document.querySelector("#chatInput"),
+        sendBtn: document.querySelector("#sendBtn")
+      };
+
+      let state = {
+        previousResponseId: "",
+        messages: []
+      };
+      let pending = false;
+
+      function setStatus(text) {
+        els.statusText.textContent = text;
+      }
+
+      function escapeRole(role) {
+        return role === "assistant" ? "곰돌이 코덱스" : "나";
+      }
+
+      function saveState() {
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+        } catch {
+          // Ignore storage failures
+        }
+      }
+
+      function loadState() {
+        try {
+          const raw = localStorage.getItem(STORAGE_KEY);
+          if (!raw) return;
+          const parsed = JSON.parse(raw);
+          if (!parsed || typeof parsed !== "object") return;
+          state.previousResponseId = String(parsed.previousResponseId || "");
+          state.messages = Array.isArray(parsed.messages)
+            ? parsed.messages
+                .map((message) => ({
+                  role: message?.role === "assistant" ? "assistant" : "user",
+                  text: String(message?.text || "").trim()
+                }))
+                .filter((message) => message.text)
+            : [];
+        } catch {
+          // Ignore parse failures
+        }
+      }
+
+      function scrollToBottom() {
+        els.chatLog.scrollTop = els.chatLog.scrollHeight;
+      }
+
+      function renderMessages() {
+        els.chatLog.innerHTML = "";
+
+        if (state.messages.length === 0) {
+          const empty = document.createElement("div");
+          empty.className = "msg assistant";
+          empty.innerHTML = `
+            <div class="msg-header">곰돌이 코덱스</div>
+            <div class="bubble">안녕! 웹에서도 대화 시작할 수 있어. 원하는 개발 요청을 적어줘.</div>
+          `;
+          els.chatLog.appendChild(empty);
+          return;
+        }
+
+        state.messages.forEach((message) => {
+          const item = document.createElement("article");
+          item.className = `msg ${message.role}`;
+
+          const header = document.createElement("div");
+          header.className = "msg-header";
+          header.textContent = escapeRole(message.role);
+
+          const bubble = document.createElement("div");
+          bubble.className = "bubble";
+          bubble.textContent = message.text;
+
+          item.appendChild(header);
+          item.appendChild(bubble);
+          els.chatLog.appendChild(item);
+        });
+      }
+
+      function appendMessage(role, text) {
+        state.messages.push({
+          role: role === "assistant" ? "assistant" : "user",
+          text: String(text || "").trim()
+        });
+        saveState();
+        renderMessages();
+        scrollToBottom();
+      }
+
+      async function sendMessage(messageText) {
+        pending = true;
+        els.sendBtn.disabled = true;
+        setStatus("답변 생성 중...");
+
+        try {
+          const response = await fetch("/api/codex/chat", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              message: messageText,
+              previousResponseId: state.previousResponseId
+            })
+          });
+
+          const payload = await response.json().catch(() => ({}));
+          if (!response.ok) {
+            const errorMessage = String(payload?.error || "요청 처리 중 오류가 발생했어요.");
+            appendMessage("assistant", `오류: ${errorMessage}`);
+            setStatus("오류");
+            return;
+          }
+
+          const answer = String(payload?.text || "").trim();
+          if (!answer) {
+            appendMessage("assistant", "응답이 비어 있어요. 다시 시도해줘.");
+            setStatus("오류");
+            return;
+          }
+
+          if (payload?.responseId) {
+            state.previousResponseId = String(payload.responseId);
+            saveState();
+          }
+
+          appendMessage("assistant", answer);
+          setStatus("대기 중");
+        } catch {
+          appendMessage("assistant", "네트워크 오류가 발생했어요. 잠시 후 다시 시도해줘.");
+          setStatus("오류");
+        } finally {
+          pending = false;
+          els.sendBtn.disabled = false;
+        }
+      }
+
+      els.chatForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        if (pending) return;
+
+        const text = String(els.chatInput.value || "").trim();
+        if (!text) return;
+
+        els.chatInput.value = "";
+        appendMessage("user", text);
+        await sendMessage(text);
+      });
+
+      els.chatInput.addEventListener("keydown", (event) => {
+        if (event.key !== "Enter" || event.shiftKey) return;
+        event.preventDefault();
+        els.chatForm.requestSubmit();
+      });
+
+      els.newChatBtn.addEventListener("click", () => {
+        state = { previousResponseId: "", messages: [] };
+        saveState();
+        renderMessages();
+        setStatus("새 대화 시작");
+        els.chatInput.focus();
+      });
+
+      loadState();
+      renderMessages();
+      scrollToBottom();
+      els.chatInput.focus();
+    </script>
+  </body>
+</html>
