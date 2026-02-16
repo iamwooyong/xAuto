@@ -80,6 +80,12 @@ const WORLD_HISTORY_LEVELS = {
   grade2: { key: "grade2", label: "세계사 2급" },
   grade1: { key: "grade1", label: "세계사 1급" }
 };
+const BASEBALL_LEVELS = {
+  beginner: { key: "beginner", label: "초급" },
+  intermediate: { key: "intermediate", label: "중급" },
+  advanced: { key: "advanced", label: "고급" }
+};
+const BASEBALL_LEVEL_KEYS = Object.keys(BASEBALL_LEVELS);
 const ENGLISH_SPEAK_ACTIONS = {
   START: "start",
   RECORD: "record",
@@ -2268,6 +2274,303 @@ const SCIENCE_QUESTION_BANK = {
   ]
 };
 
+const BASEBALL_QUESTION_BANK = {
+  beginner: [
+    {
+      question: "야구 경기에서 수비하는 한 팀의 선수는 몇 명일까요?",
+      options: ["9명", "7명", "10명", "11명"],
+      answer: "9명",
+      explanation: "야구는 수비 시 9명이 그라운드에 나와요."
+    },
+    {
+      question: "볼넷을 얻으려면 볼이 몇 개 필요할까요?",
+      options: ["4개", "3개", "5개", "2개"],
+      answer: "4개",
+      explanation: "볼 카운트 4개가 되면 타자는 1루로 진루해요."
+    },
+    {
+      question: "스트라이크가 몇 개가 되면 타자는 삼진 아웃일까요?",
+      options: ["3개", "2개", "4개", "5개"],
+      answer: "3개",
+      explanation: "스트라이크 3개는 삼진이에요."
+    },
+    {
+      question: "한 이닝 공격을 끝내려면 아웃이 몇 개 나와야 할까요?",
+      options: ["3개", "2개", "4개", "5개"],
+      answer: "3개",
+      explanation: "아웃 3개가 되면 공수 교대해요."
+    },
+    {
+      question: "주자가 점수를 얻으려면 어디를 밟아야 할까요?",
+      options: ["홈플레이트", "1루 베이스", "투수판", "더그아웃"],
+      answer: "홈플레이트",
+      explanation: "모든 베이스를 돌아 홈플레이트를 밟으면 득점이에요."
+    },
+    {
+      question: "타자가 친 공이 펜스를 넘어가며 득점하는 타격은 무엇일까요?",
+      options: ["홈런", "번트", "희생플라이", "내야안타"],
+      answer: "홈런",
+      explanation: "홈런은 강한 타격으로 바로 득점 기회를 만들어요."
+    },
+    {
+      question: "투수가 공을 던지는 약간 높은 흙 언덕을 무엇이라고 할까요?",
+      options: ["마운드", "불펜", "더그아웃", "외야석"],
+      answer: "마운드",
+      explanation: "투수는 마운드에서 포수에게 공을 던져요."
+    },
+    {
+      question: "타자가 배트를 휘둘렀지만 공을 맞히지 못하면 보통 무엇일까요?",
+      options: ["스트라이크", "볼", "세이프", "파울"],
+      answer: "스트라이크",
+      explanation: "헛스윙은 스트라이크로 기록돼요."
+    },
+    {
+      question: "프로야구 정규 경기의 기본 이닝 수는 몇 이닝일까요?",
+      options: ["9이닝", "7이닝", "10이닝", "12이닝"],
+      answer: "9이닝",
+      explanation: "기본은 9이닝이며 동점이면 연장전에 들어가요."
+    },
+    {
+      question: "타구가 1루-3루 파울라인 안쪽으로 떨어지면 무엇일까요?",
+      options: ["페어볼", "파울볼", "데드볼", "보크"],
+      answer: "페어볼",
+      explanation: "파울라인 안쪽으로 떨어지면 페어볼이에요."
+    },
+    {
+      question: "주자가 투수의 투구 때 다음 베이스를 노려 뛰는 플레이는 무엇일까요?",
+      options: ["도루", "희생번트", "폭투", "견제"],
+      answer: "도루",
+      explanation: "도루는 주자가 타격 도움 없이 베이스를 훔치는 플레이예요."
+    },
+    {
+      question: "타자가 친 뜬공을 수비수가 땅에 닿기 전에 잡으면 무엇일까요?",
+      options: ["플라이 아웃", "볼넷", "안타", "보크"],
+      answer: "플라이 아웃",
+      explanation: "뜬공 캐치는 아웃 처리돼요."
+    },
+    {
+      question: "공격 팀 선수들이 대기하는 공간은 어디일까요?",
+      options: ["더그아웃", "마운드", "백스톱", "외야 펜스"],
+      answer: "더그아웃",
+      explanation: "더그아웃은 선수들이 쉬고 준비하는 공간이에요."
+    },
+    {
+      question: "포수는 보통 어디에 위치할까요?",
+      options: ["타자 뒤 홈플레이트 뒤쪽", "1루 베이스 옆", "마운드 위", "중견수 위치"],
+      answer: "타자 뒤 홈플레이트 뒤쪽",
+      explanation: "포수는 투수 공을 받고 경기 운영을 도와요."
+    },
+    {
+      question: "만루 홈런이 나오면 몇 점이 들어갈까요?",
+      options: ["4점", "1점", "2점", "3점"],
+      answer: "4점",
+      explanation: "주자 3명과 타자 1명까지 모두 득점해 4점이에요."
+    },
+    {
+      question: "홈팀은 보통 각 이닝에서 선공일까요, 후공일까요?",
+      options: ["후공", "선공", "번갈아 랜덤", "항상 연장만 공격"],
+      answer: "후공",
+      explanation: "홈팀은 각 이닝 말 공격을 해요."
+    }
+  ],
+  intermediate: [
+    {
+      question: "주자가 강제로 다음 베이스로 가야 하는 상황에서 태그 없이 베이스를 먼저 밟아 잡는 아웃은 무엇일까요?",
+      options: ["포스아웃", "태그아웃", "삼진아웃", "낫아웃"],
+      answer: "포스아웃",
+      explanation: "강제 진루 상황에서는 베이스를 먼저 밟으면 포스아웃이에요."
+    },
+    {
+      question: "한 플레이에서 아웃 2개를 잡아내는 수비를 무엇이라고 할까요?",
+      options: ["병살", "도루", "폭투", "세이브"],
+      answer: "병살",
+      explanation: "병살은 더블플레이라고도 불러요."
+    },
+    {
+      question: "타자가 뜬공으로 아웃되더라도 3루 주자가 홈에 들어와 득점하는 플레이는 무엇일까요?",
+      options: ["희생플라이", "희생번트", "스크린번트", "안타"],
+      answer: "희생플라이",
+      explanation: "외야 깊은 뜬공으로 득점 기회를 만드는 작전이에요."
+    },
+    {
+      question: "지명타자(DH)의 주된 역할은 무엇일까요?",
+      options: ["투수 대신 타격", "투수 대신 수비", "심판 대신 판정", "포수 대신 송구"],
+      answer: "투수 대신 타격",
+      explanation: "지명타자는 투수 대신 타석에 들어가는 제도예요."
+    },
+    {
+      question: "주자가 있을 때 투수의 반칙 동작으로 주자를 진루시키는 규정은 무엇일까요?",
+      options: ["보크", "발리", "파울팁", "인터피어런스"],
+      answer: "보크",
+      explanation: "보크가 선언되면 주자가 한 베이스씩 진루해요."
+    },
+    {
+      question: "타율을 계산하는 올바른 식은 무엇일까요?",
+      options: ["안타 / 타수", "득점 / 타점", "볼넷 / 타수", "삼진 / 타수"],
+      answer: "안타 / 타수",
+      explanation: "타율은 타자가 안타를 만드는 비율이에요."
+    },
+    {
+      question: "OPS는 어떤 두 기록을 더한 값일까요?",
+      options: ["출루율 + 장타율", "타율 + 홈런", "득점 + 타점", "볼넷 + 도루"],
+      answer: "출루율 + 장타율",
+      explanation: "OPS는 출루 능력과 장타력을 함께 보여줘요."
+    },
+    {
+      question: "인필드 플라이 규정이 적용되는 대표 상황은 무엇일까요?",
+      options: ["무사/1사에서 주자 1,2루 또는 만루", "2사에서 주자 없음", "주자 3루만 있을 때", "항상 모든 뜬공"],
+      answer: "무사/1사에서 주자 1,2루 또는 만루",
+      explanation: "수비가 고의 낙구로 병살을 노리는 것을 막기 위한 규정이에요."
+    },
+    {
+      question: "희생번트의 주된 목적은 무엇일까요?",
+      options: ["주자 진루", "홈런 만들기", "볼넷 유도", "시간 지연"],
+      answer: "주자 진루",
+      explanation: "타자 아웃을 감수하고 주자를 다음 베이스로 보내는 작전이에요."
+    },
+    {
+      question: "견제구를 던지는 가장 큰 이유는 무엇일까요?",
+      options: ["도루 억제", "심판 교체", "타순 변경", "공 교체 요청"],
+      answer: "도루 억제",
+      explanation: "견제로 주자의 리드를 줄이고 도루를 어렵게 만들어요."
+    },
+    {
+      question: "세이브를 기록하는 투수는 보통 어떤 상황에서 등판할까요?",
+      options: ["리드 상황을 지키며 경기 종료", "동점 상황만 전문", "항상 선발투수", "연장전 시작 투수"],
+      answer: "리드 상황을 지키며 경기 종료",
+      explanation: "마무리 투수가 팀의 리드를 지켜 경기를 끝내면 세이브가 돼요."
+    },
+    {
+      question: "홀드는 주로 어떤 투수에게 기록될까요?",
+      options: ["리드를 지키고 마무리에게 넘긴 계투", "경기 시작 선발투수", "패전투수", "완투승 투수"],
+      answer: "리드를 지키고 마무리에게 넘긴 계투",
+      explanation: "홀드는 승리와 세이브 사이 연결 역할을 평가해요."
+    },
+    {
+      question: "폭투(Wild Pitch)와 포일(Passed Ball)의 차이로 맞는 것은 무엇일까요?",
+      options: ["폭투는 투수 책임, 포일은 포수 책임", "둘 다 타자 책임", "둘 다 수비 실책과 무관", "폭투는 항상 보크"],
+      answer: "폭투는 투수 책임, 포일은 포수 책임",
+      explanation: "잡기 어려운 공의 책임 주체가 달라요."
+    },
+    {
+      question: "만약 1루 주자가 도루를 시도할 때 타자가 헛스윙 삼진이면, 포수가 2루 송구로 잡는 플레이를 무엇이라 부를까요?",
+      options: ["도루저지", "희생타", "밀어내기", "낫아웃"],
+      answer: "도루저지",
+      explanation: "포수가 빠른 송구로 주자를 아웃시키는 수비예요."
+    },
+    {
+      question: "야수 선택(Fielder's Choice)은 어떤 상황을 말할까요?",
+      options: ["안타보다 다른 주자를 잡으려 수비 선택", "무조건 실책", "무조건 장타", "자동 볼넷"],
+      answer: "안타보다 다른 주자를 잡으려 수비 선택",
+      explanation: "타자주자를 포기하고 선행주자 아웃을 노리는 판단이에요."
+    },
+    {
+      question: "곰돌이 타자가 1루에서 2루, 2루에서 3루까지 모두 도루 성공했다면 무엇을 달성한 걸까요?",
+      options: ["멀티 도루", "사이클링 히트", "노히트노런", "홀드"],
+      answer: "멀티 도루",
+      explanation: "한 경기에서 여러 번 도루를 성공하면 멀티 도루라 불러요."
+    }
+  ],
+  advanced: [
+    {
+      question: "평균자책점(ERA)을 계산하는 기본 식은 무엇일까요?",
+      options: ["자책점 × 9 / 투구이닝", "자책점 / 경기수", "실점 / 투구수", "삼진 / 이닝"],
+      answer: "자책점 × 9 / 투구이닝",
+      explanation: "ERA는 9이닝 기준으로 투수의 자책점 허용 능력을 보여줘요."
+    },
+    {
+      question: "WHIP의 올바른 계산식은 무엇일까요?",
+      options: ["(볼넷 + 피안타) / 투구이닝", "(삼진 + 볼넷) / 투구이닝", "피홈런 / 투구이닝", "실점 / 경기수"],
+      answer: "(볼넷 + 피안타) / 투구이닝",
+      explanation: "WHIP는 이닝당 얼마나 주자를 내보냈는지 보여줘요."
+    },
+    {
+      question: "K/9(9이닝당 삼진) 계산식으로 맞는 것은 무엇일까요?",
+      options: ["삼진 × 9 / 투구이닝", "삼진 / 경기수", "삼진 / 타수", "삼진 × 이닝"],
+      answer: "삼진 × 9 / 투구이닝",
+      explanation: "K/9은 탈삼진 능력을 이닝 기준으로 표준화한 지표예요."
+    },
+    {
+      question: "BB/9(9이닝당 볼넷) 계산식으로 맞는 것은 무엇일까요?",
+      options: ["볼넷 × 9 / 투구이닝", "볼넷 / 경기수", "볼넷 / 타자수", "볼넷 × 타수"],
+      answer: "볼넷 × 9 / 투구이닝",
+      explanation: "BB/9은 제구 안정성을 확인할 때 자주 사용해요."
+    },
+    {
+      question: "FIP 지표가 상대적으로 더 직접 반영하려는 요소는 무엇일까요?",
+      options: ["삼진, 볼넷, 사구, 피홈런", "타율, 득점권 타율, OPS", "실책, 더블플레이, 도루", "관중 수, 경기장 크기"],
+      answer: "삼진, 볼넷, 사구, 피홈런",
+      explanation: "FIP는 수비 영향보다 투수가 직접 통제한 결과에 초점을 둬요."
+    },
+    {
+      question: "wRC+가 100이라는 뜻으로 가장 알맞은 것은 무엇일까요?",
+      options: ["리그 평균 수준의 득점 생산력", "최상위 1위 타자", "출루율 1.000", "장타율 1.000"],
+      answer: "리그 평균 수준의 득점 생산력",
+      explanation: "wRC+는 리그 평균을 100으로 두는 조정 지표예요."
+    },
+    {
+      question: "WAR 지표의 설명으로 가장 알맞은 것은 무엇일까요?",
+      options: ["대체 선수 대비 팀 승리에 기여한 값", "순수 홈런 개수", "수비 실책 개수", "타격폼 점수"],
+      answer: "대체 선수 대비 팀 승리에 기여한 값",
+      explanation: "WAR는 선수의 종합 가치를 비교할 때 많이 활용돼요."
+    },
+    {
+      question: "사이클링 히트를 달성하려면 한 경기에서 무엇이 모두 필요할까요?",
+      options: ["단타, 2루타, 3루타, 홈런", "홈런 4개", "안타 2개와 볼넷 2개", "도루 3개"],
+      answer: "단타, 2루타, 3루타, 홈런",
+      explanation: "한 경기에서 네 종류의 안타를 모두 기록해야 해요."
+    },
+    {
+      question: "노히트노런의 정의로 맞는 것은 무엇일까요?",
+      options: ["안타를 하나도 허용하지 않고 경기 종료", "출루도 실점도 전혀 없는 경기", "삼진 10개 이상 경기", "완투만 하면 성립"],
+      answer: "안타를 하나도 허용하지 않고 경기 종료",
+      explanation: "볼넷이나 실책 출루는 있을 수 있지만 안타는 없어야 해요."
+    },
+    {
+      question: "퍼펙트게임의 정의로 맞는 것은 무엇일까요?",
+      options: ["상대 타자를 한 명도 출루시키지 않음", "안타만 허용하지 않음", "실점만 없으면 됨", "삼진 15개 이상"],
+      answer: "상대 타자를 한 명도 출루시키지 않음",
+      explanation: "볼넷, 실책, 몸에 맞는 공도 없어야 해서 매우 희귀해요."
+    },
+    {
+      question: "타격 삼관왕의 세 부문으로 올바른 조합은 무엇일까요?",
+      options: ["타율, 홈런, 타점", "타율, 도루, 출루율", "안타, 득점, 볼넷", "출루율, 장타율, OPS"],
+      answer: "타율, 홈런, 타점",
+      explanation: "타격 주요 3개 부문을 동시에 1위하면 삼관왕이에요."
+    },
+    {
+      question: "OPS+ 지표에서 120은 어떤 의미일까요?",
+      options: ["리그 평균보다 약 20% 좋은 공격력", "리그 평균과 동일", "리그 평균보다 20% 낮음", "수비력 120점"],
+      answer: "리그 평균보다 약 20% 좋은 공격력",
+      explanation: "OPS+도 100을 평균으로 사용하는 조정 지표예요."
+    },
+    {
+      question: "BABIP는 주로 무엇을 관찰할 때 쓰일까요?",
+      options: ["인플레이 타구의 안타 비율", "삼진률", "볼넷률", "도루 성공률"],
+      answer: "인플레이 타구의 안타 비율",
+      explanation: "운과 타구 질, 수비 영향 등을 함께 보는 데 도움돼요."
+    },
+    {
+      question: "플래툰(Platoon) 전략의 핵심은 무엇일까요?",
+      options: ["투타 좌우 상성을 활용한 기용", "수비 위치 무작위 변경", "항상 번트 작전", "타순 고정 금지"],
+      answer: "투타 좌우 상성을 활용한 기용",
+      explanation: "좌투수 상대 우타자 같은 상성 전략을 말해요."
+    },
+    {
+      question: "구장 효과(Park Factor)가 높다는 의미로 가장 알맞은 것은 무엇일까요?",
+      options: ["해당 구장에서 득점이 비교적 잘 나온다", "항상 수비가 유리하다", "심판 판정이 엄격하다", "비가 자주 온다"],
+      answer: "해당 구장에서 득점이 비교적 잘 나온다",
+      explanation: "구장 크기와 환경이 득점 환경에 영향을 줄 수 있어요."
+    },
+    {
+      question: "곰돌이 투수가 7이닝 2자책점을 기록했다면 퀄리티스타트(QS) 기준에 해당할까요?",
+      options: ["해당한다", "해당하지 않는다", "삼진 수에 따라 다르다", "승리투수일 때만 해당"],
+      answer: "해당한다",
+      explanation: "QS 기준은 6이닝 이상, 3자책점 이하예요."
+    }
+  ]
+};
+
 const WORLD_HISTORY_QUESTION_BANK = {
   grade6: [
     {
@@ -2956,6 +3259,11 @@ const SUBJECT_COPY = {
     title: "곰돌이 세계사",
     subtitle: "곰돌이 선생님과 세계사능력검정시험 1~6급 문제를 연습해요.",
     bearMessage: "안녕! 난 곰돌이 선생님이야. 오늘은 세계사 여행을 떠나볼까?"
+  },
+  baseball: {
+    title: "곰돌이 야구",
+    subtitle: "야구 상식 퀴즈예요. 신민찬 어린이의 요청으로 만들었습니다.",
+    bearMessage: "안녕! 난 곰돌이 선생님이야. 야구 상식 퀴즈도 신나게 풀어볼까?"
   }
 };
 
@@ -2966,6 +3274,7 @@ const els = {
   historyViews: Array.from(document.querySelectorAll(".history-view")),
   scienceViews: Array.from(document.querySelectorAll(".science-view")),
   worldHistoryViews: Array.from(document.querySelectorAll(".world-history-view")),
+  baseballViews: Array.from(document.querySelectorAll(".baseball-view")),
   heroTitle: document.querySelector("#heroTitle"),
   heroSubtitle: document.querySelector("#heroSubtitle"),
 
@@ -3018,11 +3327,13 @@ const els = {
   refreshHistoryRankingBtn: document.querySelector("#refreshHistoryRankingBtn"),
   refreshScienceRankingBtn: document.querySelector("#refreshScienceRankingBtn"),
   refreshWorldHistoryRankingBtn: document.querySelector("#refreshWorldHistoryRankingBtn"),
+  refreshBaseballRankingBtn: document.querySelector("#refreshBaseballRankingBtn"),
   rankingList: document.querySelector("#rankingList"),
   englishRankingList: document.querySelector("#englishRankingList"),
   historyRankingList: document.querySelector("#historyRankingList"),
   scienceRankingList: document.querySelector("#scienceRankingList"),
   worldHistoryRankingList: document.querySelector("#worldHistoryRankingList"),
+  baseballRankingList: document.querySelector("#baseballRankingList"),
 
   englishStartBtn: document.querySelector("#englishStartBtn"),
   englishGuide: document.querySelector(".english-guide"),
@@ -3097,7 +3408,22 @@ const els = {
   worldHistoryAccuracy: document.querySelector("#worldHistoryAccuracy"),
   worldHistoryWrongNoteGuide: document.querySelector("#worldHistoryWrongNoteGuide"),
   worldHistoryWrongNoteList: document.querySelector("#worldHistoryWrongNoteList"),
-  worldHistoryRetryWrongBtn: document.querySelector("#worldHistoryRetryWrongBtn")
+  worldHistoryRetryWrongBtn: document.querySelector("#worldHistoryRetryWrongBtn"),
+
+  baseballStartBtn: document.querySelector("#baseballStartBtn"),
+  baseballLevelButtons: Array.from(document.querySelectorAll("[data-baseball-level]")),
+  baseballQuestionCount: document.querySelector("#baseballQuestionCount"),
+  baseballModePill: document.querySelector("#baseballModePill"),
+  baseballPrompt: document.querySelector("#baseballPrompt"),
+  baseballOptions: document.querySelector("#baseballOptions"),
+  baseballNextBtn: document.querySelector("#baseballNextBtn"),
+  baseballFeedback: document.querySelector("#baseballFeedback"),
+  baseballFeedbackBear: document.querySelector("#baseballFeedbackBear"),
+  baseballFeedbackText: document.querySelector("#baseballFeedbackText"),
+  baseballCorrect: document.querySelector("#baseballCorrect"),
+  baseballStreak: document.querySelector("#baseballStreak"),
+  baseballBestStreak: document.querySelector("#baseballBestStreak"),
+  baseballAccuracy: document.querySelector("#baseballAccuracy")
 };
 
 const state = {
@@ -3122,6 +3448,7 @@ const state = {
   historyRankingCorrect: null,
   scienceRankingCorrect: null,
   worldHistoryRankingCorrect: null,
+  baseballRankingCorrect: null,
   subject: "math"
 };
 
@@ -3210,6 +3537,20 @@ const worldHistoryState = {
   reviewTotal: 0
 };
 
+const baseballState = {
+  level: "beginner",
+  sessionActive: false,
+  sessionStartedAt: 0,
+  questionNumber: 0,
+  correct: 0,
+  wrong: 0,
+  streak: 0,
+  bestStreak: 0,
+  answered: false,
+  current: null,
+  usedQuestionIndexes: new Set()
+};
+
 let googleScriptLoadPromise = null;
 
 let profile = loadProfile();
@@ -3244,6 +3585,7 @@ function createDefaultProfile() {
     lastHistoryLevel: "grade4",
     lastScienceLevel: "starter",
     lastWorldHistoryLevel: "grade6",
+    lastBaseballLevel: "beginner",
     theme: "pink"
   };
 }
@@ -3283,6 +3625,9 @@ function loadProfile() {
     }
     if (!WORLD_HISTORY_LEVELS[merged.lastWorldHistoryLevel]) {
       merged.lastWorldHistoryLevel = defaults.lastWorldHistoryLevel;
+    }
+    if (!BASEBALL_LEVELS[merged.lastBaseballLevel]) {
+      merged.lastBaseballLevel = defaults.lastBaseballLevel;
     }
 
     return merged;
@@ -3337,6 +3682,7 @@ function loadTabPreference() {
     if (saved === "history") return "history";
     if (saved === "science") return "science";
     if (saved === "worldHistory") return "worldHistory";
+    if (saved === "baseball") return "baseball";
     return "math";
   } catch {
     return "math";
@@ -3366,7 +3712,7 @@ function applySubjectCopy(subjectKey) {
 
 function setSubjectTab(tabKey, options = {}) {
   const { persist = true } = options;
-  const validTabs = new Set(["math", "english", "history", "science", "worldHistory"]);
+  const validTabs = new Set(["math", "english", "history", "science", "worldHistory", "baseball"]);
   const safeTab = validTabs.has(tabKey) ? tabKey : "math";
   state.subject = safeTab;
 
@@ -3386,6 +3732,9 @@ function setSubjectTab(tabKey, options = {}) {
   els.worldHistoryViews.forEach((element) => {
     element.classList.toggle("hidden", safeTab !== "worldHistory");
   });
+  els.baseballViews.forEach((element) => {
+    element.classList.toggle("hidden", safeTab !== "baseball");
+  });
   applySubjectCopy(safeTab);
   document.title = "곰돌이 선생님";
 
@@ -3404,6 +3753,9 @@ function setSubjectTab(tabKey, options = {}) {
   }
   if (safeTab === "worldHistory" && !worldHistoryState.sessionActive && !worldHistoryState.current) {
     renderWorldHistoryIdle();
+  }
+  if (safeTab === "baseball" && !baseballState.sessionActive && !baseballState.current) {
+    renderBaseballIdle();
   }
 
   if (persist) {
@@ -3535,6 +3887,12 @@ function setBear(mood, message) {
   }
   if (els.worldHistoryFeedbackBear) {
     els.worldHistoryFeedbackBear.dataset.mood = mood;
+  }
+  if (els.baseballFeedback) {
+    els.baseballFeedback.dataset.mood = mood;
+  }
+  if (els.baseballFeedbackBear) {
+    els.baseballFeedbackBear.dataset.mood = mood;
   }
 }
 
@@ -3746,6 +4104,21 @@ async function fetchWorldHistoryRankings(limit = 10) {
   }
 }
 
+async function fetchBaseballRankings(limit = 10) {
+  try {
+    const response = await fetch(getApiUrl(`/api/baseball/rankings?limit=${encodeURIComponent(limit)}`));
+    if (!response.ok) {
+      throw new Error("failed to fetch baseball rankings");
+    }
+
+    const payload = await response.json();
+    return Array.isArray(payload.items) ? payload.items : [];
+  } catch (error) {
+    console.error("fetchBaseballRankings failed", error);
+    return [];
+  }
+}
+
 async function refreshMathRankings() {
   const items = await fetchMathRankings(10);
   if (authState.user) {
@@ -3802,13 +4175,25 @@ async function refreshWorldHistoryRankings() {
   renderRanking(els.worldHistoryRankingList, items);
 }
 
+async function refreshBaseballRankings() {
+  const items = await fetchBaseballRankings(10);
+  if (authState.user) {
+    const me = items.find((item) => item.userId === authState.user.id);
+    state.baseballRankingCorrect = me ? Number(me.totalCorrect || 0) : 0;
+  } else {
+    state.baseballRankingCorrect = null;
+  }
+  renderRanking(els.baseballRankingList, items);
+}
+
 async function refreshRankings() {
   await Promise.all([
     refreshMathRankings(),
     refreshEnglishRankings(),
     refreshHistoryRankings(),
     refreshScienceRankings(),
-    refreshWorldHistoryRankings()
+    refreshWorldHistoryRankings(),
+    refreshBaseballRankings()
   ]);
 }
 
@@ -4154,6 +4539,11 @@ function setWorldHistoryFeedback(message) {
   els.worldHistoryFeedbackText.textContent = `곰돌이 선생님: ${message}`;
 }
 
+function setBaseballFeedback(message) {
+  if (!els.baseballFeedbackText) return;
+  els.baseballFeedbackText.textContent = `곰돌이 선생님: ${message}`;
+}
+
 function getEnglishLevel(levelKey) {
   return ENGLISH_LEVELS[levelKey] || ENGLISH_LEVELS.starter;
 }
@@ -4186,6 +4576,16 @@ function getWorldHistoryQuestions(levelKey) {
   const safeLevel = getWorldHistoryLevel(levelKey).key;
   const questions = WORLD_HISTORY_QUESTION_BANK[safeLevel];
   return Array.isArray(questions) && questions.length > 0 ? questions : WORLD_HISTORY_QUESTION_BANK.grade6;
+}
+
+function getBaseballLevel(levelKey) {
+  return BASEBALL_LEVELS[levelKey] || BASEBALL_LEVELS.beginner;
+}
+
+function getBaseballQuestions(levelKey) {
+  const safeLevel = getBaseballLevel(levelKey).key;
+  const questions = BASEBALL_QUESTION_BANK[safeLevel];
+  return Array.isArray(questions) && questions.length > 0 ? questions : BASEBALL_QUESTION_BANK.beginner;
 }
 
 function normalizeEnglishAnswer(answer) {
@@ -4272,6 +4672,14 @@ function updateWorldHistoryLevelUi() {
   }
 }
 
+function updateBaseballLevelUi() {
+  const level = getBaseballLevel(baseballState.level);
+  setActive(els.baseballLevelButtons, "baseballLevel", level.key);
+  if (els.baseballStartBtn) {
+    els.baseballStartBtn.textContent = `${level.label} 야구 10문제 시작`;
+  }
+}
+
 function pickHistoryQuestionIndex() {
   const pool = getHistoryQuestions(historyState.level);
   const allIndexes = Array.from({ length: pool.length }, (_, index) => index);
@@ -4341,6 +4749,32 @@ function pickWorldHistoryQuestionIndex() {
 function buildWorldHistoryQuestion() {
   const pool = getWorldHistoryQuestions(worldHistoryState.level);
   const questionIndex = pickWorldHistoryQuestionIndex();
+  const question = pool[questionIndex];
+  return {
+    question: question.question,
+    options: shuffleList([...question.options]),
+    answer: question.answer,
+    explanation: question.explanation
+  };
+}
+
+function pickBaseballQuestionIndex() {
+  const pool = getBaseballQuestions(baseballState.level);
+  const allIndexes = Array.from({ length: pool.length }, (_, index) => index);
+  let availableIndexes = allIndexes.filter((index) => !baseballState.usedQuestionIndexes.has(index));
+  if (availableIndexes.length === 0) {
+    baseballState.usedQuestionIndexes.clear();
+    availableIndexes = allIndexes;
+  }
+
+  const questionIndex = availableIndexes[randomInt(0, availableIndexes.length - 1)];
+  baseballState.usedQuestionIndexes.add(questionIndex);
+  return questionIndex;
+}
+
+function buildBaseballQuestion() {
+  const pool = getBaseballQuestions(baseballState.level);
+  const questionIndex = pickBaseballQuestionIndex();
   const question = pool[questionIndex];
   return {
     question: question.question,
@@ -5215,6 +5649,15 @@ function updateWorldHistoryStats() {
   els.worldHistoryAccuracy.textContent = `${accuracy}%`;
 }
 
+function updateBaseballStats() {
+  const solved = baseballState.correct + baseballState.wrong;
+  const accuracy = solved > 0 ? Math.round((baseballState.correct / solved) * 100) : 0;
+  els.baseballCorrect.textContent = String(baseballState.correct);
+  els.baseballStreak.textContent = String(baseballState.streak);
+  els.baseballBestStreak.textContent = String(baseballState.bestStreak);
+  els.baseballAccuracy.textContent = `${accuracy}%`;
+}
+
 function renderScienceIdle() {
   const level = getScienceLevel(scienceState.level);
   scienceState.current = null;
@@ -5348,6 +5791,141 @@ function handleScienceNext() {
   renderScienceQuestion();
   setBear("idle", "좋아! 과학 다음 문제로 가자.");
   setScienceFeedback("다음 문제도 집중해서 풀어보자.");
+}
+
+function renderBaseballIdle() {
+  const level = getBaseballLevel(baseballState.level);
+  baseballState.current = null;
+  baseballState.answered = false;
+  baseballState.sessionActive = false;
+  els.baseballQuestionCount.textContent = "준비 완료";
+  els.baseballModePill.textContent = `${level.label} 객관식`;
+  els.baseballPrompt.textContent = `${level.label} 시작 버튼을 누르면 야구 상식 10문제가 나와요.`;
+  els.baseballOptions.innerHTML = "";
+  els.baseballNextBtn.textContent = "다음 문제";
+  els.baseballNextBtn.disabled = true;
+  setBaseballFeedback(`${level.label} 야구 퀴즈 준비 완료! 시작 버튼을 눌러보자.`);
+  updateBaseballLevelUi();
+  updateBaseballStats();
+}
+
+function renderBaseballQuestion() {
+  if (!baseballState.current) return;
+
+  const level = getBaseballLevel(baseballState.level);
+  els.baseballQuestionCount.textContent = `${baseballState.questionNumber} / ${TARGET_QUESTIONS} 문제`;
+  els.baseballModePill.textContent = `${level.label} 객관식`;
+  els.baseballPrompt.textContent = baseballState.current.question;
+  els.baseballOptions.innerHTML = baseballState.current.options
+    .map((option) => {
+      return `<button class="english-option" type="button" data-baseball-option="${option}">${option}</button>`;
+    })
+    .join("");
+  els.baseballNextBtn.textContent = baseballState.questionNumber >= TARGET_QUESTIONS ? "결과 보기" : "다음 문제";
+  els.baseballNextBtn.disabled = true;
+  baseballState.answered = false;
+}
+
+function startBaseballSession() {
+  const level = getBaseballLevel(baseballState.level);
+  baseballState.sessionActive = true;
+  baseballState.sessionStartedAt = Date.now();
+  baseballState.questionNumber = 1;
+  baseballState.correct = 0;
+  baseballState.wrong = 0;
+  baseballState.streak = 0;
+  baseballState.bestStreak = 0;
+  baseballState.answered = false;
+  baseballState.current = null;
+  baseballState.usedQuestionIndexes.clear();
+  baseballState.current = buildBaseballQuestion();
+  updateBaseballStats();
+  renderBaseballQuestion();
+  setBaseballFeedback(`${level.label} 야구 상식 퀴즈 시작! 차근차근 풀어보자.`);
+  setBear("thinking", `${level.label} 곰돌이 야구 라운드 시작!`);
+}
+
+function completeBaseballSession() {
+  baseballState.sessionActive = false;
+  baseballState.answered = false;
+  baseballState.current = null;
+
+  const total = baseballState.correct + baseballState.wrong;
+  const accuracy = total > 0 ? Math.round((baseballState.correct / total) * 100) : 0;
+  let mood = "happy";
+  if (accuracy >= 90) mood = "celebrate";
+  if (accuracy < 60) mood = "thinking";
+
+  els.baseballQuestionCount.textContent = "야구 라운드 완료";
+  els.baseballModePill.textContent = "야구 라운드 완료";
+  els.baseballPrompt.textContent = `총 ${baseballState.correct}/${total}문제 정답 (${accuracy}%)`;
+  els.baseballOptions.innerHTML = "";
+  els.baseballNextBtn.textContent = "다음 문제";
+  els.baseballNextBtn.disabled = true;
+  setBaseballFeedback(`완료! ${getBaseballLevel(baseballState.level).label} 라운드를 끝냈어요. 다시 도전해볼까?`);
+  updateBaseballStats();
+  setBear(mood, "야구 라운드 완료! 이제 야구 상식이 더 탄탄해졌어.");
+
+  const summary = buildBaseballRoundSummary();
+  void syncBaseballRoundResult(summary);
+}
+
+function handleBaseballOptionSelect(option) {
+  if (!baseballState.sessionActive || baseballState.answered || !baseballState.current) return;
+
+  baseballState.answered = true;
+  const isCorrect = option === baseballState.current.answer;
+
+  if (isCorrect) {
+    baseballState.correct += 1;
+    baseballState.streak += 1;
+    baseballState.bestStreak = Math.max(baseballState.bestStreak, baseballState.streak);
+    setBaseballFeedback(`정답! ${baseballState.current.explanation}`);
+    setBear("love", "야구 정답! 곰돌이 선생님이 크게 박수 치고 있어.");
+  } else {
+    baseballState.wrong += 1;
+    baseballState.streak = 0;
+    setBaseballFeedback(`오답! 정답은 "${baseballState.current.answer}" · ${baseballState.current.explanation}`);
+    setBear("cry", "괜찮아! 다음 야구 문제에서 만회하자.");
+  }
+
+  Array.from(els.baseballOptions.querySelectorAll(".english-option")).forEach((button) => {
+    if (!(button instanceof HTMLElement)) return;
+    const value = button.dataset.baseballOption || "";
+    button.setAttribute("disabled", "true");
+    if (value === baseballState.current.answer) {
+      button.classList.add("is-correct");
+      return;
+    }
+    if (value === option && !isCorrect) {
+      button.classList.add("is-wrong");
+    }
+  });
+
+  updateBaseballStats();
+  if (isCorrect) {
+    handleBaseballNext();
+    return;
+  }
+
+  els.baseballNextBtn.textContent = baseballState.questionNumber >= TARGET_QUESTIONS ? "결과 보기" : "다음 문제";
+  els.baseballNextBtn.disabled = false;
+  els.baseballNextBtn.focus();
+}
+
+function handleBaseballNext() {
+  if (!baseballState.answered) return;
+
+  if (baseballState.questionNumber >= TARGET_QUESTIONS) {
+    completeBaseballSession();
+    return;
+  }
+
+  baseballState.questionNumber += 1;
+  baseballState.current = buildBaseballQuestion();
+  renderBaseballQuestion();
+  setBear("idle", "좋아! 야구 다음 문제로 가자.");
+  setBaseballFeedback("다음 문제도 집중해서 풀어보자.");
 }
 
 function renderHistoryWrongNotes() {
@@ -6375,6 +6953,54 @@ async function syncWorldHistoryRoundResult(summary) {
   setAuthStatus("세계사 라운드 저장에 실패했어요. 로그인 상태와 DB 설정을 확인해 주세요.");
 }
 
+async function saveBaseballSessionToDb(summary) {
+  if (!authState.user || !authState.token) {
+    return { ok: false, reason: "not-logged-in" };
+  }
+
+  try {
+    const response = await fetch(getApiUrl("/api/baseball/sessions"), {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${authState.token}`
+      },
+      body: JSON.stringify(summary)
+    });
+
+    if (!response.ok) {
+      const payload = await response.json().catch(() => ({ error: "failed to save" }));
+      throw new Error(payload.error || "failed to save");
+    }
+
+    return { ok: true };
+  } catch (error) {
+    console.error("saveBaseballSessionToDb failed", error);
+    return { ok: false, reason: "request-failed" };
+  }
+}
+
+async function syncBaseballRoundResult(summary) {
+  if (!authState.user) {
+    return;
+  }
+
+  const result = await saveBaseballSessionToDb(summary);
+
+  if (result.ok) {
+    setAuthStatus(`${authState.user.name || "사용자"}님, 야구 라운드 기록이 저장됐어요.`);
+    void refreshBaseballRankings();
+    return;
+  }
+
+  if (result.reason === "not-logged-in") {
+    setAuthStatus("로그인하면 야구 라운드 결과를 저장할 수 있어요.");
+    return;
+  }
+
+  setAuthStatus("야구 라운드 저장에 실패했어요. 로그인 상태와 DB 설정을 확인해 주세요.");
+}
+
 function buildRoundSummary() {
   const total = state.sessionCorrect + state.sessionWrong;
   const accuracy = total ? Math.round((state.sessionCorrect / total) * 100) : 0;
@@ -6462,6 +7088,24 @@ function buildWorldHistoryRoundSummary() {
     bestStreak: worldHistoryState.bestStreak,
     durationMs,
     externalKey: `world-history:${getDateKey()}:${worldHistoryState.level}:${Date.now()}:${Math.random().toString(36).slice(2, 8)}`
+  };
+}
+
+function buildBaseballRoundSummary() {
+  const total = baseballState.correct + baseballState.wrong;
+  const accuracy = total ? Math.round((baseballState.correct / total) * 100) : 0;
+  const durationMs = Math.max(Date.now() - baseballState.sessionStartedAt, 0);
+
+  return {
+    date: getDateKey(),
+    level: baseballState.level,
+    totalQuestions: total,
+    correctAnswers: baseballState.correct,
+    wrongAnswers: baseballState.wrong,
+    accuracy,
+    bestStreak: baseballState.bestStreak,
+    durationMs,
+    externalKey: `baseball:${getDateKey()}:${baseballState.level}:${Date.now()}:${Math.random().toString(36).slice(2, 8)}`
   };
 }
 
@@ -6735,6 +7379,28 @@ function handleWorldHistoryLevelSelect(nextLevel) {
   }
 }
 
+function handleBaseballLevelSelect(nextLevel) {
+  if (!BASEBALL_LEVELS[nextLevel]) return;
+
+  baseballState.level = nextLevel;
+  profile.lastBaseballLevel = nextLevel;
+  saveProfile();
+  updateBaseballLevelUi();
+  baseballState.usedQuestionIndexes.clear();
+
+  const label = getBaseballLevel(nextLevel).label;
+  if (baseballState.sessionActive) {
+    setBaseballFeedback(`${label} 난이도로 바꿨어. 다음 문제부터 적용돼요.`);
+    setBear("happy", `${label} 난이도로 변경 완료!`);
+    return;
+  }
+
+  if (state.subject === "baseball") {
+    renderBaseballIdle();
+    setBear("happy", `${label} 난이도 준비 완료!`);
+  }
+}
+
 function handleEnglishLevelSelect(nextLevel) {
   if (!ENGLISH_LEVELS[nextLevel]) return;
 
@@ -6950,6 +7616,7 @@ function handleLogout() {
   state.historyRankingCorrect = null;
   state.scienceRankingCorrect = null;
   state.worldHistoryRankingCorrect = null;
+  state.baseballRankingCorrect = null;
   renderAuthUser();
 
   if (window.google?.accounts?.id) {
@@ -7001,6 +7668,12 @@ function bindEvents() {
   els.worldHistoryLevelButtons.forEach((button) => {
     button.addEventListener("click", () => {
       handleWorldHistoryLevelSelect(button.dataset.worldHistoryLevel);
+    });
+  });
+
+  els.baseballLevelButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      handleBaseballLevelSelect(button.dataset.baseballLevel);
     });
   });
 
@@ -7086,6 +7759,10 @@ function bindEvents() {
     void refreshWorldHistoryRankings();
   });
 
+  els.refreshBaseballRankingBtn.addEventListener("click", () => {
+    void refreshBaseballRankings();
+  });
+
   els.historyRetryWrongBtn.addEventListener("click", () => {
     startHistoryWrongReview();
   });
@@ -7104,6 +7781,10 @@ function bindEvents() {
 
   els.worldHistoryStartBtn.addEventListener("click", () => {
     startWorldHistorySession();
+  });
+
+  els.baseballStartBtn.addEventListener("click", () => {
+    startBaseballSession();
   });
 
   els.englishOptions.addEventListener("click", (event) => {
@@ -7164,6 +7845,17 @@ function bindEvents() {
 
   els.worldHistoryNextBtn.addEventListener("click", () => {
     handleWorldHistoryNext();
+  });
+
+  els.baseballOptions.addEventListener("click", (event) => {
+    const target = event.target;
+    if (!(target instanceof HTMLElement)) return;
+    if (!target.classList.contains("english-option")) return;
+    handleBaseballOptionSelect(String(target.dataset.baseballOption || ""));
+  });
+
+  els.baseballNextBtn.addEventListener("click", () => {
+    handleBaseballNext();
   });
 
   els.englishSpeakActionBtn.addEventListener("click", () => {
@@ -7227,7 +7919,15 @@ function bindEvents() {
 
   document.addEventListener("keydown", (event) => {
     if (event.key !== "Enter") return;
-    if (state.subject !== "english" && state.subject !== "history" && state.subject !== "science" && state.subject !== "worldHistory") return;
+    if (
+      state.subject !== "english" &&
+      state.subject !== "history" &&
+      state.subject !== "science" &&
+      state.subject !== "worldHistory" &&
+      state.subject !== "baseball"
+    ) {
+      return;
+    }
 
     const target = event.target;
     if (target instanceof HTMLInputElement || target instanceof HTMLTextAreaElement) return;
@@ -7264,6 +7964,15 @@ function bindEvents() {
         event.preventDefault();
         handleWorldHistoryNext();
       }
+      return;
+    }
+
+    if (state.subject === "baseball") {
+      if (!baseballState.sessionActive) return;
+      if (baseballState.answered) {
+        event.preventDefault();
+        handleBaseballNext();
+      }
     }
   });
 
@@ -7279,6 +7988,7 @@ function init() {
   historyState.level = HISTORY_LEVELS[profile.lastHistoryLevel] ? profile.lastHistoryLevel : "grade4";
   scienceState.level = SCIENCE_LEVELS[profile.lastScienceLevel] ? profile.lastScienceLevel : "starter";
   worldHistoryState.level = WORLD_HISTORY_LEVELS[profile.lastWorldHistoryLevel] ? profile.lastWorldHistoryLevel : "grade6";
+  baseballState.level = BASEBALL_LEVELS[profile.lastBaseballLevel] ? profile.lastBaseballLevel : "beginner";
   state.subject = loadTabPreference();
 
   setActive(els.operationButtons, "operation", state.operation);
@@ -7287,6 +7997,7 @@ function init() {
   setActive(els.historyLevelButtons, "historyLevel", historyState.level);
   setActive(els.scienceLevelButtons, "scienceLevel", scienceState.level);
   setActive(els.worldHistoryLevelButtons, "worldHistoryLevel", worldHistoryState.level);
+  setActive(els.baseballLevelButtons, "baseballLevel", baseballState.level);
 
   applyTheme(profile.theme, { persist: false });
   setThemePicker(false);
@@ -7300,6 +8011,7 @@ function init() {
   renderHistoryIdle();
   renderScienceIdle();
   renderWorldHistoryIdle();
+  renderBaseballIdle();
   setBear("idle", "안녕! 난 곰돌이 선생님이야. 오늘도 즐겁게 문제 풀어볼까?");
   setFeedback("천천히, 정확하게! 준비되면 시작해요.");
 

@@ -338,6 +338,29 @@ async function initDb() {
     CREATE INDEX IF NOT EXISTS idx_world_history_sessions_user_created
     ON world_history_sessions(user_id, created_at DESC)
   `);
+
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS baseball_sessions (
+      id BIGSERIAL PRIMARY KEY,
+      user_id TEXT NOT NULL REFERENCES math_users(id) ON DELETE CASCADE,
+      date TEXT NOT NULL,
+      level TEXT NOT NULL,
+      total_questions INTEGER NOT NULL,
+      correct_answers INTEGER NOT NULL,
+      wrong_answers INTEGER NOT NULL,
+      accuracy INTEGER NOT NULL,
+      best_streak INTEGER NOT NULL DEFAULT 0,
+      duration_ms INTEGER NOT NULL DEFAULT 0,
+      external_key TEXT NOT NULL UNIQUE,
+      created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+      updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+    )
+  `);
+
+  await pool.query(`
+    CREATE INDEX IF NOT EXISTS idx_baseball_sessions_user_created
+    ON baseball_sessions(user_id, created_at DESC)
+  `);
 }
 
 app.use(express.json());
@@ -1168,6 +1191,130 @@ app.post("/api/world-history/sessions", async (req, res) => {
   } catch (error) {
     console.error("failed to save world history session", error);
     res.status(500).json({ error: "failed to save world history session" });
+  }
+});
+
+app.get("/api/baseball/rankings", async (req, res) => {
+  const limit = Math.min(Math.max(toInt(req.query.limit, 10), 1), 50);
+
+  try {
+    const { rows } = await pool.query(
+      `
+        SELECT
+          u.id AS "userId",
+          COALESCE(NULLIF(u.nickname, ''), u.name) AS "displayName",
+          COALESCE(SUM(s.correct_answers), 0)::INT AS "totalCorrect",
+          COUNT(s.id)::INT AS "roundCount"
+        FROM math_users u
+        LEFT JOIN baseball_sessions s ON s.user_id = u.id
+        GROUP BY u.id, u.nickname, u.name
+        HAVING COALESCE(SUM(s.correct_answers), 0) > 0
+        ORDER BY "totalCorrect" DESC, "roundCount" ASC, "displayName" ASC
+        LIMIT $1
+      `,
+      [limit]
+    );
+
+    res.json({ items: rows });
+  } catch (error) {
+    console.error("failed to fetch baseball rankings", error);
+    res.status(500).json({ error: "failed to fetch baseball rankings" });
+  }
+});
+
+app.get("/api/baseball/sessions", async (req, res) => {
+  const session = getSessionOrReject(req, res);
+  if (!session) return;
+
+  const limit = Math.min(Math.max(toInt(req.query.limit, 50), 1), 200);
+
+  try {
+    const { rows } = await pool.query(
+      `
+        SELECT
+          date,
+          level,
+          total_questions AS "totalQuestions",
+          correct_answers AS "correctAnswers",
+          wrong_answers AS "wrongAnswers",
+          accuracy,
+          best_streak AS "bestStreak",
+          duration_ms AS "durationMs",
+          created_at AS "createdAt"
+        FROM baseball_sessions
+        WHERE user_id = $1
+        ORDER BY created_at DESC
+        LIMIT $2
+      `,
+      [session.sub, limit]
+    );
+
+    res.json({ items: rows });
+  } catch (error) {
+    console.error("failed to fetch baseball sessions", error);
+    res.status(500).json({ error: "failed to fetch baseball sessions" });
+  }
+});
+
+app.post("/api/baseball/sessions", async (req, res) => {
+  const session = getSessionOrReject(req, res);
+  if (!session) return;
+
+  const date = String(req.body?.date || "").trim();
+  const level = String(req.body?.level || "").trim();
+  const totalQuestions = toInt(req.body?.totalQuestions, 0);
+  const correctAnswers = toInt(req.body?.correctAnswers, 0);
+  const wrongAnswers = toInt(req.body?.wrongAnswers, 0);
+  const accuracy = toInt(req.body?.accuracy, 0);
+  const bestStreak = toInt(req.body?.bestStreak, 0);
+  const durationMs = Math.max(toInt(req.body?.durationMs, 0), 0);
+  const externalKey = String(req.body?.externalKey || `baseball:${session.sub}:${Date.now()}`).slice(0, 160);
+
+  const validLevels = ["beginner", "intermediate", "advanced"];
+  if (!date || !validLevels.includes(level)) {
+    res.status(400).json({ error: "date or level is invalid" });
+    return;
+  }
+
+  if (totalQuestions <= 0 || correctAnswers < 0 || wrongAnswers < 0) {
+    res.status(400).json({ error: "session metrics are invalid" });
+    return;
+  }
+
+  try {
+    await pool.query(
+      `
+        INSERT INTO baseball_sessions (
+          user_id,
+          date,
+          level,
+          total_questions,
+          correct_answers,
+          wrong_answers,
+          accuracy,
+          best_streak,
+          duration_ms,
+          external_key
+        )
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
+        ON CONFLICT (external_key)
+        DO UPDATE SET
+          level = EXCLUDED.level,
+          total_questions = EXCLUDED.total_questions,
+          correct_answers = EXCLUDED.correct_answers,
+          wrong_answers = EXCLUDED.wrong_answers,
+          accuracy = EXCLUDED.accuracy,
+          best_streak = EXCLUDED.best_streak,
+          duration_ms = EXCLUDED.duration_ms,
+          updated_at = NOW()
+      `,
+      [session.sub, date, level, totalQuestions, correctAnswers, wrongAnswers, accuracy, bestStreak, durationMs, externalKey]
+    );
+
+    res.status(201).json({ ok: true });
+  } catch (error) {
+    console.error("failed to save baseball session", error);
+    res.status(500).json({ error: "failed to save baseball session" });
   }
 });
 

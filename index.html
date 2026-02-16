@@ -88,6 +88,7 @@
         <button class="subject-tab" data-subject="history" type="button">곰돌이 한국사</button>
         <button class="subject-tab" data-subject="science" type="button">곰돌이 과학</button>
         <button class="subject-tab" data-subject="worldHistory" type="button">곰돌이 세계사</button>
+        <button class="subject-tab" data-subject="baseball" type="button">곰돌이 야구</button>
       </nav>
 
       <section class="panel settings-panel math-view">
@@ -526,9 +527,82 @@
           <ol class="ranking-list" id="worldHistoryRankingList"></ol>
         </section>
       </section>
+
+      <section class="panel settings-panel baseball-view hidden" id="baseballSettingsPanel">
+        <h2>곰돌이 야구</h2>
+        <p class="english-guide">야구 상식 퀴즈예요. 신민찬 어린이의 요청으로 만들었습니다.</p>
+        <div class="option-wrap">
+          <p class="option-title">야구 난이도</p>
+          <div class="chip-row" id="baseballLevelRow">
+            <button class="chip is-active" data-baseball-level="beginner" type="button">초급</button>
+            <button class="chip" data-baseball-level="intermediate" type="button">중급</button>
+            <button class="chip" data-baseball-level="advanced" type="button">고급</button>
+          </div>
+        </div>
+        <button class="btn btn-primary" id="baseballStartBtn" type="button">초급 야구 10문제 시작</button>
+      </section>
+
+      <section class="panel quiz-panel baseball-view hidden" id="baseballQuizPanel">
+        <div class="quiz-head">
+          <p class="question-count" id="baseballQuestionCount">준비 완료</p>
+          <p class="mode-pill" id="baseballModePill">초급 객관식</p>
+        </div>
+
+        <p class="english-label">야구 상식 퀴즈를 풀어보세요.</p>
+        <p class="equation english-equation" id="baseballPrompt">야구 시작 버튼을 누르면 문제가 나와요.</p>
+
+        <div class="english-options" id="baseballOptions"></div>
+        <div class="english-actions">
+          <button class="btn btn-primary" id="baseballNextBtn" type="button" disabled>다음 문제</button>
+        </div>
+
+        <section class="feedback english-feedback" id="baseballFeedback" data-mood="idle" aria-live="polite">
+          <div class="feedback-bear english-feedback-bear" id="baseballFeedbackBear" data-mood="idle" aria-hidden="true">
+            <span class="fb-ear fb-ear-left"></span>
+            <span class="fb-ear fb-ear-right"></span>
+            <span class="fb-eye fb-eye-left"></span>
+            <span class="fb-eye fb-eye-right"></span>
+            <span class="fb-snout"></span>
+            <span class="fb-mouth"></span>
+            <span class="fb-blush fb-blush-left"></span>
+            <span class="fb-blush fb-blush-right"></span>
+          </div>
+          <p class="feedback-text english-feedback-text" id="baseballFeedbackText">곰돌이 선생님: 야구 탭 준비 완료!</p>
+        </section>
+      </section>
+
+      <section class="panel stats-panel baseball-view hidden" id="baseballStatsPanel">
+        <h2>오늘의 야구 성과판</h2>
+        <div class="stat-grid">
+          <article class="stat-card">
+            <p class="stat-label">맞힌 문제</p>
+            <p class="stat-value" id="baseballCorrect">0</p>
+          </article>
+          <article class="stat-card">
+            <p class="stat-label">현재 연속 정답</p>
+            <p class="stat-value" id="baseballStreak">0</p>
+          </article>
+          <article class="stat-card">
+            <p class="stat-label">최고 연속 기록</p>
+            <p class="stat-value" id="baseballBestStreak">0</p>
+          </article>
+          <article class="stat-card">
+            <p class="stat-label">정답률</p>
+            <p class="stat-value" id="baseballAccuracy">0%</p>
+          </article>
+        </div>
+        <section class="ranking-board">
+          <div class="ranking-head">
+            <h3>곰돌이 야구 랭킹</h3>
+            <button class="btn btn-ghost ranking-refresh" id="refreshBaseballRankingBtn" type="button">새로고침</button>
+          </div>
+          <p class="ranking-sub">맞힌 문제 수 기준 TOP 10</p>
+          <ol class="ranking-list" id="baseballRankingList"></ol>
+        </section>
+      </section>
     </main>
 
     <script src="https://accounts.google.com/gsi/client" async defer></script>
-    <script src="app.js?v=20260216-25"></script>
+    <script src="app.js?v=20260216-26"></script>
   </body>
 </html>
