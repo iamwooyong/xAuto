@@ -1981,304 +1981,512 @@ HISTORY_LEVEL_KEYS.forEach((levelKey) => {
   HISTORY_QUESTION_BANK[levelKey] = dedupeHistoryQuestions(mergedQuestions);
 });
 
-const SCIENCE_QUESTION_BANK = {
+const SCIENCE_SOURCE_CATALOG = {
+  nasaEarthK4: {
+    title: "NASA | What Is Earth? (Grades K-4)",
+    url: "https://www.nasa.gov/learning-resources/for-kids-and-students/what-is-earth-grades-k-4/"
+  },
+  britannicaDay: {
+    title: "Britannica | day",
+    url: "https://www.britannica.com/science/day"
+  },
+  britannicaSenseOrgan: {
+    title: "Britannica | sense organ",
+    url: "https://www.britannica.com/science/sense-organ"
+  },
+  britannicaWaterCycle: {
+    title: "Britannica | water cycle",
+    url: "https://www.britannica.com/science/water-cycle"
+  },
+  britannicaMatter: {
+    title: "Britannica | matter",
+    url: "https://www.britannica.com/science/matter"
+  },
+  britannicaPhotosynthesis: {
+    title: "Britannica | photosynthesis",
+    url: "https://www.britannica.com/science/photosynthesis"
+  },
+  britannicaMagnet: {
+    title: "Britannica | magnet",
+    url: "https://www.britannica.com/science/magnet"
+  },
+  britannicaSolarSystem: {
+    title: "Britannica | solar system",
+    url: "https://www.britannica.com/science/solar-system"
+  },
+  britannicaElectricity: {
+    title: "Britannica | electricity",
+    url: "https://www.britannica.com/science/electricity"
+  },
+  britannicaEcosystem: {
+    title: "Britannica | ecosystem",
+    url: "https://www.britannica.com/science/ecosystem"
+  },
+  britannicaPlateTectonics: {
+    title: "Britannica | plate tectonics",
+    url: "https://www.britannica.com/science/plate-tectonics"
+  },
+  britannicaCellBiology: {
+    title: "Britannica | cell biology",
+    url: "https://www.britannica.com/science/cell-biology"
+  },
+  britannicaAtom: {
+    title: "Britannica | atom",
+    url: "https://www.britannica.com/science/atom"
+  },
+  britannicaPH: {
+    title: "Britannica | pH",
+    url: "https://www.britannica.com/science/pH"
+  },
+  britannicaAcidBase: {
+    title: "Britannica | acid-base reaction",
+    url: "https://www.britannica.com/science/acid-base-reaction"
+  },
+  britannicaRefraction: {
+    title: "Britannica | refraction",
+    url: "https://www.britannica.com/science/refraction"
+  },
+  britannicaWavePhysics: {
+    title: "Britannica | wave (physics)",
+    url: "https://www.britannica.com/science/wave-physics"
+  },
+  britannicaNewtonsLaws: {
+    title: "Britannica | Newton's laws of motion",
+    url: "https://www.britannica.com/science/Newtons-laws-of-motion"
+  },
+  britannicaGlycolysis: {
+    title: "Britannica | glycolysis",
+    url: "https://www.britannica.com/science/glycolysis"
+  },
+  britannicaReplication: {
+    title: "Britannica | replication",
+    url: "https://www.britannica.com/science/replication"
+  },
+  britannicaIdealGasLaw: {
+    title: "Britannica | ideal gas law",
+    url: "https://www.britannica.com/science/ideal-gas-law"
+  },
+  britannicaCellularRespiration: {
+    title: "Britannica | cellular respiration",
+    url: "https://www.britannica.com/science/cellular-respiration"
+  },
+  openstaxBiology2e: {
+    title: "OpenStax | Biology 2e",
+    url: "https://openstax.org/details/books/biology-2e"
+  },
+  openstaxChemistry2e: {
+    title: "OpenStax | Chemistry 2e",
+    url: "https://openstax.org/details/books/chemistry-2e"
+  },
+  openstaxPhysics1: {
+    title: "OpenStax | University Physics Volume 1",
+    url: "https://openstax.org/details/books/university-physics-volume-1"
+  },
+  openstaxAnatomy2e: {
+    title: "OpenStax | Anatomy and Physiology 2e",
+    url: "https://openstax.org/details/books/anatomy-and-physiology-2e"
+  }
+};
+
+const SCIENCE_SOURCE_PAIRS_BY_CATEGORY = {
+  starterSky: ["nasaEarthK4", "britannicaDay"],
+  starterBody: ["britannicaSenseOrgan", "openstaxAnatomy2e"],
+  starterMatter: ["britannicaMatter", "openstaxChemistry2e"],
+  starterLife: ["britannicaPhotosynthesis", "openstaxBiology2e"],
+
+  beginnerEarthSpace: ["nasaEarthK4", "britannicaSolarSystem"],
+  beginnerMatter: ["britannicaMatter", "openstaxChemistry2e"],
+  beginnerLife: ["britannicaPhotosynthesis", "openstaxBiology2e"],
+  beginnerElectric: ["britannicaElectricity", "openstaxPhysics1"],
+  beginnerGeology: ["britannicaPlateTectonics", "britannicaWaterCycle"],
+  beginnerWeather: ["britannicaWaterCycle", "nasaEarthK4"],
+
+  intermediateCell: ["britannicaCellBiology", "openstaxBiology2e"],
+  intermediateChem: ["britannicaAtom", "openstaxChemistry2e"],
+  intermediatePhysics: ["britannicaNewtonsLaws", "openstaxPhysics1"],
+  intermediateEarthEco: ["britannicaEcosystem", "britannicaPlateTectonics"],
+  intermediateOptics: ["britannicaRefraction", "britannicaWavePhysics"],
+
+  advancedBio: ["openstaxBiology2e", "britannicaGlycolysis"],
+  advancedChem: ["openstaxChemistry2e", "britannicaIdealGasLaw"],
+  advancedPhysics: ["openstaxPhysics1", "britannicaRefraction"],
+  advancedNeuro: ["openstaxAnatomy2e", "britannicaCellularRespiration"],
+
+  fallback: ["openstaxBiology2e", "openstaxPhysics1"]
+};
+
+const SCIENCE_FACT_ITEMS = {
   starter: [
-    {
-      question: "해가 떠 있는 시간은 언제일까요?",
-      options: ["낮", "밤", "새벽", "자정"],
-      answer: "낮",
-      explanation: "해가 떠 있는 시간은 보통 낮이에요."
-    },
-    {
-      question: "소리를 들을 때 사용하는 신체 기관은 무엇일까요?",
-      options: ["귀", "코", "손", "눈"],
-      answer: "귀",
-      explanation: "귀는 소리를 듣는 역할을 해요."
-    },
-    {
-      question: "냄새를 맡을 때 사용하는 신체 기관은 무엇일까요?",
-      options: ["코", "귀", "발", "입"],
-      answer: "코",
-      explanation: "코로 냄새를 맡을 수 있어요."
-    },
-    {
-      question: "얼음은 어떤 상태의 물질일까요?",
-      options: ["고체", "액체", "기체", "플라스마"],
-      answer: "고체",
-      explanation: "얼음은 단단한 고체 상태예요."
-    },
-    {
-      question: "물을 많이 주면 잘 자라는 것은 무엇일까요?",
-      options: ["식물", "돌", "장난감", "종이컵"],
-      answer: "식물",
-      explanation: "식물은 물을 받아 자라요."
-    },
-    {
-      question: "하늘에서 비가 올 때 가장 잘 보이는 것은 무엇일까요?",
-      options: ["구름", "별", "달", "해"],
-      answer: "구름",
-      explanation: "비는 보통 비구름에서 내려요."
-    },
-    {
-      question: "낮에 햇빛이 비치면 생기는 것은 무엇일까요?",
-      options: ["그림자", "눈", "얼음", "안개"],
-      answer: "그림자",
-      explanation: "빛이 물체를 만나면 그림자가 생겨요."
-    },
-    {
-      question: "숨을 쉴 때 우리 몸으로 들어오는 것은 무엇일까요?",
-      options: ["공기", "모래", "나무", "돌"],
-      answer: "공기",
-      explanation: "우리는 공기를 들이마시며 숨 쉬어요."
-    },
-    {
-      question: "밤하늘에서 반짝이는 천체로 가장 알맞은 것은 무엇일까요?",
-      options: ["별", "구름", "비", "무지개"],
-      answer: "별",
-      explanation: "별은 밤하늘에서 반짝여 보여요."
-    },
-    {
-      question: "눈이 올 때 하얗게 쌓이는 것은 무엇일까요?",
-      options: ["눈", "모래", "낙엽", "물고기"],
-      answer: "눈",
-      explanation: "눈은 하얀 얼음 결정이 모여 내리는 거예요."
-    },
-    {
-      question: "자석에 잘 붙는 물체는 무엇일까요?",
-      options: ["철못", "나무젓가락", "고무공", "플라스틱 컵"],
-      answer: "철못",
-      explanation: "철 성분이 있는 물체는 자석에 잘 붙어요."
-    },
-    {
-      question: "물을 마시면 우리 몸은 어떻게 될까요?",
-      options: ["갈증이 줄어요", "숨을 못 쉬어요", "몸이 작아져요", "귀가 안 들려요"],
-      answer: "갈증이 줄어요",
-      explanation: "물을 마시면 몸에 필요한 수분을 채울 수 있어요."
-    }
+    { id: "daytime", category: "starterSky", prompt: "해가 떠 있는 시간", answer: "낮" },
+    { id: "night-stars", category: "starterSky", prompt: "별을 가장 잘 볼 수 있는 시간", answer: "밤" },
+    { id: "ear-hearing", category: "starterBody", prompt: "소리를 들을 때 주로 사용하는 기관", answer: "귀" },
+    { id: "nose-smell", category: "starterBody", prompt: "냄새를 맡을 때 주로 사용하는 기관", answer: "코" },
+    { id: "eye-seeing", category: "starterBody", prompt: "빛과 색을 볼 때 주로 사용하는 기관", answer: "눈" },
+    { id: "tongue-taste", category: "starterBody", prompt: "맛을 느낄 때 중요한 기관", answer: "혀" },
+    { id: "air-breath", category: "starterBody", prompt: "숨을 쉴 때 몸 안으로 들어오는 것", answer: "공기" },
+    { id: "ice-solid", category: "starterMatter", prompt: "얼음의 물질 상태", answer: "고체" },
+    { id: "water-liquid", category: "starterMatter", prompt: "컵에 담긴 물의 물질 상태", answer: "액체" },
+    { id: "steam-gas", category: "starterMatter", prompt: "수증기의 물질 상태", answer: "기체" },
+    { id: "plant-needs-water", category: "starterLife", prompt: "식물이 자라기 위해 꼭 필요한 것", answer: "물" },
+    { id: "rain-cloud", category: "starterSky", prompt: "비가 내릴 때 주로 나타나는 구름", answer: "비구름" },
+    { id: "shadow", category: "starterSky", prompt: "햇빛을 받는 물체 뒤에 생기는 어두운 부분", answer: "그림자" },
+    { id: "magnet-iron", category: "starterMatter", prompt: "자석에 잘 붙는 물체", answer: "철못" },
+    { id: "drink-water", category: "starterBody", prompt: "물을 마셨을 때 줄어드는 느낌", answer: "갈증" },
+    { id: "moon-around-earth", category: "starterSky", prompt: "지구 주위를 도는 대표적인 천체", answer: "달" },
+    { id: "earth-around-sun", category: "starterSky", prompt: "지구가 공전하는 중심의 별", answer: "태양" },
+    { id: "fish-fin", category: "starterLife", prompt: "물고기가 물속에서 움직일 때 주로 쓰는 기관", answer: "지느러미" },
+    { id: "bird-wing", category: "starterLife", prompt: "새가 하늘을 날 때 주로 쓰는 기관", answer: "날개" },
+    { id: "frog-larva", category: "starterLife", prompt: "개구리가 어릴 때의 모습", answer: "올챙이" },
+    { id: "seed-sprout", category: "starterLife", prompt: "씨앗이 자라 처음 나오는 모습", answer: "새싹" },
+    { id: "food-making-light", category: "starterLife", prompt: "식물이 햇빛으로 양분을 만드는 과정", answer: "광합성" },
+    { id: "summer-hot", category: "starterSky", prompt: "1년 중 가장 더운 계절", answer: "여름" },
+    { id: "winter-cold", category: "starterSky", prompt: "1년 중 가장 추운 계절", answer: "겨울" },
+    { id: "fall-leaves", category: "starterSky", prompt: "나뭇잎 색이 바뀌고 떨어지는 계절", answer: "가을" },
+    { id: "spring-flowers", category: "starterSky", prompt: "꽃이 많이 피기 시작하는 계절", answer: "봄" },
+    { id: "rainbow-after-rain", category: "starterSky", prompt: "무지개를 보기 쉬운 날씨", answer: "비가 그친 뒤" },
+    { id: "thunderstorm", category: "starterSky", prompt: "번개와 천둥이 함께 나타나는 날씨", answer: "뇌우" },
+    { id: "snow-crystal", category: "starterMatter", prompt: "눈송이를 이루는 기본 형태", answer: "얼음 결정" },
+    { id: "warm-clothes", category: "starterBody", prompt: "추운 날 몸을 따뜻하게 지키는 방법", answer: "옷을 두껍게 입기" },
+    { id: "sky-blue", category: "starterSky", prompt: "맑은 낮 하늘의 대표 색", answer: "파란색" },
+    { id: "wood-float", category: "starterMatter", prompt: "물 위에 뜨기 쉬운 재료", answer: "나무" },
+    { id: "stone-sink", category: "starterMatter", prompt: "물에서 잘 가라앉는 물체", answer: "돌" },
+    { id: "living-needs-water", category: "starterLife", prompt: "동식물이 살아가는 데 공통으로 중요한 것", answer: "깨끗한 물" },
+    { id: "day-night-cause", category: "starterSky", prompt: "낮과 밤이 반복되는 가장 큰 이유", answer: "지구의 자전" }
   ],
   beginner: [
-    {
-      question: "물이 100°C에서 끓으면 주로 어떤 상태가 될까요?",
-      options: ["기체(수증기)", "고체", "금속", "모래"],
-      answer: "기체(수증기)",
-      explanation: "물이 끓으면 수증기 같은 기체 상태로 변해요."
-    },
-    {
-      question: "지구가 공전하는 중심 천체는 무엇일까요?",
-      options: ["태양", "달", "화성", "금성"],
-      answer: "태양",
-      explanation: "지구는 태양 주위를 공전해요."
-    },
-    {
-      question: "식물이 스스로 양분을 만드는 작용은 무엇일까요?",
-      options: ["광합성", "호흡", "발효", "응축"],
-      answer: "광합성",
-      explanation: "식물은 광합성으로 양분을 만들어요."
-    },
-    {
-      question: "달의 모양이 바뀌어 보이는 주된 이유는 무엇일까요?",
-      options: ["달과 지구, 태양의 위치 변화", "달이 매일 커졌다 작아짐", "구름의 색 변화", "지구 자전 속도 감소"],
-      answer: "달과 지구, 태양의 위치 변화",
-      explanation: "세 천체의 상대적 위치가 달의 위상 변화를 만들어요."
-    },
-    {
-      question: "전구가 켜지려면 전기 회로는 어떤 상태여야 할까요?",
-      options: ["닫힌 회로", "열린 회로", "끊긴 회로", "없어도 됨"],
-      answer: "닫힌 회로",
-      explanation: "전류가 흐르려면 회로가 닫혀 있어야 해요."
-    },
-    {
-      question: "지구의 계절 변화에 가장 큰 영향을 주는 것은 무엇일까요?",
-      options: ["지구의 자전축 기울기와 공전", "달의 공전만", "구름 양", "바람 세기"],
-      answer: "지구의 자전축 기울기와 공전",
-      explanation: "지구 축 기울기와 공전 때문에 계절이 달라져요."
-    },
-    {
-      question: "고체가 열을 받아 액체로 변하는 현상은 무엇일까요?",
-      options: ["녹는 현상", "증발", "응결", "승화"],
-      answer: "녹는 현상",
-      explanation: "고체가 액체로 변하는 것은 녹는 현상이에요."
-    },
-    {
-      question: "화석은 주로 무엇을 알려줄까요?",
-      options: ["옛 생물과 옛 환경", "오늘 날씨", "내일 기온", "전기 사용량"],
-      answer: "옛 생물과 옛 환경",
-      explanation: "화석은 과거 생물과 환경 정보를 알려줘요."
-    },
-    {
-      question: "빛이 직진한다는 성질을 이용한 현상은 무엇일까요?",
-      options: ["그림자 생성", "소리 반사", "중력 증가", "질량 보존"],
-      answer: "그림자 생성",
-      explanation: "빛이 곧게 가기 때문에 그림자가 생겨요."
-    },
-    {
-      question: "물의 상태 변화 중 액체가 기체로 변하는 것은 무엇일까요?",
-      options: ["증발", "응고", "응축", "승화"],
-      answer: "증발",
-      explanation: "액체가 기체로 변하는 현상은 증발이에요."
-    },
-    {
-      question: "지층이 쌓여 만들어지는 순서를 알맞게 고르면 무엇일까요?",
-      options: ["아래가 오래되고 위가 새로운 층", "위가 오래되고 아래가 새로운 층", "항상 같은 나이", "무작위로 뒤바뀜"],
-      answer: "아래가 오래되고 위가 새로운 층",
-      explanation: "지층은 보통 아래층이 먼저 쌓여 더 오래돼요."
-    },
-    {
-      question: "생태계에서 생산자에 해당하는 것은 무엇일까요?",
-      options: ["식물", "호랑이", "사람", "버섯"],
-      answer: "식물",
-      explanation: "식물은 광합성으로 양분을 만들기 때문에 생산자예요."
-    }
+    { id: "boiling-water", category: "beginnerMatter", prompt: "물이 100°C에서 끓을 때 바뀌는 상태", answer: "수증기" },
+    { id: "freezing-water", category: "beginnerMatter", prompt: "물이 0°C 부근에서 되는 상태", answer: "얼음" },
+    { id: "melting-ice", category: "beginnerMatter", prompt: "얼음이 녹아 되는 상태", answer: "액체 물" },
+    { id: "evaporation", category: "beginnerMatter", prompt: "액체가 기체로 바뀌는 상태 변화", answer: "증발" },
+    { id: "condensation", category: "beginnerMatter", prompt: "기체가 액체로 바뀌는 상태 변화", answer: "응결" },
+    { id: "freezing", category: "beginnerMatter", prompt: "액체가 고체로 바뀌는 상태 변화", answer: "응고" },
+    { id: "sublimation", category: "beginnerMatter", prompt: "고체가 액체를 거치지 않고 기체가 되는 변화", answer: "승화" },
+    { id: "earth-rotation", category: "beginnerEarthSpace", prompt: "지구의 자전 주기", answer: "약 24시간" },
+    { id: "earth-revolution", category: "beginnerEarthSpace", prompt: "지구의 공전 주기", answer: "약 1년" },
+    { id: "season-cause", category: "beginnerEarthSpace", prompt: "계절 변화의 주된 원인", answer: "지구 자전축의 기울기" },
+    { id: "moon-phase-cause", category: "beginnerEarthSpace", prompt: "달 모양이 달라 보이는 주된 이유", answer: "태양-지구-달의 상대적 위치 변화" },
+    { id: "earth-satellite", category: "beginnerEarthSpace", prompt: "지구의 자연 위성", answer: "달" },
+    { id: "largest-planet", category: "beginnerEarthSpace", prompt: "태양계에서 가장 큰 행성", answer: "목성" },
+    { id: "ring-planet", category: "beginnerEarthSpace", prompt: "고리가 뚜렷하게 보이는 행성", answer: "토성" },
+    { id: "solar-center", category: "beginnerEarthSpace", prompt: "태양계 중심의 별", answer: "태양" },
+    { id: "photosynthesis-input", category: "beginnerLife", prompt: "광합성에 꼭 필요한 에너지", answer: "햇빛" },
+    { id: "photosynthesis-output", category: "beginnerLife", prompt: "광합성 결과로 나오는 대표 기체", answer: "산소" },
+    { id: "root-role", category: "beginnerLife", prompt: "식물 뿌리의 핵심 역할", answer: "물과 무기양분 흡수" },
+    { id: "stomata-role", category: "beginnerLife", prompt: "잎의 기공이 하는 중요한 일", answer: "기체 교환" },
+    { id: "closed-circuit", category: "beginnerElectric", prompt: "전구가 켜지기 위한 회로 상태", answer: "닫힌 회로" },
+    { id: "series-circuit", category: "beginnerElectric", prompt: "직렬 회로에서 한 부분이 끊어졌을 때 결과", answer: "전체가 꺼짐" },
+    { id: "parallel-circuit", category: "beginnerElectric", prompt: "병렬 회로의 대표 장점", answer: "일부가 고장나도 나머지는 작동" },
+    { id: "same-pole", category: "beginnerElectric", prompt: "자석의 같은 극끼리 가까워질 때 나타나는 힘", answer: "척력" },
+    { id: "different-pole", category: "beginnerElectric", prompt: "자석의 다른 극끼리 가까워질 때 나타나는 힘", answer: "인력" },
+    { id: "fossil-info", category: "beginnerGeology", prompt: "화석이 알려주는 정보", answer: "과거 생물과 환경" },
+    { id: "strata-rule", category: "beginnerGeology", prompt: "지층의 상대 연령을 판단하는 기본 원리", answer: "아래층이 더 오래됨" },
+    { id: "igneous-rock", category: "beginnerGeology", prompt: "용암이 식어 만들어지는 암석", answer: "화성암" },
+    { id: "sedimentary-rock", category: "beginnerGeology", prompt: "퇴적물이 굳어 만들어지는 암석", answer: "퇴적암" },
+    { id: "metamorphic-rock", category: "beginnerGeology", prompt: "열과 압력으로 변해 만들어지는 암석", answer: "변성암" },
+    { id: "producer", category: "beginnerLife", prompt: "생태계에서 생산자에 해당하는 생물", answer: "식물" },
+    { id: "decomposer", category: "beginnerLife", prompt: "생태계에서 분해자 역할을 하는 생물", answer: "균류와 세균" },
+    { id: "first-consumer", category: "beginnerLife", prompt: "먹이사슬에서 1차 소비자에 해당하는 생물", answer: "초식동물" },
+    { id: "ozone-role", category: "beginnerWeather", prompt: "오존층의 중요한 기능", answer: "자외선 차단" },
+    { id: "typhoon-energy", category: "beginnerWeather", prompt: "태풍이 강해질 때 필요한 주된 에너지원", answer: "따뜻한 바닷물" },
+    { id: "water-cycle-start", category: "beginnerWeather", prompt: "물의 순환을 시작하게 하는 주요 열원", answer: "태양열" }
   ],
   intermediate: [
-    {
-      question: "세포에서 유전 정보를 주로 담고 있는 구조는 무엇일까요?",
-      options: ["핵", "미토콘드리아", "리보솜", "세포막"],
-      answer: "핵",
-      explanation: "핵에는 DNA가 들어 있어 유전 정보를 담아요."
-    },
-    {
-      question: "뉴턴의 제2법칙을 올바르게 나타낸 식은 무엇일까요?",
-      options: ["F = ma", "E = mc²", "V = IR", "pH = -log[H⁺]"],
-      answer: "F = ma",
-      explanation: "힘은 질량과 가속도의 곱으로 나타내요."
-    },
-    {
-      question: "중성 용액의 pH 값으로 가장 알맞은 것은 무엇일까요?",
-      options: ["7", "1", "3", "11"],
-      answer: "7",
-      explanation: "중성 용액은 보통 pH 7이에요."
-    },
-    {
-      question: "전류의 단위는 무엇일까요?",
-      options: ["암페어(A)", "볼트(V)", "와트(W)", "옴(Ω)"],
-      answer: "암페어(A)",
-      explanation: "전류의 SI 단위는 암페어예요."
-    },
-    {
-      question: "전기 저항의 단위는 무엇일까요?",
-      options: ["옴(Ω)", "암페어(A)", "줄(J)", "뉴턴(N)"],
-      answer: "옴(Ω)",
-      explanation: "저항은 옴으로 나타내요."
-    },
-    {
-      question: "원소를 원자 번호 순으로 배열한 표는 무엇일까요?",
-      options: ["주기율표", "별자리표", "기상도", "성적표"],
-      answer: "주기율표",
-      explanation: "주기율표는 원자 번호에 따라 원소를 배열한 표예요."
-    },
-    {
-      question: "질량 보존 법칙에 대한 설명으로 옳은 것은 무엇일까요?",
-      options: ["반응 전후 전체 질량은 같다", "생성물 질량이 항상 더 크다", "반응물 질량이 항상 더 크다", "질량은 항상 사라진다"],
-      answer: "반응 전후 전체 질량은 같다",
-      explanation: "닫힌계에서 화학 반응 전후 질량 총합은 같아요."
-    },
-    {
-      question: "판 경계에서 지진과 화산 활동이 활발한 주된 이유는 무엇일까요?",
-      options: ["판이 이동하며 서로 상호작용하기 때문", "바다색이 달라서", "달의 인력만으로", "비가 많이 와서"],
-      answer: "판이 이동하며 서로 상호작용하기 때문",
-      explanation: "판의 충돌, 발산, 변환 운동이 지질 활동을 일으켜요."
-    },
-    {
-      question: "빛이 서로 다른 매질 경계면을 지날 때 진행 방향이 바뀌는 현상은 무엇일까요?",
-      options: ["굴절", "회절", "반사", "간섭"],
-      answer: "굴절",
-      explanation: "매질이 바뀌면 빛의 속도가 달라져 굴절이 일어나요."
-    },
-    {
-      question: "속력을 구하는 기본 식으로 알맞은 것은 무엇일까요?",
-      options: ["속력 = 거리 / 시간", "속력 = 질량 / 힘", "속력 = 전압 × 전류", "속력 = 온도 / 압력"],
-      answer: "속력 = 거리 / 시간",
-      explanation: "단위 시간당 이동한 거리가 속력이에요."
-    },
-    {
-      question: "금속 원자와 비금속 원자가 전자를 주고받아 형성하는 결합은 무엇일까요?",
-      options: ["이온 결합", "공유 결합", "수소 결합", "금속 결합"],
-      answer: "이온 결합",
-      explanation: "전자 이동으로 양이온과 음이온이 결합해요."
-    },
-    {
-      question: "광합성 결과로 생성되는 물질로 옳은 것은 무엇일까요?",
-      options: ["포도당과 산소", "질소와 헬륨", "메탄과 암모니아", "철과 구리"],
-      answer: "포도당과 산소",
-      explanation: "광합성으로 포도당을 만들고 산소를 방출해요."
-    }
+    { id: "dna-location", category: "intermediateCell", prompt: "세포에서 유전 정보가 주로 저장된 구조", answer: "핵" },
+    { id: "mitochondria", category: "intermediateCell", prompt: "세포 호흡으로 에너지를 만드는 세포 소기관", answer: "미토콘드리아" },
+    { id: "ribosome", category: "intermediateCell", prompt: "단백질 합성이 일어나는 소기관", answer: "리보솜" },
+    { id: "chloroplast", category: "intermediateCell", prompt: "광합성이 일어나는 소기관", answer: "엽록체" },
+    { id: "cell-membrane", category: "intermediateCell", prompt: "세포 안팎의 물질 이동을 조절하는 구조", answer: "세포막" },
+    { id: "chromosome", category: "intermediateCell", prompt: "DNA가 응축되어 나타난 구조", answer: "염색체" },
+    { id: "atomic-number", category: "intermediateChem", prompt: "원자 번호가 의미하는 값", answer: "양성자 수" },
+    { id: "isotope", category: "intermediateChem", prompt: "동위 원소 사이에서 다른 입자 수", answer: "중성자 수" },
+    { id: "ampere", category: "intermediatePhysics", prompt: "전류의 SI 단위", answer: "암페어(A)" },
+    { id: "volt", category: "intermediatePhysics", prompt: "전압의 SI 단위", answer: "볼트(V)" },
+    { id: "ohm", category: "intermediatePhysics", prompt: "전기 저항의 SI 단위", answer: "옴(Ω)" },
+    { id: "watt", category: "intermediatePhysics", prompt: "전력의 SI 단위", answer: "와트(W)" },
+    { id: "ohms-law", category: "intermediatePhysics", prompt: "전압·전류·저항의 관계식", answer: "V = IR" },
+    { id: "newton2", category: "intermediatePhysics", prompt: "힘·질량·가속도의 관계식", answer: "F = ma" },
+    { id: "speed", category: "intermediatePhysics", prompt: "속력을 계산하는 기본식", answer: "거리/시간" },
+    { id: "acceleration", category: "intermediatePhysics", prompt: "가속도를 계산하는 기본식", answer: "속도 변화량/시간" },
+    { id: "neutral-ph", category: "intermediateChem", prompt: "중성 용액의 대표 pH 값", answer: "7" },
+    { id: "acid-ph", category: "intermediateChem", prompt: "산성 용액의 pH 범위", answer: "7보다 작다" },
+    { id: "base-ph", category: "intermediateChem", prompt: "염기성 용액의 pH 범위", answer: "7보다 크다" },
+    { id: "mass-conservation", category: "intermediateChem", prompt: "질량 보존 법칙의 핵심 내용", answer: "반응 전후 총질량이 같다" },
+    { id: "ionic-bond", category: "intermediateChem", prompt: "금속과 비금속 사이에서 전자 이동으로 생기는 결합", answer: "이온 결합" },
+    { id: "covalent-bond", category: "intermediateChem", prompt: "비금속 원자들 사이의 전자 공유 결합", answer: "공유 결합" },
+    { id: "plate-motion", category: "intermediateEarthEco", prompt: "판 경계에서 지진이 자주 일어나는 주된 이유", answer: "판의 상대 운동" },
+    { id: "reflection-law", category: "intermediateOptics", prompt: "빛의 반사 법칙에서 항상 같은 두 각", answer: "입사각과 반사각" },
+    { id: "refraction-cause", category: "intermediateOptics", prompt: "빛이 굴절하는 직접 원인", answer: "매질에 따른 속도 변화" },
+    { id: "convex-lens", category: "intermediateOptics", prompt: "볼록렌즈의 대표적인 작용", answer: "빛을 모음" },
+    { id: "concave-lens", category: "intermediateOptics", prompt: "오목렌즈의 대표적인 작용", answer: "빛을 퍼뜨림" },
+    { id: "sound-pitch", category: "intermediatePhysics", prompt: "소리의 높낮이에 가장 큰 영향을 주는 요소", answer: "진동수" },
+    { id: "sound-loudness", category: "intermediatePhysics", prompt: "소리의 크기에 가장 큰 영향을 주는 요소", answer: "진폭" },
+    { id: "eco-producer", category: "intermediateEarthEco", prompt: "생태계에서 광합성으로 유기물을 만드는 생물", answer: "식물과 조류" },
+    { id: "primary-consumer", category: "intermediateEarthEco", prompt: "먹이사슬에서 1차 소비자의 예", answer: "토끼" },
+    { id: "secondary-consumer", category: "intermediateEarthEco", prompt: "먹이사슬에서 2차 소비자의 예", answer: "뱀" },
+    { id: "respiration-products", category: "intermediateCell", prompt: "세포 호흡의 대표적인 생성물", answer: "이산화탄소와 물" },
+    { id: "hemoglobin", category: "intermediateCell", prompt: "혈액에서 산소 운반을 담당하는 단백질", answer: "헤모글로빈" },
+    { id: "neuron", category: "intermediateCell", prompt: "신경계의 기능적 기본 단위", answer: "뉴런" }
   ],
   advanced: [
-    {
-      question: "해당 과정(glycolysis)이 주로 일어나는 세포 내 위치는 어디일까요?",
-      options: ["세포질", "핵", "골지체", "리소좀"],
-      answer: "세포질",
-      explanation: "해당 과정은 세포질에서 진행돼요."
-    },
-    {
-      question: "DNA 복제 방식으로 옳은 것은 무엇일까요?",
-      options: ["반보존적 복제", "완전보존적 복제", "분산적 복제만", "무작위 복제"],
-      answer: "반보존적 복제",
-      explanation: "새 DNA는 기존 가닥 1개와 새 가닥 1개로 이루어져요."
-    },
-    {
-      question: "르샤틀리에 원리에 대한 설명으로 옳은 것은 무엇일까요?",
-      options: ["평형계가 변화에 대응해 그 변화를 줄이는 방향으로 이동", "평형계는 항상 정지", "압력 변화는 영향 없음", "농도 변화는 영향 없음"],
-      answer: "평형계가 변화에 대응해 그 변화를 줄이는 방향으로 이동",
-      explanation: "평형은 외부 조건 변화에 대해 상쇄 방향으로 이동해요."
-    },
-    {
-      question: "이상기체 상태방정식으로 알맞은 것은 무엇일까요?",
-      options: ["PV = nRT", "E = hf", "F = Gm₁m₂/r²", "Q = mcΔT"],
-      answer: "PV = nRT",
-      explanation: "이상기체의 압력, 부피, 몰수, 온도 관계식이에요."
-    },
-    {
-      question: "전기 유도 현상에서 유도 기전력이 생기는 직접 원인은 무엇일까요?",
-      options: ["자기선속 변화", "온도 고정", "질량 증가", "압력 일정"],
-      answer: "자기선속 변화",
-      explanation: "패러데이 법칙에 따라 자기선속 변화가 유도 기전력을 만들어요."
-    },
-    {
-      question: "광전 효과에서 전자가 방출되기 위한 핵심 조건은 무엇일까요?",
-      options: ["임계 진동수 이상의 빛", "빛의 세기만 증가", "온도 상승", "압력 증가"],
-      answer: "임계 진동수 이상의 빛",
-      explanation: "진동수가 임계값보다 커야 전자가 방출돼요."
-    },
-    {
-      question: "완충 용액의 주요 특징으로 옳은 것은 무엇일까요?",
-      options: ["소량의 산/염기 첨가에도 pH 변화가 작다", "항상 pH 7이다", "반드시 강산만 포함", "반드시 강염기만 포함"],
-      answer: "소량의 산/염기 첨가에도 pH 변화가 작다",
-      explanation: "완충 용액은 pH 변화를 억제해요."
-    },
-    {
-      question: "산화에 대한 설명으로 옳은 것은 무엇일까요?",
-      options: ["산화수 증가 또는 전자 잃음", "산화수 감소", "전자 얻음", "반응 정지"],
-      answer: "산화수 증가 또는 전자 잃음",
-      explanation: "산화는 전자를 잃는 과정으로 볼 수 있어요."
-    },
-    {
-      question: "반응 속도를 증가시키는 촉매의 역할은 무엇일까요?",
-      options: ["활성화 에너지를 낮춘다", "평형 상수를 바꾼다", "생성물의 종류를 바꾼다", "반응열의 부호를 바꾼다"],
-      answer: "활성화 에너지를 낮춘다",
-      explanation: "촉매는 다른 경로를 제공해 활성화 에너지를 낮춰요."
-    },
-    {
-      question: "스넬의 법칙을 올바르게 나타낸 식은 무엇일까요?",
-      options: ["n₁sinθ₁ = n₂sinθ₂", "F = ma", "V = IR", "pV = const (항상)"],
-      answer: "n₁sinθ₁ = n₂sinθ₂",
-      explanation: "굴절률과 입사/굴절각의 관계를 나타내요."
-    },
-    {
-      question: "건설적 간섭이 일어나는 조건으로 가장 알맞은 것은 무엇일까요?",
-      options: ["위상 차가 0 또는 2π의 정수배", "위상 차가 π/2", "진폭이 0", "주파수가 다르면 항상 간섭 불가"],
-      answer: "위상 차가 0 또는 2π의 정수배",
-      explanation: "동위상일 때 파동이 강화되어 건설적 간섭이 나타나요."
-    },
-    {
-      question: "신경 세포의 활동 전위 상승 구간에서 주로 일어나는 일은 무엇일까요?",
-      options: ["Na⁺ 유입 증가", "K⁺ 유출 증가만", "Cl⁻ 유입만", "ATP 완전 고갈"],
-      answer: "Na⁺ 유입 증가",
-      explanation: "전압 개폐성 Na⁺ 통로가 열리며 막전위가 빠르게 상승해요."
-    }
+    { id: "glycolysis-location", category: "advancedBio", prompt: "해당 과정(glycolysis)이 진행되는 위치", answer: "세포질" },
+    { id: "krebs-location", category: "advancedBio", prompt: "시트르산 회로(Krebs cycle)가 진행되는 위치", answer: "미토콘드리아 기질" },
+    { id: "etc-location", category: "advancedBio", prompt: "전자전달계가 위치한 막", answer: "미토콘드리아 내막" },
+    { id: "semi-conservative", category: "advancedBio", prompt: "DNA 복제 모델", answer: "반보존적 복제" },
+    { id: "dna-polymerase", category: "advancedBio", prompt: "DNA 복제에서 새 가닥 합성을 담당하는 효소", answer: "DNA 중합효소" },
+    { id: "rna-polymerase", category: "advancedBio", prompt: "전사 과정에서 RNA를 합성하는 효소", answer: "RNA 중합효소" },
+    { id: "translation-location", category: "advancedBio", prompt: "번역(translation)이 일어나는 위치", answer: "리보솜" },
+    { id: "atp-synthase", category: "advancedBio", prompt: "화학삼투 과정에서 ATP를 만드는 효소", answer: "ATP 합성효소" },
+    { id: "enzyme-role", category: "advancedBio", prompt: "효소가 반응 속도를 높이는 핵심 원리", answer: "활성화 에너지 감소" },
+    { id: "competitive-inhibition", category: "advancedBio", prompt: "경쟁적 저해의 핵심 특징", answer: "기질과 활성 부위 경쟁" },
+    { id: "allosteric-regulation", category: "advancedBio", prompt: "알로스테릭 조절의 핵심 메커니즘", answer: "입체구조 변화로 효소 활성 조절" },
+    { id: "le-chatelier", category: "advancedChem", prompt: "르샤틀리에 원리의 핵심 내용", answer: "평형계는 변화를 줄이는 방향으로 이동" },
+    { id: "ideal-gas", category: "advancedChem", prompt: "이상기체 상태 방정식", answer: "PV = nRT" },
+    { id: "boyle-law", category: "advancedChem", prompt: "보일 법칙을 나타내는 식", answer: "P1V1 = P2V2" },
+    { id: "charles-law", category: "advancedChem", prompt: "샤를 법칙을 나타내는 식", answer: "V1/T1 = V2/T2" },
+    { id: "oxidation", category: "advancedChem", prompt: "산화의 전자 관점 정의", answer: "전자 잃음" },
+    { id: "reduction", category: "advancedChem", prompt: "환원의 전자 관점 정의", answer: "전자 얻음" },
+    { id: "catalyst-k", category: "advancedChem", prompt: "촉매가 평형상수(K)에 미치는 영향", answer: "평형상수는 변하지 않음" },
+    { id: "buffer", category: "advancedChem", prompt: "완충 용액의 핵심 기능", answer: "pH 변화 완화" },
+    { id: "ph-formula", category: "advancedChem", prompt: "pH를 정의하는 식", answer: "pH = -log[H+]" },
+    { id: "faraday-law", category: "advancedPhysics", prompt: "패러데이 법칙에서 유도 기전력이 생기는 조건", answer: "자기선속 변화" },
+    { id: "lenz-law", category: "advancedPhysics", prompt: "렌츠 법칙에서 유도 전류 방향", answer: "자기선속 변화를 방해하는 방향" },
+    { id: "coulomb-law", category: "advancedPhysics", prompt: "쿨롱 법칙 식", answer: "F = kq1q2/r²" },
+    { id: "power-formula", category: "advancedPhysics", prompt: "전력 계산 기본식", answer: "P = VI" },
+    { id: "snell-law", category: "advancedPhysics", prompt: "스넬 법칙 식", answer: "n1sinθ1 = n2sinθ2" },
+    { id: "constructive-interference", category: "advancedPhysics", prompt: "보강 간섭이 일어나는 위상 조건", answer: "위상 차 2πm" },
+    { id: "destructive-interference", category: "advancedPhysics", prompt: "상쇄 간섭이 일어나는 위상 조건", answer: "위상 차 (2m+1)π" },
+    { id: "diffraction", category: "advancedPhysics", prompt: "회절이 뚜렷해지는 조건", answer: "틈 크기가 파장과 비슷할 때" },
+    { id: "photoelectric", category: "advancedPhysics", prompt: "광전 효과에서 전자 방출의 핵심 조건", answer: "임계 진동수 이상" },
+    { id: "de-broglie", category: "advancedPhysics", prompt: "드브로이 파장 관계식", answer: "λ = h/p" },
+    { id: "depolarization", category: "advancedNeuro", prompt: "활동 전위 상승기에 주로 일어나는 이온 이동", answer: "Na+ 유입" },
+    { id: "repolarization", category: "advancedNeuro", prompt: "활동 전위 하강기에 주로 일어나는 이온 이동", answer: "K+ 유출" },
+    { id: "all-or-none", category: "advancedNeuro", prompt: "활동 전위의 전부-아니면-무 원리", answer: "자극이 역치를 넘으면 일정 크기로 발생" },
+    { id: "homeostasis", category: "advancedNeuro", prompt: "항상성 유지에서 가장 대표적인 조절 방식", answer: "음성 되먹임" },
+    { id: "final-acceptor", category: "advancedBio", prompt: "세포 호흡 전자전달계의 최종 전자수용체", answer: "산소" }
   ]
 };
+
+const SCIENCE_QUESTION_VARIANTS = [
+  (prompt) => `${prompt}은(는) 무엇일까요?`,
+  (prompt) => `다음 설명을 읽고 알맞은 답을 고르세요. ${prompt}`,
+  (prompt) => `곰돌이 과학 퀴즈: ${prompt}에 해당하는 것은 무엇일까요?`
+];
+
+const SCIENCE_MIN_QUESTIONS_PER_LEVEL = 100;
+const SCIENCE_MAX_ANSWER_SIMILARITY = 0.82;
+
+function normalizeScienceText(text) {
+  return String(text || "")
+    .trim()
+    .toLowerCase()
+    .replace(/\s+/g, "")
+    .replace(/[(){}\[\]·.,!?~'"`:+\-=/\\]/g, "");
+}
+
+function buildScienceBigrams(text) {
+  if (text.length <= 1) return [text];
+  const bigrams = [];
+  for (let index = 0; index < text.length - 1; index += 1) {
+    bigrams.push(text.slice(index, index + 2));
+  }
+  return bigrams;
+}
+
+function calcScienceStringSimilarity(a, b) {
+  const normalizedA = normalizeScienceText(a);
+  const normalizedB = normalizeScienceText(b);
+  if (!normalizedA || !normalizedB) return 0;
+  if (normalizedA === normalizedB) return 1;
+
+  const aBigrams = buildScienceBigrams(normalizedA);
+  const bBigrams = buildScienceBigrams(normalizedB);
+  const counts = new Map();
+  aBigrams.forEach((token) => {
+    counts.set(token, (counts.get(token) || 0) + 1);
+  });
+
+  let intersection = 0;
+  bBigrams.forEach((token) => {
+    const current = counts.get(token) || 0;
+    if (current > 0) {
+      intersection += 1;
+      counts.set(token, current - 1);
+    }
+  });
+
+  return (2 * intersection) / (aBigrams.length + bBigrams.length);
+}
+
+function normalizeSciencePrompt(prompt) {
+  return String(prompt || "")
+    .trim()
+    .replace(/[.!?]$/, "");
+}
+
+function uniqueScienceList(items) {
+  const seen = new Set();
+  const unique = [];
+  items.forEach((item) => {
+    const key = normalizeScienceText(item);
+    if (!key || seen.has(key)) return;
+    seen.add(key);
+    unique.push(String(item));
+  });
+  return unique;
+}
+
+function pickScienceDistractors(items, currentIndex) {
+  const current = items[currentIndex];
+  const answer = String(current.answer || "");
+  const sameCategory = [];
+  const crossCategory = [];
+
+  items.forEach((item, index) => {
+    if (index === currentIndex) return;
+    const candidate = String(item.answer || "").trim();
+    if (!candidate || normalizeScienceText(candidate) === normalizeScienceText(answer)) return;
+    if (calcScienceStringSimilarity(answer, candidate) > SCIENCE_MAX_ANSWER_SIMILARITY) return;
+    if (item.category === current.category) {
+      sameCategory.push(candidate);
+    } else {
+      crossCategory.push(candidate);
+    }
+  });
+
+  const merged = [...sameCategory, ...crossCategory];
+  if (merged.length === 0) return [];
+
+  const uniqueMerged = uniqueScienceList(merged);
+  const startIndex = (currentIndex * 7) % uniqueMerged.length;
+  const selected = [];
+
+  for (let offset = 0; offset < uniqueMerged.length && selected.length < 3; offset += 1) {
+    const candidate = uniqueMerged[(startIndex + offset) % uniqueMerged.length];
+    if (!candidate) continue;
+    if (calcScienceStringSimilarity(answer, candidate) > SCIENCE_MAX_ANSWER_SIMILARITY) continue;
+    selected.push(candidate);
+  }
+
+  return selected.slice(0, 3);
+}
+
+function buildScienceQuestionBankFromFacts(factLibrary) {
+  const bank = {};
+
+  SCIENCE_LEVEL_KEYS.forEach((levelKey) => {
+    const items = Array.isArray(factLibrary[levelKey]) ? factLibrary[levelKey] : [];
+
+    const levelQuestions = items.flatMap((item, index) => {
+      const prompt = normalizeSciencePrompt(item.prompt);
+      const answer = String(item.answer || "").trim();
+      if (!prompt || !answer) return [];
+
+      const distractors = pickScienceDistractors(items, index);
+      const options = uniqueScienceList([answer, ...distractors]).slice(0, 4);
+      if (options.length < 4) return [];
+
+      const categorySources = SCIENCE_SOURCE_PAIRS_BY_CATEGORY[item.category] || SCIENCE_SOURCE_PAIRS_BY_CATEGORY.fallback;
+      const sourceIds = uniqueScienceList(categorySources).filter((sourceId) => SCIENCE_SOURCE_CATALOG[sourceId]).slice(0, 2);
+      if (sourceIds.length < 2) return [];
+
+      const explanation = `${prompt}의 정답은 "${answer}"이에요.`;
+      const conceptId = `${levelKey}:${item.id || index}`;
+
+      return SCIENCE_QUESTION_VARIANTS.map((buildQuestion, variantIndex) => ({
+        question: buildQuestion(prompt),
+        options,
+        answer,
+        explanation,
+        conceptId,
+        sourceIds,
+        verification: "2-source-cross-check"
+      }));
+    });
+
+    const deduped = [];
+    const seenQuestions = new Set();
+    levelQuestions.forEach((question) => {
+      const key = normalizeScienceText(question.question);
+      if (!key || seenQuestions.has(key)) return;
+      seenQuestions.add(key);
+      deduped.push(question);
+    });
+
+    bank[levelKey] = deduped;
+  });
+
+  return bank;
+}
+
+function validateScienceQuestionBank(bank) {
+  const errors = [];
+  const summary = {};
+
+  SCIENCE_LEVEL_KEYS.forEach((levelKey) => {
+    const list = Array.isArray(bank[levelKey]) ? bank[levelKey] : [];
+    summary[levelKey] = list.length;
+
+    if (list.length < SCIENCE_MIN_QUESTIONS_PER_LEVEL) {
+      errors.push(`[${levelKey}] question count ${list.length} < ${SCIENCE_MIN_QUESTIONS_PER_LEVEL}`);
+    }
+
+    list.forEach((question, index) => {
+      const answer = String(question.answer || "").trim();
+      const options = Array.isArray(question.options) ? question.options.map((option) => String(option || "").trim()) : [];
+      const uniqueOptions = uniqueScienceList(options);
+      const sourceIds = Array.isArray(question.sourceIds) ? question.sourceIds : [];
+
+      if (!answer) {
+        errors.push(`[${levelKey}#${index}] empty answer`);
+      }
+
+      if (uniqueOptions.length !== 4) {
+        errors.push(`[${levelKey}#${index}] options length must be 4 unique values`);
+      }
+
+      const hasAnswer = uniqueOptions.some((option) => normalizeScienceText(option) === normalizeScienceText(answer));
+      if (!hasAnswer) {
+        errors.push(`[${levelKey}#${index}] answer missing from options`);
+      }
+
+      if (sourceIds.length < 2) {
+        errors.push(`[${levelKey}#${index}] sourceIds must have at least 2 references`);
+      } else {
+        sourceIds.forEach((sourceId) => {
+          if (!SCIENCE_SOURCE_CATALOG[sourceId]) {
+            errors.push(`[${levelKey}#${index}] unknown source id: ${sourceId}`);
+          }
+        });
+      }
+
+      uniqueOptions
+        .filter((option) => normalizeScienceText(option) !== normalizeScienceText(answer))
+        .forEach((distractor) => {
+          const similarity = calcScienceStringSimilarity(answer, distractor);
+          if (similarity > SCIENCE_MAX_ANSWER_SIMILARITY) {
+            errors.push(
+              `[${levelKey}#${index}] distractor too similar to answer (similarity=${similarity.toFixed(2)}): "${answer}" vs "${distractor}"`
+            );
+          }
+        });
+    });
+  });
+
+  return {
+    ok: errors.length === 0,
+    errors,
+    summary
+  };
+}
+
+const SCIENCE_QUESTION_BANK = buildScienceQuestionBankFromFacts(SCIENCE_FACT_ITEMS);
+const SCIENCE_QUESTION_BANK_VALIDATION = validateScienceQuestionBank(SCIENCE_QUESTION_BANK);
+
+if (!SCIENCE_QUESTION_BANK_VALIDATION.ok) {
+  console.error("[science-bank] validation failed", SCIENCE_QUESTION_BANK_VALIDATION);
+} else {
+  console.info("[science-bank] validation passed", SCIENCE_QUESTION_BANK_VALIDATION.summary);
+}
 
 const BASEBALL_QUESTION_BANK = {
   beginner: [
@@ -3843,7 +4051,8 @@ const scienceState = {
   bestStreak: 0,
   answered: false,
   current: null,
-  usedQuestionIndexes: new Set()
+  usedQuestionIndexes: new Set(),
+  usedConceptIds: new Set()
 };
 
 const worldHistoryState = {
@@ -5116,15 +5325,22 @@ function buildHistoryQuestion() {
 
 function pickScienceQuestionIndex() {
   const pool = getScienceQuestions(scienceState.level);
+  if (!Array.isArray(pool) || pool.length === 0) return 0;
   const allIndexes = Array.from({ length: pool.length }, (_, index) => index);
-  let availableIndexes = allIndexes.filter((index) => !scienceState.usedQuestionIndexes.has(index));
+  let availableIndexes = allIndexes.filter((index) => {
+    if (scienceState.usedQuestionIndexes.has(index)) return false;
+    const conceptId = String(pool[index]?.conceptId || index);
+    return !scienceState.usedConceptIds.has(conceptId);
+  });
   if (availableIndexes.length === 0) {
     scienceState.usedQuestionIndexes.clear();
+    scienceState.usedConceptIds.clear();
     availableIndexes = allIndexes;
   }
 
   const questionIndex = availableIndexes[randomInt(0, availableIndexes.length - 1)];
   scienceState.usedQuestionIndexes.add(questionIndex);
+  scienceState.usedConceptIds.add(String(pool[questionIndex]?.conceptId || questionIndex));
   return questionIndex;
 }
 
@@ -5132,11 +5348,18 @@ function buildScienceQuestion() {
   const pool = getScienceQuestions(scienceState.level);
   const questionIndex = pickScienceQuestionIndex();
   const question = pool[questionIndex];
+  const sourceIds = Array.isArray(question.sourceIds) ? question.sourceIds : [];
+  const sources = sourceIds
+    .map((sourceId) => SCIENCE_SOURCE_CATALOG[sourceId]?.url)
+    .filter((url) => typeof url === "string" && url.length > 0);
   return {
     question: question.question,
     options: shuffleList([...question.options]),
     answer: question.answer,
-    explanation: question.explanation
+    explanation: question.explanation,
+    conceptId: question.conceptId,
+    sourceIds,
+    sources
   };
 }
 
@@ -6146,6 +6369,7 @@ function startScienceSession() {
   scienceState.answered = false;
   scienceState.current = null;
   scienceState.usedQuestionIndexes.clear();
+  scienceState.usedConceptIds.clear();
   scienceState.current = buildScienceQuestion();
   updateScienceStats();
   renderScienceQuestion();
@@ -7987,6 +8211,7 @@ function handleScienceLevelSelect(nextLevel) {
   saveProfile();
   updateScienceLevelUi();
   scienceState.usedQuestionIndexes.clear();
+  scienceState.usedConceptIds.clear();
 
   const label = getScienceLevel(nextLevel).label;
   if (scienceState.sessionActive) {
