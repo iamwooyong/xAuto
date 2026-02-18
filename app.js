@@ -2785,302 +2785,329 @@ const BASEBALL_QUESTION_BANK = {
   ]
 };
 
-const SOCCER_QUESTION_BANK = {
+const SOCCER_FACT_ITEMS = {
   beginner: [
-    {
-      question: "축구 경기에서 한 팀이 동시에 그라운드에 나오는 선수 수는 몇 명일까요?",
-      options: ["11명", "9명", "10명", "12명"],
-      answer: "11명",
-      explanation: "축구는 보통 팀당 11명이 경기에 출전해요."
-    },
-    {
-      question: "정규 시간 기준 축구 경기는 전반과 후반 각각 몇 분일까요?",
-      options: ["45분", "30분", "40분", "50분"],
-      answer: "45분",
-      explanation: "정규 시간은 전반 45분 + 후반 45분이에요."
-    },
-    {
-      question: "골키퍼가 손으로 공을 다룰 수 있는 기본 구역은 어디일까요?",
-      options: ["자기 팀 페널티 지역", "센터 서클", "상대 팀 페널티 지역", "터치라인 바깥"],
-      answer: "자기 팀 페널티 지역",
-      explanation: "골키퍼는 자기 페널티 지역 안에서만 손 사용이 가능해요."
-    },
-    {
-      question: "정상 득점(골)으로 인정되려면 공이 어떻게 되어야 할까요?",
-      options: ["공 전체가 골라인을 넘어야 함", "공 일부만 골라인을 넘으면 됨", "골키퍼가 건드리면 자동 득점", "크로스바 맞으면 자동 득점"],
-      answer: "공 전체가 골라인을 넘어야 함",
-      explanation: "공 전체가 라인을 넘어야 골로 인정돼요."
-    },
-    {
-      question: "수비수가 공을 건드린 뒤 자기 팀 골라인 밖으로 나가면 공격팀에 주어지는 것은 무엇일까요?",
-      options: ["코너킥", "스로인", "페널티킥", "드롭볼"],
-      answer: "코너킥",
-      explanation: "수비수 최종 터치 후 골라인 아웃이면 코너킥이에요."
-    },
-    {
-      question: "터치라인 밖으로 공이 나갔을 때 재개하는 방법은 무엇일까요?",
-      options: ["스로인", "코너킥", "킥오프", "간접 프리킥"],
-      answer: "스로인",
-      explanation: "터치라인 아웃은 손으로 던지는 스로인으로 재개해요."
-    },
-    {
-      question: "경기에서 경고를 뜻하는 카드는 무엇일까요?",
-      options: ["옐로카드", "레드카드", "블루카드", "그린카드"],
-      answer: "옐로카드",
-      explanation: "옐로카드는 경고, 레드카드는 퇴장을 의미해요."
-    },
-    {
-      question: "레드카드를 받은 선수에게 내려지는 조치로 맞는 것은 무엇일까요?",
-      options: ["즉시 퇴장", "코너킥 1회 면제", "주장 교체", "전반 종료까지 대기"],
-      answer: "즉시 퇴장",
-      explanation: "레드카드를 받으면 즉시 경기장에서 퇴장해요."
-    },
-    {
-      question: "경기 시작과 득점 후 재개할 때 사용하는 방식은 무엇일까요?",
-      options: ["킥오프", "스로인", "골킥", "드롭볼"],
-      answer: "킥오프",
-      explanation: "킥오프로 경기를 시작하고 득점 후에도 재개해요."
-    },
-    {
-      question: "수비 반칙이 자기 팀 페널티 지역 안에서 발생하면 보통 공격팀에 무엇이 주어질까요?",
-      options: ["페널티킥", "코너킥", "스로인", "오프사이드 선언"],
-      answer: "페널티킥",
-      explanation: "페널티 지역 내 수비 반칙은 페널티킥이 주어져요."
-    },
-    {
-      question: "오프사이드 판정에서 핵심이 되는 기준으로 가장 알맞은 것은 무엇일까요?",
-      options: ["패스 순간 공격수가 공과 두 번째 수비수보다 앞에 있는지", "공이 높이 떴는지", "골키퍼가 나온 거리", "관중석 소음"],
-      answer: "패스 순간 공격수가 공과 두 번째 수비수보다 앞에 있는지",
-      explanation: "오프사이드는 패스 순간의 위치와 플레이 관여 여부를 봐요."
-    },
-    {
-      question: "토너먼트에서 정규 시간 후 동점일 때 보통 추가로 치르는 시간은 무엇일까요?",
-      options: ["연장전", "재경기", "바로 추첨", "즉시 승부 없음"],
-      answer: "연장전",
-      explanation: "토너먼트에서는 연장전을 통해 승부를 가리기도 해요."
-    },
-    {
-      question: "연장전은 일반적으로 어떤 구성으로 진행될까요?",
-      options: ["15분 전반 + 15분 후반", "30분 전반만", "10분 전반 + 10분 후반", "45분 후반만"],
-      answer: "15분 전반 + 15분 후반",
-      explanation: "연장전은 보통 15분씩 두 번 진행돼요."
-    },
-    {
-      question: "승부차기에서 기본적으로 먼저 차는 선수 수는 팀당 몇 명일까요?",
-      options: ["5명", "3명", "7명", "11명"],
-      answer: "5명",
-      explanation: "기본은 팀당 5명씩 차고, 동점이면 서든데스로 이어져요."
-    },
-    {
-      question: "VAR의 주요 목적은 무엇일까요?",
-      options: ["중요 판정 장면을 영상으로 재확인", "광고 노출", "선수 체력 측정", "경기장 조명 조절"],
-      answer: "중요 판정 장면을 영상으로 재확인",
-      explanation: "VAR는 득점·PK·퇴장 등 핵심 판정을 보조해요."
-    },
-    {
-      question: "주심이 파울 직후 공격팀에 유리하다고 보고 경기를 이어가게 하는 원칙은 무엇일까요?",
-      options: ["어드밴티지", "오프사이드 트랩", "티키타카", "역습 금지"],
-      answer: "어드밴티지",
-      explanation: "어드밴티지는 공격 흐름의 이점을 살리기 위한 원칙이에요."
-    }
+    { id: "team-size", category: "rules", prompt: "축구 경기에서 한 팀이 그라운드에 동시에 출전하는 선수 수", answer: "11명" },
+    { id: "half-duration", category: "rules", prompt: "정규 시간 기준 전반 또는 후반 한 하프의 시간", answer: "45분" },
+    { id: "halftime", category: "rules", prompt: "하프타임의 일반적인 길이", answer: "약 15분" },
+    { id: "goal-condition", category: "rules", prompt: "골로 인정되기 위한 핵심 조건", answer: "공 전체가 골라인을 넘어야 함" },
+    { id: "throw-in", category: "restart", prompt: "터치라인 밖으로 공이 나갔을 때의 기본 재개 방식", answer: "스로인" },
+    { id: "corner-kick", category: "restart", prompt: "수비수가 마지막으로 터치한 공이 골라인을 벗어났을 때 공격팀 재개 방식", answer: "코너킥" },
+    { id: "goal-kick", category: "restart", prompt: "공격수가 마지막으로 터치한 공이 골라인을 벗어났을 때 수비팀 재개 방식", answer: "골킥" },
+    { id: "yellow-card", category: "discipline", prompt: "경고를 의미하는 카드", answer: "옐로카드" },
+    { id: "red-card", category: "discipline", prompt: "즉시 퇴장을 의미하는 카드", answer: "레드카드" },
+    { id: "two-yellow", category: "discipline", prompt: "한 경기에서 옐로카드 2장을 받으면 내려지는 조치", answer: "퇴장" },
+    { id: "penalty-foul", category: "discipline", prompt: "수비 반칙이 자기 페널티 지역 안에서 발생했을 때 주어지는 것", answer: "페널티킥" },
+    { id: "gk-hand-zone", category: "rules", prompt: "골키퍼가 손으로 공을 다룰 수 있는 기본 구역", answer: "자기 페널티지역" },
+    { id: "offside-timing", category: "rules", prompt: "오프사이드 위치를 판단하는 기준 시점", answer: "패스가 출발하는 순간" },
+    { id: "corner-spot", category: "restart", prompt: "코너킥을 차는 위치", answer: "코너 아크" },
+    { id: "throw-technique", category: "restart", prompt: "스로인의 올바른 기본 동작", answer: "양손으로 머리 위에서 던진다" },
+    { id: "wall-distance", category: "restart", prompt: "프리킥 시 수비벽이 지켜야 하는 최소 거리", answer: "9.15m" },
+    { id: "minimum-players", category: "rules", prompt: "경기를 계속하기 위한 한 팀의 최소 선수 수", answer: "7명" },
+    { id: "added-time", category: "rules", prompt: "추가시간이 주어지는 주된 이유", answer: "중단된 시간을 보충하기 위해" },
+    { id: "captain-band", category: "terms", prompt: "주장을 식별하기 위한 대표 표시", answer: "주장 완장" },
+    { id: "back-pass-rule", category: "rules", prompt: "골키퍼 백패스 규정의 핵심", answer: "발로 준 패스를 손으로 처리할 수 없다" },
+    { id: "indirect-fk", category: "restart", prompt: "간접 프리킥의 핵심 득점 규정", answer: "직접 득점할 수 없다" },
+    { id: "direct-fk", category: "restart", prompt: "직접 프리킥의 핵심 득점 규정", answer: "직접 득점할 수 있다" },
+    { id: "penalty-distance", category: "restart", prompt: "페널티킥 지점과 골라인 사이 거리", answer: "11m" },
+    { id: "goal-width", category: "equipment", prompt: "축구 골대의 가로 폭", answer: "7.32m" },
+    { id: "goal-height", category: "equipment", prompt: "축구 골대의 세로 높이", answer: "2.44m" },
+    { id: "ball-size", category: "equipment", prompt: "성인 공식 경기에서 사용하는 기본 공 규격", answer: "5호" },
+    { id: "ball-circumference", category: "equipment", prompt: "공식 축구공의 둘레 범위", answer: "68~70cm" },
+    { id: "striker-role", category: "position", prompt: "스트라이커의 핵심 임무", answer: "득점 마무리" },
+    { id: "fullback-role", category: "position", prompt: "풀백의 핵심 임무", answer: "측면 수비와 오버래핑" },
+    { id: "centerback-role", category: "position", prompt: "센터백의 핵심 임무", answer: "중앙 수비와 후방 빌드업 시작" },
+    { id: "winger-role", category: "position", prompt: "윙어의 대표 역할", answer: "측면 돌파와 크로스" },
+    { id: "dm-role", category: "position", prompt: "수비형 미드필더의 대표 역할", answer: "수비 보호와 전환 연결" },
+    { id: "ref-role", category: "officiating", prompt: "주심의 기본 역할", answer: "규칙 적용과 판정" },
+    { id: "ar-role", category: "officiating", prompt: "부심의 기본 역할", answer: "오프사이드와 아웃 판정 보조" },
+    { id: "var-target", category: "officiating", prompt: "VAR이 우선적으로 다루는 핵심 판정 범주", answer: "득점·페널티킥·직접퇴장·오인식별" }
   ],
   intermediate: [
-    {
-      question: "4-3-3 포메이션의 숫자가 의미하는 순서로 맞는 것은 무엇일까요?",
-      options: ["수비수-미드필더-공격수", "골키퍼-수비수-미드필더", "공격수-미드필더-수비수", "코치-선수-교체"],
-      answer: "수비수-미드필더-공격수",
-      explanation: "포메이션 표기는 필드 플레이어 라인 구성 순서를 뜻해요."
-    },
-    {
-      question: "어시스트(assist)의 의미로 가장 알맞은 것은 무엇일까요?",
-      options: ["득점으로 연결된 마지막 패스", "태클 성공 횟수", "골킥 개수", "경고 누적"],
-      answer: "득점으로 연결된 마지막 패스",
-      explanation: "동료의 득점을 직접 도운 패스를 어시스트라고 해요."
-    },
-    {
-      question: "클린시트(clean sheet)의 뜻으로 맞는 것은 무엇일까요?",
-      options: ["실점 없이 경기 종료", "득점 없이 경기 종료", "파울 없이 경기 종료", "슈팅 없이 경기 종료"],
-      answer: "실점 없이 경기 종료",
-      explanation: "팀이 한 골도 내주지 않으면 클린시트예요."
-    },
-    {
-      question: "세트피스(set piece)에 해당하는 상황으로 가장 알맞은 것은 무엇일까요?",
-      options: ["코너킥", "드리블 돌파", "오픈플레이 패스", "압박 회피 런"],
-      answer: "코너킥",
-      explanation: "세트피스는 프리킥·코너킥 같은 정지된 상황 재개예요."
-    },
-    {
-      question: "전방 압박(pressing)의 핵심 목표는 무엇일까요?",
-      options: ["상대 빌드업을 방해해 빠르게 공 탈취", "무조건 뒤로 물러서기", "드리블만 반복", "롱스로인만 시도"],
-      answer: "상대 빌드업을 방해해 빠르게 공 탈취",
-      explanation: "압박은 상대의 실수를 유도하고 높은 위치에서 공을 되찾으려는 전술이에요."
-    },
-    {
-      question: "역습(counter attack)의 특징으로 가장 알맞은 것은 무엇일까요?",
-      options: ["공을 탈취한 뒤 빠르게 전진해 공격", "무조건 점유율 유지", "중앙 수비수만 공격", "코너킥만 노리기"],
-      answer: "공을 탈취한 뒤 빠르게 전진해 공격",
-      explanation: "역습은 수비 전환 직후 빠른 속도로 공간을 공략해요."
-    },
-    {
-      question: "오버래핑(overlap)의 설명으로 맞는 것은 무엇일까요?",
-      options: ["뒤의 선수가 바깥으로 앞질러 침투", "골키퍼가 중앙으로 올라옴", "공격수가 수비수 자리로 이동", "주장이 심판과 교대"],
-      answer: "뒤의 선수가 바깥으로 앞질러 침투",
-      explanation: "측면에서 풀백이 윙어 바깥을 돌아 올라가는 장면이 대표적이에요."
-    },
-    {
-      question: "스루패스의 목적은 무엇일까요?",
-      options: ["수비 뒷공간으로 침투하는 동료에게 패스", "공을 멀리 걷어내기", "경기 시간 지연", "심판에게 공 전달"],
-      answer: "수비 뒷공간으로 침투하는 동료에게 패스",
-      explanation: "수비 라인을 무너뜨리는 전진 패스예요."
-    },
-    {
-      question: "가짜 9번(false nine)의 특징으로 가장 알맞은 것은 무엇일까요?",
-      options: ["최전방 공격수가 내려와 연계에 관여", "수비수 9명이 동시에 전진", "골키퍼가 공격수로 고정", "코너킥 전담 선수"],
-      answer: "최전방 공격수가 내려와 연계에 관여",
-      explanation: "센터포워드가 내려와 공간을 만들고 연계를 돕는 역할이에요."
-    },
-    {
-      question: "전환 수비(transition defense)가 필요한 순간은 언제일까요?",
-      options: ["공을 빼앗긴 직후", "득점 세리머니 중", "전반 시작 전", "하프타임 휴식 중"],
-      answer: "공을 빼앗긴 직후",
-      explanation: "공 소유를 잃은 직후가 가장 위험한 전환 구간이에요."
-    },
-    {
-      question: "로우 블록(low block)의 전형적 특징은 무엇일까요?",
-      options: ["수비 라인을 낮게 두고 공간을 좁힘", "수비 라인을 매우 높게 유지", "중앙 미드필더를 모두 전방 배치", "양쪽 풀백을 벤치 대기"],
-      answer: "수비 라인을 낮게 두고 공간을 좁힘",
-      explanation: "골문 근처에서 촘촘하게 막아 상대에게 공간을 덜 주는 방식이에요."
-    },
-    {
-      question: "원투패스(one-two)의 핵심은 무엇일까요?",
-      options: ["짧은 패스 후 즉시 재침투해 다시 받기", "중앙에서 롱패스만 반복", "백패스만 계속하기", "코너킥으로만 연결"],
-      answer: "짧은 패스 후 즉시 재침투해 다시 받기",
-      explanation: "빠른 패스 교환으로 수비 사이를 뚫는 데 효과적이에요."
-    },
-    {
-      question: "타깃맨(target man)의 장점으로 가장 알맞은 것은 무엇일까요?",
-      options: ["전방에서 공을 지켜 2선과 연계", "항상 수비라인 마지막에만 대기", "세트피스 수비 불참", "드리블 금지"],
-      answer: "전방에서 공을 지켜 2선과 연계",
-      explanation: "전방 기점 역할로 동료의 공격 가담 시간을 벌어줘요."
-    },
-    {
-      question: "수비수가 오프사이드 트랩을 시도할 때 목표는 무엇일까요?",
-      options: ["공격수를 오프사이드 위치에 남기기", "코너킥 유도", "볼 소유 포기", "무조건 태클하기"],
-      answer: "공격수를 오프사이드 위치에 남기기",
-      explanation: "수비 라인을 동시에 올려 공격수의 타이밍을 끊는 전략이에요."
-    },
-    {
-      question: "직접 프리킥과 간접 프리킥의 차이로 맞는 것은 무엇일까요?",
-      options: ["직접은 바로 슈팅 득점 가능, 간접은 다른 선수 터치 필요", "직접은 헤더만 가능", "간접은 손 사용 가능", "차이가 없다"],
-      answer: "직접은 바로 슈팅 득점 가능, 간접은 다른 선수 터치 필요",
-      explanation: "직접 프리킥은 바로 골 가능, 간접은 2인 이상 터치가 필요해요."
-    },
-    {
-      question: "하프스페이스를 잘 활용하면 얻기 쉬운 이점은 무엇일까요?",
-      options: ["중앙과 측면 사이에서 전진 패스 각도 확보", "무조건 코너킥 증가", "수비 숫자 자동 증가", "오프사이드 면제"],
-      answer: "중앙과 측면 사이에서 전진 패스 각도 확보",
-      explanation: "하프스페이스는 상대 수비 간격을 흔들기 좋은 구역이에요."
-    }
+    { id: "formation-order", category: "tactics", prompt: "4-3-3 포메이션 숫자의 기본 의미 순서", answer: "수비수-미드필더-공격수" },
+    { id: "double-pivot", category: "tactics", prompt: "더블 볼란치(Double pivot)의 핵심 구조", answer: "수비형 미드필더 2명이 축을 이룸" },
+    { id: "false-nine", category: "tactics", prompt: "가짜 9번(False nine)의 대표 움직임", answer: "최전방이 내려와 연계한다" },
+    { id: "inverted-winger", category: "tactics", prompt: "인버티드 윙어의 전형적인 움직임", answer: "안쪽으로 접고 들어와 슈팅/연계" },
+    { id: "overlap", category: "tactics", prompt: "오버래핑(Overlap)의 핵심", answer: "뒤 선수의 바깥 추월 침투" },
+    { id: "underlap", category: "tactics", prompt: "언더래핑(Underlap)의 핵심", answer: "뒤 선수가 안쪽 공간으로 침투" },
+    { id: "half-space", category: "tactics", prompt: "하프스페이스의 위치", answer: "측면과 중앙 사이 세로 통로" },
+    { id: "pressing-trigger", category: "pressing", prompt: "압박 트리거로 자주 쓰이는 상황", answer: "상대의 불안한 첫 터치" },
+    { id: "counter-press", category: "pressing", prompt: "게겐프레싱의 핵심 타이밍", answer: "볼을 잃은 직후 즉시 압박" },
+    { id: "low-block", category: "defense", prompt: "로우 블록의 특징", answer: "수비 라인을 낮추고 박스 근처를 촘촘히 지킴" },
+    { id: "mid-block", category: "defense", prompt: "미드 블록의 특징", answer: "중원에서 라인 간격을 유지하며 압박" },
+    { id: "high-line", category: "defense", prompt: "하이 라인의 특징", answer: "수비 라인을 높여 전진 압박" },
+    { id: "rest-defense", category: "transition", prompt: "레스트 디펜스의 목적", answer: "공격 중 역습 위험을 줄이기 위한 후방 안정" },
+    { id: "attack-transition", category: "transition", prompt: "공격 전환의 핵심", answer: "탈취 직후 빠르게 전진해 찬스 창출" },
+    { id: "defense-transition", category: "transition", prompt: "수비 전환의 핵심", answer: "볼을 잃자마자 공간과 라인 정리" },
+    { id: "switch-play", category: "tactics", prompt: "약한 쪽 전환(Switch play)의 주된 효과", answer: "반대편 넓은 공간 활용" },
+    { id: "third-man-run", category: "tactics", prompt: "서드맨 런(Third-man run)의 핵심", answer: "직접 받지 않는 3번째 선수가 침투" },
+    { id: "one-two", category: "tactics", prompt: "원투 패스의 핵심", answer: "짧은 패스 후 즉시 재침투" },
+    { id: "overload-isolate", category: "tactics", prompt: "오버로드 투 아이솔레이트 전술의 개념", answer: "한쪽으로 모은 뒤 반대 1대1 공간 창출" },
+    { id: "zonal-marking", category: "defense", prompt: "지역 방어(Zonal marking)의 기준", answer: "공간을 기준으로 수비" },
+    { id: "man-marking", category: "defense", prompt: "대인 방어(Man marking)의 기준", answer: "선수를 기준으로 수비" },
+    { id: "mixed-marking", category: "defense", prompt: "혼합 마킹의 핵심", answer: "지역 방어와 대인 방어를 함께 사용" },
+    { id: "offside-trap", category: "defense", prompt: "오프사이드 트랩의 핵심 동작", answer: "수비 라인을 동시에 올려 타이밍을 끊음" },
+    { id: "offside-risk", category: "defense", prompt: "오프사이드 트랩 실패 시 대표 위험", answer: "뒷공간 침투 허용" },
+    { id: "cut-back", category: "attack", prompt: "컷백 패스의 대표 타깃 구역", answer: "페널티 지역 중앙/후방 침투 지점" },
+    { id: "diagonal-pass", category: "attack", prompt: "대각 패스의 전술적 장점", answer: "수비 라인을 비껴 전진 경로 확보" },
+    { id: "wingback-role", category: "position", prompt: "윙백의 핵심 역할", answer: "측면에서 공격과 수비를 모두 수행" },
+    { id: "pivot-role", category: "position", prompt: "피벗(Pivot)의 핵심 역할", answer: "빌드업 중심 축으로 방향 전환" },
+    { id: "progressive-pass", category: "metrics", prompt: "프로그레시브 패스의 정의", answer: "상대 골문 방향으로 의미 있게 전진시키는 패스" },
+    { id: "key-pass", category: "metrics", prompt: "키 패스의 정의", answer: "슈팅으로 직접 이어진 패스" },
+    { id: "press-resistance", category: "metrics", prompt: "프레스 저항(Press resistance)의 의미", answer: "압박 상황에서 공을 지키고 전개하는 능력" },
+    { id: "compactness", category: "defense", prompt: "컴팩트니스(Compactness)의 핵심", answer: "라인 간 간격을 좁혀 공간을 줄임" },
+    { id: "second-ball", category: "terms", prompt: "세컨드 볼(Second ball)의 의미", answer: "경합 뒤 떨어지는 루즈볼" },
+    { id: "direct-play", category: "attack", prompt: "다이렉트 플레이의 특징", answer: "짧은 횡패스보다 빠른 전진을 우선" },
+    { id: "possession-play", category: "attack", prompt: "포제션 플레이의 특징", answer: "볼 소유를 유지하며 기회를 설계" }
   ],
   advanced: [
-    {
-      question: "xG(expected goals)의 의미로 가장 알맞은 것은 무엇일까요?",
-      options: ["슈팅 기회의 기대 득점값", "선수의 연봉 예측치", "경기장 점유 면적", "태클 성공 확률"],
-      answer: "슈팅 기회의 기대 득점값",
-      explanation: "슈팅 위치·각도·상황 등을 기반으로 득점 가능성을 수치화해요."
-    },
-    {
-      question: "PPDA가 낮게 나오는 팀의 일반적 성향은 무엇일까요?",
-      options: ["강한 전방 압박", "극단적 로우 블록만 유지", "패스 시도 최소화", "슈팅 회피"],
-      answer: "강한 전방 압박",
-      explanation: "PPDA가 낮을수록 상대 패스를 덜 허용하며 적극적으로 압박하는 경향이 커요."
-    },
-    {
-      question: "점유율이 높아도 반드시 득점이 늘지 않는 이유로 가장 알맞은 것은 무엇일까요?",
-      options: ["유효한 찬스 창출이 부족할 수 있음", "점유율은 득점과 항상 반비례", "점유율이 높으면 슈팅 금지", "심판이 자동으로 무효 처리"],
-      answer: "유효한 찬스 창출이 부족할 수 있음",
-      explanation: "점유율 자체보다 어떤 지역에서 얼마나 위협적으로 공을 썼는지가 중요해요."
-    },
-    {
-      question: "rest defense의 주된 목적은 무엇일까요?",
-      options: ["공격 중 볼을 잃었을 때 즉시 역습 차단", "항상 오프사이드 유도", "세트피스 전담", "후반 체력 비축"],
-      answer: "공격 중 볼을 잃었을 때 즉시 역습 차단",
-      explanation: "공격 시에도 뒤에 안정 구조를 남겨 전환 리스크를 줄여요."
-    },
-    {
-      question: "인버티드 풀백(inverted fullback)의 일반적 움직임은 무엇일까요?",
-      options: ["측면에서 안쪽 미드필드로 들어와 수적 우위 형성", "항상 최전방으로만 질주", "센터백 뒤로만 이동", "라인 밖에서 대기"],
-      answer: "측면에서 안쪽 미드필드로 들어와 수적 우위 형성",
-      explanation: "중앙 빌드업 안정과 패스 경로 확장을 돕는 역할이에요."
-    },
-    {
-      question: "counter-pressing(게겐프레싱)의 핵심은 무엇일까요?",
-      options: ["볼을 잃은 직후 즉시 압박해 재탈취", "볼을 잃으면 전원 후퇴만", "세트피스 전담 조직", "롱볼만 고집"],
-      answer: "볼을 잃은 직후 즉시 압박해 재탈취",
-      explanation: "전환 순간 짧은 시간 내 공을 되찾아 상대 역습을 막는 전략이에요."
-    },
-    {
-      question: "빌드업에서 3-2 구조를 만드는 이유로 가장 알맞은 것은 무엇일까요?",
-      options: ["1차 압박 회피와 중앙 연결 안정", "공격수 수 줄이기", "코너킥 횟수 감소", "오프사이드 방지 규정 회피"],
-      answer: "1차 압박 회피와 중앙 연결 안정",
-      explanation: "후방 3명+중앙 2명으로 패스 네트워크를 안정화해요."
-    },
-    {
-      question: "progressive pass의 설명으로 옳은 것은 무엇일까요?",
-      options: ["상대 골문 방향으로 의미 있게 전진시키는 패스", "백패스만 반복하는 패스", "터치라인 밖으로 나가는 패스", "심판에게 전달하는 패스"],
-      answer: "상대 골문 방향으로 의미 있게 전진시키는 패스",
-      explanation: "전진 거리와 위협도 측면에서 공격 전개에 중요한 지표예요."
-    },
-    {
-      question: "xA(expected assists)가 보여주는 정보로 가장 알맞은 것은 무엇일까요?",
-      options: ["패스가 슈팅으로 이어졌을 때의 기대 도움값", "수비 성공 확률", "골키퍼 선방 기대값", "팀 버스 이동 거리"],
-      answer: "패스가 슈팅으로 이어졌을 때의 기대 도움값",
-      explanation: "창의적 패스의 질을 평가할 때 쓰는 지표예요."
-    },
-    {
-      question: "약한 쪽 전환(weak-side switch)의 전술적 이점은 무엇일까요?",
-      options: ["한쪽으로 몰린 수비를 반대편 넓은 공간으로 흔듦", "오프사이드 자동 해제", "경기 시간 정지", "교체 카드 추가 획득"],
-      answer: "한쪽으로 몰린 수비를 반대편 넓은 공간으로 흔듦",
-      explanation: "수비 이동 속도보다 빠르게 공을 전환하면 공간 우위를 만들 수 있어요."
-    },
-    {
-      question: "하이 라인(high line)을 사용할 때 얻을 수 있는 장점으로 가장 알맞은 것은 무엇일까요?",
-      options: ["라인 간격을 좁혀 압박과 볼 회수 지점 전진", "항상 실점 감소 보장", "체력 소모 0", "오프사이드 규정 무시"],
-      answer: "라인 간격을 좁혀 압박과 볼 회수 지점 전진",
-      explanation: "팀 전체를 끌어올려 상대 진영에서 공을 되찾기 쉬워져요."
-    },
-    {
-      question: "third-man run 패턴의 핵심으로 맞는 것은 무엇일까요?",
-      options: ["직접 받는 선수가 아닌 3번째 선수가 공간 침투", "수비수 3명이 항상 겹침", "골키퍼 3연속 킥", "공을 3번 바운드 후 패스"],
-      answer: "직접 받는 선수가 아닌 3번째 선수가 공간 침투",
-      explanation: "패스받는 척 끌어낸 뒤 제3의 선수가 침투해 수비를 흔들어요."
-    },
-    {
-      question: "저점유 고효율 팀의 전형적 특징으로 가장 알맞은 것은 무엇일까요?",
-      options: ["적은 기회에서도 높은 전환 공격 완성도", "슈팅 시도 최소화", "전진 패스 금지", "세트피스 포기"],
-      answer: "적은 기회에서도 높은 전환 공격 완성도",
-      explanation: "역습 품질과 박스 침투 효율이 높아 적은 점유율로도 득점해요."
-    },
-    {
-      question: "오버로드(overload)의 전술적 의미로 맞는 것은 무엇일까요?",
-      options: ["특정 구역에 수적 우위를 만들어 패스 루트 확보", "전 구역 동일 인원 유지", "항상 개인기만 사용", "수비수 교체 금지"],
-      answer: "특정 구역에 수적 우위를 만들어 패스 루트 확보",
-      explanation: "국지적 수적 우위는 탈압박과 찬스 창출에 유리해요."
-    },
-    {
-      question: "라인 브레이킹 패스(line-breaking pass)의 목적은 무엇일까요?",
-      options: ["수비 라인 사이를 통과해 전진 연결", "수비 라인을 뒤로 물리기만 함", "터치라인 밖으로 내보내기", "골키퍼에게만 전달"],
-      answer: "수비 라인 사이를 통과해 전진 연결",
-      explanation: "수비 블록을 직접 관통해 공격 템포를 높이는 패스예요."
-    },
-    {
-      question: "데이터 분석에서 게임 스테이트(game state)를 고려해야 하는 이유로 가장 알맞은 것은 무엇일까요?",
-      options: ["리드/열세 상황에 따라 전술 선택과 지표가 달라지기 때문", "심판 성향만으로 결과가 정해지기 때문", "선수 교체는 항상 동일하기 때문", "날씨는 모든 팀에 완전히 동일하기 때문"],
-      answer: "리드/열세 상황에 따라 전술 선택과 지표가 달라지기 때문",
-      explanation: "앞서고 있을 때와 뒤지고 있을 때 팀의 위험 감수와 지표가 크게 달라져요."
-    }
+    { id: "xg", category: "analytics", prompt: "xG(Expected Goals)의 핵심 의미", answer: "슈팅 한 번이 골이 될 기대 확률" },
+    { id: "npxg", category: "analytics", prompt: "npxG의 의미", answer: "페널티킥을 제외한 기대득점" },
+    { id: "xa", category: "analytics", prompt: "xA(Expected Assists)의 의미", answer: "패스가 골로 이어질 기대 도움값" },
+    { id: "ppda", category: "analytics", prompt: "PPDA가 낮다는 해석으로 맞는 것", answer: "상대 패스를 적게 허용할 만큼 강하게 압박" },
+    { id: "field-tilt", category: "analytics", prompt: "Field Tilt 지표가 주로 보여주는 것", answer: "공격 진영 점유 비중" },
+    { id: "xt", category: "analytics", prompt: "xT(Expected Threat)의 목적", answer: "볼 이동이 득점 위협을 얼마나 높였는지 측정" },
+    { id: "progressive-carry", category: "analytics", prompt: "프로그레시브 캐리의 정의", answer: "드리블로 공을 유의미하게 전진 운반" },
+    { id: "final-third-entry", category: "analytics", prompt: "Final-third entry가 의미하는 것", answer: "공을 공격 3분의 1 지역으로 진입시킨 횟수" },
+    { id: "box-entry", category: "analytics", prompt: "박스 엔트리(Box entry)의 의미", answer: "공을 페널티 지역 안으로 투입한 상황" },
+    { id: "game-state", category: "analytics", prompt: "데이터 해석에서 게임 스테이트를 반드시 보는 이유", answer: "리드/열세에 따라 전술과 지표가 달라지기 때문" },
+    { id: "shot-quality", category: "analytics", prompt: "슈팅 질을 좌우하는 대표 요소", answer: "거리·각도·압박 정도" },
+    { id: "set-piece-xg", category: "analytics", prompt: "세트피스 xG를 관리하는 이유", answer: "정지 상황이 고품질 찬스를 자주 만들기 때문" },
+    { id: "counter-efficiency", category: "analytics", prompt: "역습 효율이 높다는 뜻", answer: "적은 터치로 빠르게 슈팅까지 연결" },
+    { id: "positional-play", category: "tactical-principle", prompt: "포지셔널 플레이의 핵심 원칙", answer: "공간 점유와 패스 라인 최적화" },
+    { id: "five-lanes", category: "tactical-principle", prompt: "5레인 점유 원칙의 목적", answer: "공격 폭과 깊이를 균형 있게 확보" },
+    { id: "numerical-superiority", category: "tactical-principle", prompt: "수적 우위의 의미", answer: "특정 구역에서 상대보다 많은 인원 확보" },
+    { id: "positional-superiority", category: "tactical-principle", prompt: "위치적 우위의 의미", answer: "라인 사이 유리한 위치를 선점" },
+    { id: "qualitative-superiority", category: "tactical-principle", prompt: "질적 우위의 의미", answer: "개인 능력 우위 매치업을 활용" },
+    { id: "cover-shadow", category: "pressing", prompt: "커버 섀도우(Cover shadow)의 핵심", answer: "몸 방향으로 패스 길목을 가리며 압박" },
+    { id: "pressing-trap", category: "pressing", prompt: "프레싱 트랩의 목적", answer: "상대를 유도한 지점에서 집단 압박" },
+    { id: "rest-defense-shape", category: "transition", prompt: "레스트 디펜스에서 자주 쓰는 후방 균형 구조", answer: "2-3 또는 3-2 형태" },
+    { id: "line-breaking-pass", category: "attack", prompt: "라인 브레이킹 패스의 정의", answer: "수비 라인을 관통해 전진 연결하는 패스" },
+    { id: "third-line-pass", category: "attack", prompt: "써드 라인 패스의 목적", answer: "중원/수비 라인을 넘어 전방에 직접 연결" },
+    { id: "vertical-compactness", category: "defense", prompt: "세로 컴팩트니스의 효과", answer: "라인 간 거리를 줄여 중앙 공간 차단" },
+    { id: "horizontal-compactness", category: "defense", prompt: "가로 컴팩트니스의 효과", answer: "좌우 간격을 줄여 하프스페이스 차단" },
+    { id: "tempo-control", category: "tactical-principle", prompt: "템포 컨트롤의 의미", answer: "공격 속도를 상황에 맞게 조절" },
+    { id: "circulation", category: "tactical-principle", prompt: "볼 순환(Circulation)의 주된 목적", answer: "수비 블록을 이동시켜 빈 공간 생성" },
+    { id: "xpts", category: "analytics", prompt: "xPts(Expected Points)의 의미", answer: "경기 내용 기반의 기대 승점" },
+    { id: "conversion-rate", category: "analytics", prompt: "슈팅 전환율(Conversion rate)의 의미", answer: "슈팅 대비 득점 비율" },
+    { id: "post-shot-xg", category: "analytics", prompt: "Post-shot xG가 반영하는 핵심 요소", answer: "슈팅 이후 공의 실제 궤적/코스 품질" },
+    { id: "load-management", category: "performance", prompt: "로드 매니지먼트의 핵심 목표", answer: "과부하를 줄여 부상 위험 관리" },
+    { id: "periodization", category: "performance", prompt: "주기화 훈련(Periodization)의 핵심", answer: "경기 일정에 맞춘 훈련 강도 설계" },
+    { id: "tapering", category: "performance", prompt: "테이퍼링(Tapering)의 목적", answer: "중요 경기 전 피로를 줄여 컨디션 최고화" },
+    { id: "sleep", category: "performance", prompt: "수면이 경기력에 중요한 이유", answer: "인지 판단과 반응 속도 회복" },
+    { id: "hydration", category: "performance", prompt: "탈수가 경기력에 미치는 대표 영향", answer: "집중력과 고강도 수행 능력 저하" },
+    { id: "video-analysis", category: "performance", prompt: "영상 분석의 핵심 가치", answer: "전술 패턴과 약점을 객관적으로 확인" }
   ]
 };
+
+const SOCCER_QUESTION_VARIANTS = [
+  (prompt) => `${prompt}으로 가장 알맞은 것은 무엇일까요?`,
+  (prompt) => `다음 문장을 보고 정답을 고르세요. ${prompt}`,
+  (prompt) => `곰돌이 축구 퀴즈: ${prompt}에 해당하는 답은 무엇일까요?`
+];
+
+const SOCCER_MIN_QUESTIONS_PER_LEVEL = 100;
+const SOCCER_MAX_ANSWER_SIMILARITY = 0.84;
+
+function normalizeSoccerText(text) {
+  return String(text || "")
+    .trim()
+    .toLowerCase()
+    .replace(/\s+/g, "")
+    .replace(/[(){}\[\]·.,!?~'"`:+\-=/\\]/g, "");
+}
+
+function buildSoccerBigrams(text) {
+  if (text.length <= 1) return [text];
+  const bigrams = [];
+  for (let index = 0; index < text.length - 1; index += 1) {
+    bigrams.push(text.slice(index, index + 2));
+  }
+  return bigrams;
+}
+
+function calcSoccerStringSimilarity(a, b) {
+  const normalizedA = normalizeSoccerText(a);
+  const normalizedB = normalizeSoccerText(b);
+  if (!normalizedA || !normalizedB) return 0;
+  if (normalizedA === normalizedB) return 1;
+
+  const aBigrams = buildSoccerBigrams(normalizedA);
+  const bBigrams = buildSoccerBigrams(normalizedB);
+  const counts = new Map();
+  aBigrams.forEach((token) => {
+    counts.set(token, (counts.get(token) || 0) + 1);
+  });
+
+  let intersection = 0;
+  bBigrams.forEach((token) => {
+    const current = counts.get(token) || 0;
+    if (current > 0) {
+      intersection += 1;
+      counts.set(token, current - 1);
+    }
+  });
+
+  return (2 * intersection) / (aBigrams.length + bBigrams.length);
+}
+
+function uniqueSoccerList(items) {
+  const seen = new Set();
+  const unique = [];
+
+  items.forEach((item) => {
+    const normalized = normalizeSoccerText(item);
+    if (!normalized || seen.has(normalized)) return;
+    seen.add(normalized);
+    unique.push(String(item));
+  });
+
+  return unique;
+}
+
+function normalizeSoccerPrompt(prompt) {
+  return String(prompt || "")
+    .trim()
+    .replace(/[.!?]$/, "");
+}
+
+function pickSoccerDistractors(items, currentIndex) {
+  const current = items[currentIndex];
+  const answer = String(current.answer || "").trim();
+  const sameCategory = [];
+  const crossCategory = [];
+
+  items.forEach((item, index) => {
+    if (index === currentIndex) return;
+    const candidate = String(item.answer || "").trim();
+    if (!candidate) return;
+    if (normalizeSoccerText(candidate) === normalizeSoccerText(answer)) return;
+    if (calcSoccerStringSimilarity(answer, candidate) > SOCCER_MAX_ANSWER_SIMILARITY) return;
+
+    if (item.category === current.category) {
+      sameCategory.push(candidate);
+    } else {
+      crossCategory.push(candidate);
+    }
+  });
+
+  const merged = uniqueSoccerList([...sameCategory, ...crossCategory]);
+  if (merged.length === 0) return [];
+
+  const startIndex = (currentIndex * 5) % merged.length;
+  const selected = [];
+
+  for (let offset = 0; offset < merged.length && selected.length < 3; offset += 1) {
+    const candidate = merged[(startIndex + offset) % merged.length];
+    if (!candidate) continue;
+    if (calcSoccerStringSimilarity(answer, candidate) > SOCCER_MAX_ANSWER_SIMILARITY) continue;
+    selected.push(candidate);
+  }
+
+  return selected.slice(0, 3);
+}
+
+function buildSoccerQuestionBankFromFacts(factLibrary) {
+  const bank = {};
+
+  SOCCER_LEVEL_KEYS.forEach((levelKey) => {
+    const items = Array.isArray(factLibrary[levelKey]) ? factLibrary[levelKey] : [];
+    const questions = items.flatMap((item, index) => {
+      const prompt = normalizeSoccerPrompt(item.prompt);
+      const answer = String(item.answer || "").trim();
+      if (!prompt || !answer) return [];
+
+      const distractors = pickSoccerDistractors(items, index);
+      const options = uniqueSoccerList([answer, ...distractors]).slice(0, 4);
+      if (options.length < 4) return [];
+
+      const conceptId = `${levelKey}:${item.id || index}`;
+      const explanation = `${prompt}의 정답은 "${answer}"이에요.`;
+
+      return SOCCER_QUESTION_VARIANTS.map((buildQuestion) => ({
+        question: buildQuestion(prompt),
+        options,
+        answer,
+        explanation,
+        conceptId,
+        verification: "option-answer-similarity-check"
+      }));
+    });
+
+    const deduped = [];
+    const seenQuestions = new Set();
+
+    questions.forEach((question) => {
+      const key = normalizeSoccerText(question.question);
+      if (!key || seenQuestions.has(key)) return;
+      seenQuestions.add(key);
+      deduped.push(question);
+    });
+
+    bank[levelKey] = deduped;
+  });
+
+  return bank;
+}
+
+function validateSoccerQuestionBank(bank) {
+  const errors = [];
+  const summary = {};
+
+  SOCCER_LEVEL_KEYS.forEach((levelKey) => {
+    const list = Array.isArray(bank[levelKey]) ? bank[levelKey] : [];
+    summary[levelKey] = list.length;
+
+    if (list.length < SOCCER_MIN_QUESTIONS_PER_LEVEL) {
+      errors.push(`[${levelKey}] question count ${list.length} < ${SOCCER_MIN_QUESTIONS_PER_LEVEL}`);
+    }
+
+    list.forEach((question, index) => {
+      const answer = String(question.answer || "").trim();
+      const options = Array.isArray(question.options) ? question.options.map((option) => String(option || "").trim()) : [];
+      const uniqueOptions = uniqueSoccerList(options);
+
+      if (!answer) {
+        errors.push(`[${levelKey}#${index}] empty answer`);
+      }
+
+      if (uniqueOptions.length !== 4) {
+        errors.push(`[${levelKey}#${index}] options length must be 4 unique values`);
+      }
+
+      const hasAnswer = uniqueOptions.some((option) => normalizeSoccerText(option) === normalizeSoccerText(answer));
+      if (!hasAnswer) {
+        errors.push(`[${levelKey}#${index}] answer missing from options`);
+      }
+
+      uniqueOptions
+        .filter((option) => normalizeSoccerText(option) !== normalizeSoccerText(answer))
+        .forEach((distractor) => {
+          const similarity = calcSoccerStringSimilarity(answer, distractor);
+          if (similarity > SOCCER_MAX_ANSWER_SIMILARITY) {
+            errors.push(
+              `[${levelKey}#${index}] distractor too similar to answer (similarity=${similarity.toFixed(2)}): "${answer}" vs "${distractor}"`
+            );
+          }
+        });
+    });
+  });
+
+  return {
+    ok: errors.length === 0,
+    errors,
+    summary
+  };
+}
+
+const SOCCER_QUESTION_BANK = buildSoccerQuestionBankFromFacts(SOCCER_FACT_ITEMS);
+const SOCCER_QUESTION_BANK_VALIDATION = validateSoccerQuestionBank(SOCCER_QUESTION_BANK);
+
+if (!SOCCER_QUESTION_BANK_VALIDATION.ok) {
+  console.error("[soccer-bank] validation failed", SOCCER_QUESTION_BANK_VALIDATION);
+} else {
+  console.info("[soccer-bank] validation passed", SOCCER_QUESTION_BANK_VALIDATION.summary);
+}
 
 const WORLD_HISTORY_QUESTION_BANK = {
   grade6: [
@@ -3778,7 +3805,7 @@ const SUBJECT_COPY = {
   },
   soccer: {
     title: "곰돌이 축구",
-    subtitle: "곰돌이 선생님과 축구 상식 퀴즈를 난이도별로 재미있게 풀어봐요.",
+    subtitle: "곰돌이 선생님과 축구 상식 퀴즈를 난이도별로 풀어봐요. 문제풀을 크게 늘리고 자동 검증을 적용했어요.",
     bearMessage: "안녕! 난 곰돌이 선생님이야. 이번엔 축구 상식 퀴즈로 워밍업해볼까?"
   }
 };
@@ -4098,7 +4125,8 @@ const soccerState = {
   bestStreak: 0,
   answered: false,
   current: null,
-  usedQuestionIndexes: new Set()
+  usedQuestionIndexes: new Set(),
+  usedConceptIds: new Set()
 };
 
 let googleScriptLoadPromise = null;
@@ -5417,15 +5445,22 @@ function buildBaseballQuestion() {
 
 function pickSoccerQuestionIndex() {
   const pool = getSoccerQuestions(soccerState.level);
+  if (!Array.isArray(pool) || pool.length === 0) return 0;
   const allIndexes = Array.from({ length: pool.length }, (_, index) => index);
-  let availableIndexes = allIndexes.filter((index) => !soccerState.usedQuestionIndexes.has(index));
+  let availableIndexes = allIndexes.filter((index) => {
+    if (soccerState.usedQuestionIndexes.has(index)) return false;
+    const conceptId = String(pool[index]?.conceptId || index);
+    return !soccerState.usedConceptIds.has(conceptId);
+  });
   if (availableIndexes.length === 0) {
     soccerState.usedQuestionIndexes.clear();
+    soccerState.usedConceptIds.clear();
     availableIndexes = allIndexes;
   }
 
   const questionIndex = availableIndexes[randomInt(0, availableIndexes.length - 1)];
   soccerState.usedQuestionIndexes.add(questionIndex);
+  soccerState.usedConceptIds.add(String(pool[questionIndex]?.conceptId || questionIndex));
   return questionIndex;
 }
 
@@ -5437,7 +5472,9 @@ function buildSoccerQuestion() {
     question: question.question,
     options: shuffleList([...question.options]),
     answer: question.answer,
-    explanation: question.explanation
+    explanation: question.explanation,
+    conceptId: question.conceptId,
+    verification: question.verification
   };
 }
 
@@ -6640,6 +6677,7 @@ function startSoccerSession() {
   soccerState.answered = false;
   soccerState.current = null;
   soccerState.usedQuestionIndexes.clear();
+  soccerState.usedConceptIds.clear();
   soccerState.current = buildSoccerQuestion();
   updateSoccerStats();
   renderSoccerQuestion();
@@ -8278,6 +8316,7 @@ function handleSoccerLevelSelect(nextLevel) {
   saveProfile();
   updateSoccerLevelUi();
   soccerState.usedQuestionIndexes.clear();
+  soccerState.usedConceptIds.clear();
 
   const label = getSoccerLevel(nextLevel).label;
   if (soccerState.sessionActive) {
