@@ -1,7 +1,0 @@
-services:
-  synology-telegram-torrent-bridge:
-    build: .
-    container_name: synology-telegram-torrent-bridge
-    restart: unless-stopped
-    env_file:
-      - .env
