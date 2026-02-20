@@ -5,9 +5,15 @@
   "type": "module",
   "scripts": {
     "start": "node server.js",
+    "start:nodb": "SKIP_DB=true node server.js",
     "db:up": "docker compose up -d postgres",
     "db:down": "docker compose down",
-    "db:logs": "docker compose logs -f postgres"
+    "db:logs": "docker compose logs -f postgres",
+    "xbot:reply": "node scripts/x-reply-bot.mjs",
+    "xbot:scan": "node scripts/x-engagement-assistant.mjs scan",
+    "xbot:list": "node scripts/x-engagement-assistant.mjs list",
+    "xbot:approve": "node scripts/x-engagement-assistant.mjs approve",
+    "xbot:reject": "node scripts/x-engagement-assistant.mjs reject"
   },
   "dependencies": {
     "express": "^4.21.2",
