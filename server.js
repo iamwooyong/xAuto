@@ -18,12 +18,12 @@ loadDotEnv(path.join(ROOT, ".env"));
 const execFileAsync = promisify(execFile);
 const X_ENGAGEMENT_SCRIPT_PATH = path.join(ROOT, "scripts", "x-engagement-assistant.mjs");
 const DEFAULT_X_ENGAGEMENT_STATE_PATH = path.join(ROOT, "data", "x-engagement-assistant.json");
-const DATABASE_URL = process.env.DATABASE_URL || "postgresql://postgres:postgres@localhost:5432/gommath";
+const DATABASE_URL = process.env.DATABASE_URL || "postgresql://postgres:postgres@localhost:5432/xauto";
 const GOOGLE_CLIENT_IDS = (process.env.GOOGLE_CLIENT_IDS || process.env.GOOGLE_CLIENT_ID || "160808232856-3c351j191uocqiailplgha2pnf2qtdam.apps.googleusercontent.com")
   .split(",")
   .map((value) => value.trim())
   .filter(Boolean);
-const SESSION_SECRET = process.env.SESSION_SECRET || "gommath-dev-session-secret";
+const SESSION_SECRET = process.env.SESSION_SECRET || "xauto-dev-session-secret";
 const SESSION_TTL_HOURS = Math.max(Number(process.env.SESSION_TTL_HOURS || 24 * 7), 1);
 const SESSION_TTL_MS = SESSION_TTL_HOURS * 60 * 60 * 1000;
 const SKIP_DB = ["1", "true", "yes", "y", "on"].includes(String(process.env.SKIP_DB || "").trim().toLowerCase());
@@ -2410,10 +2410,14 @@ app.get("/xbot", (_req, res) => {
   res.sendFile(path.join(ROOT, "xbot-manual.html"));
 });
 
+app.get("/", (_req, res) => {
+  res.redirect("/xbot");
+});
+
 app.use(express.static(ROOT));
 
 app.get("*", (_req, res) => {
-  res.sendFile(path.join(ROOT, "index.html"));
+  res.redirect("/xbot");
 });
 
 function startServer() {
